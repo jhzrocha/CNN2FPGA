@@ -1,0 +1,153 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity testbench is
+end testbench;
+
+architecture testbench of testbench is
+    constant p_QT_BITS : natural := 8;
+    constant p_QT_PIXELS : natural := 4;
+ 
+    signal w_DATA, w_KERNEL : signed(0 to p_QT_BITS*p_QT_PIXELS-1);
+    signal w_RST, w_ENA, w_CLK_n: std_logic := '0';
+    
+    signal w_RESULT : integer;
+
+begin
+    uut : entity work.top 
+        generic map (p_QT_BITS,p_QT_PIXELS)
+        port map (
+            i_DATA   => w_DATA,
+            i_KERNEL => w_KERNEL,
+            i_RST => w_RST,
+            i_ENA => w_ENA,
+            i_CLKn => w_CLK_n,
+            o_VALUE  => w_RESULT
+        );
+
+    p_INPUTS: process
+    begin
+  
+
+        
+        w_RST <= '1';
+        w_ENA <= '0';
+        
+        w_CLK_n <= '1';
+        wait for 1 ns;
+        w_RST <= '0';
+
+        w_CLK_n <= '0';
+        wait for 1 ns;
+
+        w_CLK_n <= '1';
+        wait for 1 ns;
+
+        w_DATA <= "00000010000000100000001000000010";
+        w_KERNEL <= "00000010000000100000001000000010"; 
+        
+        w_ENA <= '1';
+        wait for 1 ns;
+        w_CLK_n <= '0';
+        wait for 1 ns;
+
+        w_CLK_n <= '1';
+        wait for 1 ns;        
+        w_CLK_n <= '0';
+        wait for 1 ns;
+
+        w_CLK_n <= '1';
+        wait for 1 ns;        
+        w_CLK_n <= '0';
+        wait for 1 ns;
+
+        w_CLK_n <= '1';
+        wait for 1 ns;       
+        w_CLK_n <= '0';
+        wait for 1 ns;
+
+        w_CLK_n <= '1';
+        wait for 1 ns;        
+        w_CLK_n <= '0';
+        wait for 1 ns;
+
+        w_CLK_n <= '1';
+        wait for 1 ns;        
+        w_CLK_n <= '0';
+        wait for 1 ns;
+
+        w_CLK_n <= '1';
+        wait for 1 ns;        
+        w_CLK_n <= '0';
+        wait for 1 ns;
+
+        w_CLK_n <= '1';
+        wait for 1 ns;        
+        w_CLK_n <= '0';
+        wait for 1 ns;
+		assert w_RESULT = 15 report "Fail @ 1" severity error;
+
+        w_ENA <= '0';
+        w_RST <= '1';
+        w_DATA <= "00000011000000110000001100000011";
+        w_KERNEL <= "00000011000000110000001100000011"; 
+        
+        w_CLK_n <= '1';
+        wait for 1 ns;        
+        w_CLK_n <= '0';
+        wait for 1 ns;
+		assert w_RESULT = 0 report "Fail @ 1" severity error;
+        
+
+
+        w_CLK_n <= '1';
+        wait for 1 ns; 
+        
+        w_RST <= '0';
+                
+                
+        w_CLK_n <= '0';
+        wait for 1 ns;
+
+        w_ENA <= '1';
+        
+        w_CLK_n <= '1';
+        wait for 1 ns;        
+        w_CLK_n <= '0';
+        wait for 1 ns;
+        
+        w_CLK_n <= '1';
+        wait for 1 ns;        
+        w_CLK_n <= '0';
+        wait for 1 ns;
+        
+        w_CLK_n <= '1';
+        wait for 1 ns;        
+        w_CLK_n <= '0';
+        wait for 1 ns;
+        
+        w_CLK_n <= '1';
+        wait for 1 ns;        
+        w_CLK_n <= '0';
+        wait for 1 ns;
+        
+        w_CLK_n <= '1';
+        wait for 1 ns;        
+        w_CLK_n <= '0';
+        wait for 1 ns;
+        
+        w_CLK_n <= '1';
+        wait for 1 ns;        
+        w_CLK_n <= '0';
+        wait for 1 ns;
+        
+
+        
+ 
+    
+
+        wait;
+    end process;
+
+end testbench;

@@ -1,0 +1,50 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+
+
+entity convolutional_element is
+    generic (p_QT_PIXELS : natural := 9;
+             p_QT_BITS : natural := 8);
+    TYPE signedArray IS ARRAY(0 to p_QT_PIXELS-1) OF SIGNED(0 to p_QT_BITS-1);
+    port (
+      i_DATA    : in signedArray;
+      i_KERNEL  : in signedArray;
+      i_RST     : in std_logic;
+      i_ENA     : in std_logic;
+      o_VALUE   : out integer
+    );
+end convolutional_element;
+
+architecture convolutional_element_a of convolutional_element is
+    signal result 
+    
+    component convolutional_unit is
+      port(
+        i_DATA    : in signed(0 to p_QT_BITS-1);
+        i_KERNEL  : in signed(0 to p_QT_BITS-1);
+        i_RST     : in std_logic;
+        i_ENA     : in std_logic;
+        i_VALUE   : in integer := 0;
+        o_VALUE   : out integer
+      );
+  	end component convolutional_unit; 
+      
+begin    
+    convolutional_sum:
+    
+    
+    for i in 0 to p_QT_PIXELS-1 generate
+    x0: convolutional_unit
+    port map(
+      a => c(i),
+      b => c(i+1)
+    );
+  end generate u0;
+    end generate convolutional_sum;
+    
+    
+    
+    
+end convolutional_element_a;

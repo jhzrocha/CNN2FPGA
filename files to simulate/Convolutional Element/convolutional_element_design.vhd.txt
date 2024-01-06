@@ -1,0 +1,31 @@
+-- Code your design here
+library IEEE;
+use IEEE.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity top is
+    generic (p_QT_BITS : natural := 8;
+	          p_QT_PIXELS : natural := 9);
+    port (
+      i_DATA    : in signed(0 to p_QT_BITS*p_QT_PIXELS-1);
+      i_KERNEL  : in signed(0 to p_QT_BITS*p_QT_PIXELS-1);
+      i_RST     : in std_logic;
+      i_ENA     : in std_logic;
+	  i_CLKn    : in std_logic;
+      o_VALUE   : out integer
+    );
+end top;
+
+architecture arch of top is
+begin
+    u_CONV : entity work.convolutional_element  -- Altere aqui
+        generic map (p_QT_BITS,p_QT_PIXELS )
+        port map (
+            i_DATA   => i_DATA,
+            i_KERNEL => i_KERNEL,
+            i_RST => i_RST,
+            i_ENA => i_ENA,
+            i_CLKn => i_CLKn,
+            o_VALUE  => o_VALUE
+        );
+end arch;
