@@ -24,6 +24,7 @@ class fileHandler:
 
     def createComponentsFolder(self):
         fullPath = os.path.join('ComponentsOutput')
+        os.path.
         print(fullPath)
         if not os.path.exists(fullPath):
             os.makedirs(fullPath)
