@@ -1,89 +1,28 @@
-import os
-class adderComponent:
+from ComponentCommonMethods import ComponentCommonMethods
+
+class adderComponent(ComponentCommonMethods):
   
-  inputs = []
-  portMap = ''
-  process = ''
-  operations = ''
-
-  call = """    {} : entity work.adder  
-        port map (
-            {}
-            o_VALUE  => {}}
-        );"""
-  
-  file = """
-    library IEEE;
-    use IEEE.std_logic_1164.all;
-    use ieee.numeric_std.all;
-
-    entity adder is
-        port (
-      {}
-      o_VALUE      : out integer
-    );
-end adder;
-
-architecture arc of adder is
-begin    
+  internalOperations = """
     add:
-    process({})
-    begin
-		o_VALUE <={}; 
-        
-	end process add;
+      process({})
+      begin
+      o_VALUE <={};           
+    end process add;
+  """
 
-end arc;"""
-
-
-
-  def __init__(self, qtInputs):
-
-    self.generateFile(qtInputs)
-    print(self.file)
-
-
-  
-  def generateFile(self, qtInputs):
-    self.setPortMap(qtInputs)
-    self.setProcessParameters(qtInputs)
+  def __init__(self):
     self.setOperations(qtInputs)
-    self.file = self.file.format(self.getInputs(),
-                           self.getProcessParameters(),
-                           self.getOperations())
-     
-  def getPortMap(self):
-    return self.portMap
-  
-  def setPortMap(self, qtInputs):
-    for i in range(0, qtInputs):
-        self.portMap =  self.portMap + 'i_VALUE_{} : in integer;\n'.format(i)
-        self.inputs.append('i_VALUE_{}'.format(i))
+    super.__init__
 
-  
-  def getProcessParameters(self):
-    return self.process
-
-  def setProcessParameters(self,qtInputs):
-    for i in range(0, qtInputs-1):
-        self.process =  self.process + 'i_VALUE_{},'.format(i)
-    self.process =  self.process + 'i_VALUE_{}'.format(qtInputs-1)
-   
-  
-  def getOperations(self):
-    return self.operations
-  
   def setOperations(self, qtInputs):
+    processParameters = ''
+    operations = ''
+    
     for i in range(0, qtInputs-1):
-        self.operations =  self.operations + 'i_VALUE_{} +'.format(i)
-    self.operations =  self.operations + 'i_VALUE_{}'.format(qtInputs-1)
-  
-  def getObjectCall(self):
-    return self.call 
-  
-  def setObjectCall(self, objectName, connectionParameters):
-    self.call = self.call.format(objectName,)  
+        operations =  operations + 'i_VALUE_{} +'.format(i)
+        processParameters =  processParameters + 'i_VALUE_{},'.format(i)
+    
+    processParameters =  processParameters + 'i_VALUE_{}'.format(qtInputs-1)
+    operations =  operations + 'i_VALUE_{}'.format(qtInputs-1)
+    self.internalOperations.format(processParameters,operations)
 
-  def getPortMapConnections(self):
-    print('a')
-    #    criar a entrada do parametro e criar o
