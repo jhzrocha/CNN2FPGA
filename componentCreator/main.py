@@ -1,4 +1,3 @@
-from ComponentCommonMethods import ComponentCommonMethods
 from adder import adderComponent
 # Criando uma instância do ManipuladorDeArquivos
 
@@ -15,6 +14,7 @@ from adder import adderComponent
 # print(a.getEntityAndArchitectureFile())
 
 
-b = adderComponent('Adder')
+b = adderComponent('Adder',5)
+b.addGenericByParameters('QT_BITS_P', 'integer', 0)
 print(b.getEntityAndArchitectureFile())
 print(b.getObjectCall('a'))

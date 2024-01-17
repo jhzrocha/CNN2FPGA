@@ -1,9 +1,10 @@
 from port import port
-
+from generic import Generic
 
 class ComponentCommonMethods:
     
     minimalComponentFileName = ''
+    generics = []
     inputs = []
     outputs = []
 
@@ -13,6 +14,7 @@ use ieee.numeric_std.all;"""
 
     entityDeclaration = """
     entity {} is
+        {}
         port (
 {}
         );
@@ -24,12 +26,14 @@ use ieee.numeric_std.all;"""
         {}
     end arc;"""
 
-    internalOperations = ''
+    processment = ''
 
     call = """    {} : entity work.{}  
     port map (
 {}
     );"""
+
+    genericsDeclaration = 'generic ({});'
 
     def __init__(self, minimalComponentFileName):
         self.minimalComponentFileName = minimalComponentFileName
@@ -39,6 +43,18 @@ use ieee.numeric_std.all;"""
      
     def addOutputPort(self, port):
         self.outputs.append(port)
+
+    def addGenericByParameters(self, name, dataType, initialValue):
+        newGeneric = Generic(name, dataType, initialValue)
+        self.generics.append(newGeneric)
+    
+    def addInputPortByParameters(self, name, dataType, connection = ''):
+        inputPort = port(name,dataType,connection)
+        self.inputs.append(inputPort)
+    
+    def addOutputPortByParameters(self, name, dataType, connection = ''):
+        outputPort = port(name,dataType,connection)
+        self.outputs.append(outputPort)
 
     def addMultipleGeneratedInputPorts(self, qtPorts, dataType):
         for i in range(0, qtPorts):
@@ -77,19 +93,31 @@ use ieee.numeric_std.all;"""
             callPortMap = callPortMap + f'      {i.name} : in {i.dataType};\n'
         for i in self.outputs:
             callPortMap = callPortMap + f'      {i.name} : out {i.dataType};\n'
-
+                
         if callPortMap.endswith(';\n'):
             callPortMap = callPortMap[:-2]
         
         return self.entityDeclaration.format(self.minimalComponentFileName,
+                                             self.getGenericDeclaration(),
                                              callPortMap,
                                              self.minimalComponentFileName)
     
+    def getGenericDeclaration(self):
+        generics = ''
+        if(len(self.generics) > 0):
+            for i in self.generics:
+                generics = generics + f"{i.name} : {i.dataType} := {i.initialValue};\n"
+            if generics.endswith(';\n'):
+                generics = generics[:-2]            
+            generics = self.genericsDeclaration.format(generics)
+        return generics
+
+
     def getArchitectureDeclaration(self):
-        return self.architectureDeclaration.format(self.minimalComponentFileName,self.internalOperations)
+        return self.architectureDeclaration.format(self.minimalComponentFileName,self.processment)
     
-    def setInternalOperations(self, internalOperation):
-        self.internalOperations = internalOperation
+    def setProcessment(self, internalOperation):
+        self.processment = internalOperation
 
     def getEntityAndArchitectureFile(self):
         file = f"""{self.importHeader}
@@ -97,3 +125,4 @@ use ieee.numeric_std.all;"""
                  {self.getArchitectureDeclaration()}"""   
         
         return file
+    
