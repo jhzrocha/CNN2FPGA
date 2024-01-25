@@ -1,11 +1,15 @@
 
-class port:
+class Port:
     name = ''
     dataType = ''
+    # type = ''
     connection = ''
 
-    def __init__(self, name, dataType, connection = ''):
+    def __init__(self, name, 
+                #  type, 
+                 dataType, connection = ''):
         self.name = name
+        # self.type = type
         self.dataType = dataType
         self.connection = connection
     
@@ -20,6 +24,12 @@ class port:
     
     def getdataType(self):
         return self.dataType
+    
+    # def setType(self,type):
+    #     self.type = type
+    
+    # def getType(self):
+    #     return self.type
 
     def setConnection(self, connection):
         self.connection = connection

@@ -9,4 +9,5 @@ class Generic:
         self.name = name
         self.dataType = dataType
         self.initialValue = initialValue
+        self.value = self.initialValue
 

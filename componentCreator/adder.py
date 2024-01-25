@@ -1,21 +1,25 @@
 from ComponentCommonMethods import ComponentCommonMethods
+from port import Port
 
-class adderComponent(ComponentCommonMethods):
+class AdderComponent(ComponentCommonMethods):
   
-  internalOperations = """
+
+  def __init__(self, qtInputPorts):
+    self.minimalComponentFileName = 'adder'
+    self.portMap = { 'in': [],
+                     'out': [Port('o_VALUE','integer')] 
+                   }
+    self.internalOperations = """
     add:
       process({})
       begin
       o_VALUE <= {};           
     end process add;
-  """
+    """
+    super().__init__()
 
-  def __init__(self, minimalComponentFileName, qtInputPorts):
-    self.addOutputPortByParameters('o_VALUE', 'integer')
     self.addMultipleGeneratedInputPorts(qtInputPorts, 'integer')
-    super().__init__(minimalComponentFileName)
   
-
   def addMultipleGeneratedInputPorts(self, qtPorts, dataType):
     super().addMultipleGeneratedInputPorts(qtPorts, dataType)
     self.setOperations()
@@ -24,7 +28,7 @@ class adderComponent(ComponentCommonMethods):
     processParameters = ''
     operations = ''
     
-    for i in self.inputs:
+    for i in self.portMap['in']:
         operations =  operations + f"{i.name} +"
         processParameters =  processParameters + f"{i.name} ,"
     
