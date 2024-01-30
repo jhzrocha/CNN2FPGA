@@ -1,6 +1,6 @@
-from ComponentCommonMethods import ComponentCommonMethods
+from componentBases.ComponentCommonMethods import ComponentCommonMethods
 from port import Port
-from generic import Generic
+from componentBases.generic import Generic
 
 class Multiplicator(ComponentCommonMethods):
 

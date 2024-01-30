@@ -1,4 +1,4 @@
-from ComponentCommonMethods import ComponentCommonMethods
+from componentBases.ComponentCommonMethods import ComponentCommonMethods
 from port import Port
 
 class AdderComponent(ComponentCommonMethods):

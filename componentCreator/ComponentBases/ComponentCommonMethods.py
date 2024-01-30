@@ -1,5 +1,5 @@
 from port import Port
-from generic import Generic
+from componentBases.generic import Generic
 from copy import deepcopy
 
 class ComponentCommonMethods:

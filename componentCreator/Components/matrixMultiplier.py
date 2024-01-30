@@ -1,8 +1,8 @@
-from ComponentCommonMethods import ComponentCommonMethods
-from generic import Generic
+from componentBases.ComponentCommonMethods import ComponentCommonMethods
+from componentBases.generic import Generic
 from port import Port
-from adder import AdderComponent
-from multiplicator import Multiplicator
+from components.adder import AdderComponent
+from components.multiplicator import Multiplicator
 
 
 class MatrixMultiplier(ComponentCommonMethods):

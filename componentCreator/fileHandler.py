@@ -1,31 +1,27 @@
 import os
 
-class fileHandler:
-    def __init__(self, caminho_arquivo):
-        self.caminho_arquivo = caminho_arquivo
+class FileHandler:
+    def __init__(self, directoryName,path):
+        self.directoryName = directoryName
+        self.path = path
+        self.directoryPath = os.path.join(self.path, self.directoryName)
+        self.makeDirectory()
 
-    def ler_arquivo(self):
-        try:
-            with open(self.caminho_arquivo, 'r') as arquivo:
-                conteudo = arquivo.read()
-                return conteudo
-        except FileNotFoundError:
-            return f"O arquivo '{self.caminho_arquivo}' não foi encontrado."
+    def makeDirectory(self):
+        if not os.path.exists(self.directoryPath):
+            os.makedirs(self.directoryPath)
+            print(f"Directory '{self.directoryName}' created sucessfully.")
+        else:
+            print(f"Directory '{self.directoryName}' already exists.")
 
-    def escrever_arquivo(self, conteudo):
-        with open(self.caminho_arquivo, 'w') as arquivo:
-            arquivo.write(conteudo)
-        print(f"Conteúdo escrito no arquivo '{self.caminho_arquivo}'.")
+    def addFile(self, nome_file, texto):
+        filePath = os.path.join(self.directoryPath, nome_file)
+        with open(filePath, 'w') as file:
+            file.write(texto)
+        print(f"File '{nome_file}' create sucessfully on {self.directoryName}.")
 
-    def apendar_arquivo(self, conteudo):
-        with open(self.caminho_arquivo, 'a') as arquivo:
-            arquivo.write(conteudo)
-        print(f"Conteúdo adicionado ao arquivo '{self.caminho_arquivo}'.")
-
-    def createComponentsFolder(self):
-        fullPath = os.path.join('ComponentsOutput')
-        os.path.
-        print(fullPath)
-        if not os.path.exists(fullPath):
-            os.makedirs(fullPath)
-
+    def clean(self):
+        for file in os.listdir(self.directoryPath):
+            filePath = os.path.join(self.directoryPath, file)
+            os.remove(filePath)
+        print(f"files removidos da pasta '{self.directoryName}'.")
