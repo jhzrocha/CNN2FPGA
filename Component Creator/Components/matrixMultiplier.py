@@ -1,8 +1,8 @@
-from componentBases.ComponentCommonMethods import ComponentCommonMethods
-from componentBases.generic import Generic
-from port import Port
-from components.adder import AdderComponent
-from components.multiplicator import Multiplicator
+from ComponentBases.ComponentCommonMethods import ComponentCommonMethods
+from ComponentBases.generic import Generic
+from ComponentBases.port import Port
+from Components.adder import AdderComponent
+from Components.multiplicator import Multiplicator
 
 
 class MatrixMultiplier(ComponentCommonMethods):
@@ -21,6 +21,8 @@ class MatrixMultiplier(ComponentCommonMethods):
         self.AddMultipliers(qtPixels)
         self.addInternalComponent(AdderComponent(qtPixels), 'adder')
         self.setInternalComponentsPortMap(qtPixels)
+        self.OutputEntityAndArchitectureFile()
+
 
 
     def AddMultipliers(self, qtPixels):
@@ -30,12 +32,12 @@ class MatrixMultiplier(ComponentCommonMethods):
     def setInternalComponentsPortMap(self, qtPixels):
         adderParameters = {}
         for i in range(qtPixels):
-            multParameters = {'i_DATA':f"i_DATA({i} to p_QT_BITS*{i+1}-1)",
-                          'i_KERNEL' : f"i_KERNEL({i} to p_QT_BITS*{i+1}-1)",
+            multParameters = {'i_DATA':f"i_DATA({i}*p_QT_BITS to p_QT_BITS*{i+1}-1)",
+                          'i_KERNEL' : f"i_KERNEL({i}*p_QT_BITS to p_QT_BITS*{i+1}-1)",
                           'i_ENA' : 'i_ENA',
-                          'o_VALUE' : f"w_Mult_{i}"
+                          'o_VALUE' : f"w_MULT_{i}"
                           }
             self.setInternalComponentPortMap(f"Multi_{i}",multParameters)
-            adderParameters[f"i_PORT_{i}"] = f"w_Mult_{i}"
+            adderParameters[f"i_PORT_{i}"] = f"w_MULT_{i}"
         adderParameters['o_VALUE'] = 'o_VALUE'
         self.setInternalComponentPortMap('adder',adderParameters)

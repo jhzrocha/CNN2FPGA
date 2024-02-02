@@ -1,11 +1,11 @@
-from componentBases.ComponentCommonMethods import ComponentCommonMethods
-from port import Port
+from ComponentBases.ComponentCommonMethods import ComponentCommonMethods
+from ComponentBases.port import Port
 
 class AdderComponent(ComponentCommonMethods):
   
 
   def __init__(self, qtInputPorts):
-    self.minimalComponentFileName = 'adder'
+    self.minimalComponentFileName = f"Adder_{qtInputPorts}in"
     self.portMap = { 'in': [],
                      'out': [Port('o_VALUE','integer')] 
                    }
@@ -19,6 +19,8 @@ class AdderComponent(ComponentCommonMethods):
     super().__init__()
 
     self.addMultipleGeneratedInputPorts(qtInputPorts, 'integer')
+
+    self.OutputEntityAndArchitectureFile()
   
   def addMultipleGeneratedInputPorts(self, qtPorts, dataType):
     super().addMultipleGeneratedInputPorts(qtPorts, dataType)

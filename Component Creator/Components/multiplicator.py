@@ -1,6 +1,6 @@
-from componentBases.ComponentCommonMethods import ComponentCommonMethods
-from port import Port
-from componentBases.generic import Generic
+from ComponentBases.ComponentCommonMethods import ComponentCommonMethods
+from ComponentBases.port import Port
+from ComponentBases.generic import Generic
 
 class Multiplicator(ComponentCommonMethods):
 
@@ -28,3 +28,5 @@ class Multiplicator(ComponentCommonMethods):
         """
         super().__init__()
         self.generics = [Generic('p_QT_BITS','natural','8')]
+        self.OutputEntityAndArchitectureFile()
+

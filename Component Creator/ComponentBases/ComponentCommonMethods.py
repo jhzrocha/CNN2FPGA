@@ -1,6 +1,7 @@
-from port import Port
-from componentBases.generic import Generic
+from ComponentBases.port import Port
+from ComponentBases.generic import Generic
 from copy import deepcopy
+from FileHandler.fileHandler import FileHandler
 
 class ComponentCommonMethods:
     
@@ -121,7 +122,7 @@ use ieee.numeric_std.all;"""
         generics = ''
         if(len(self.generics) > 0):
             for i in self.generics:
-                generics = generics + f"{i.name} : {i.dataType} := {i.initialValue};\n"
+                generics = generics + f"{i.name} : {i.dataType} := {i.value};\n"
             if generics.endswith(';\n'):
                 generics = generics[:-2]            
             generics = self.genericsDeclaration.format(generics)
@@ -170,4 +171,13 @@ use ieee.numeric_std.all;"""
     
     def resetParameters(self):
         self.internalComponents = {}
+
+
+    def OutputEntityAndArchitectureFile(self):
+        fileHandler = FileHandler("Output")
+
+        if not fileHandler.verifyIfFileExists(f"{self.minimalComponentFileName}.vhd", "Output"):
+           fileHandler.addFile(f"{self.minimalComponentFileName}.vhd",self.getEntityAndArchitectureFile())
+        
+        del fileHandler
                 
