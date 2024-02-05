@@ -8,5 +8,6 @@ import os
 # Criando uma instância do ManipuladorDeArquivos
 
 multiplicador = MatrixMultiplier(9)
+multiplicador.createDesignFile()
 
 
