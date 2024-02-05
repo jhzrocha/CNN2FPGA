@@ -37,6 +37,7 @@ class MatrixMultiplier(ComponentCommonMethods):
                           'i_ENA' : 'i_ENA',
                           'o_VALUE' : f"w_MULT_{i}"
                           }
+            self.addInternalSignalWire(f"w_MULT_{i}", 'integer', 0)
             self.setInternalComponentPortMap(f"Multi_{i}",multParameters)
             adderParameters[f"i_PORT_{i}"] = f"w_MULT_{i}"
         adderParameters['o_VALUE'] = 'o_VALUE'

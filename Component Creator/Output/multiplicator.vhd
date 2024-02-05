@@ -13,7 +13,9 @@ use ieee.numeric_std.all;
     end multiplicator;
                  
     architecture arc of multiplicator is
+
         begin    
+        
         
             multi:
             process(i_DATA,i_KERNEL,i_ENA)

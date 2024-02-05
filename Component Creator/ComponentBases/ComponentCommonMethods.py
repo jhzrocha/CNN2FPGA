@@ -1,7 +1,10 @@
 from ComponentBases.port import Port
 from ComponentBases.generic import Generic
+from ComponentBases.wire import Wire
+
 from copy import deepcopy
 from FileHandler.fileHandler import FileHandler
+
 
 class ComponentCommonMethods:
     
@@ -10,6 +13,7 @@ class ComponentCommonMethods:
     generics = []
     portMap = {}
     internalComponents = {}
+    internalSignalWires = []
 
     importHeader = """library IEEE;
 use IEEE.std_logic_1164.all;
@@ -25,7 +29,9 @@ use ieee.numeric_std.all;"""
     internalOperations = ''
     architectureDeclaration = """
     architecture arc of {} is
+{}
         begin    
+        
         {}
     end arc;"""
 
@@ -131,7 +137,7 @@ use ieee.numeric_std.all;"""
 
     def getArchitectureDeclaration(self):
         processment = self.getInternalComponentDeclarations() + self.processment
-        return self.architectureDeclaration.format(self.minimalComponentFileName, processment)
+        return self.architectureDeclaration.format(self.minimalComponentFileName, self.getWireDeclarations(), processment)
     
     def setProcessment(self, internalOperations):
         self.processment = internalOperations
@@ -172,6 +178,10 @@ use ieee.numeric_std.all;"""
     def resetParameters(self):
         self.internalComponents = {}
 
+    def setInternalComponentGenerics(self, genericName, value):
+        for generic in self.generics:
+            if(generic.name == genericName):
+                generic.value = value
 
     def OutputEntityAndArchitectureFile(self):
         fileHandler = FileHandler("Output")
@@ -180,4 +190,16 @@ use ieee.numeric_std.all;"""
            fileHandler.addFile(f"{self.minimalComponentFileName}.vhd",self.getEntityAndArchitectureFile())
         
         del fileHandler
-                
+    
+    def getWireDeclarations(self):
+        declaration = ''
+        for signal in self.internalSignalWires:
+            declaration = declaration + f"      signal {signal.name} : {signal.dataType} := {signal.initialValue};\n"
+        return declaration
+
+    def addInternalSignalWire(self,name, dataType, initialValue):
+        self.internalSignalWires.append(Wire(name,dataType, initialValue))
+
+    def createDesignFile(self):
+        designComponent = ComponentCommonMethods()
+        designComponent.addInternalComponent(self,self.minimalComponentFileName)

@@ -13,7 +13,18 @@ use ieee.numeric_std.all;
     end MatrixMultiplier;
                  
     architecture arc of MatrixMultiplier is
+      signal w_MULT_0 : integer := 0;
+      signal w_MULT_1 : integer := 0;
+      signal w_MULT_2 : integer := 0;
+      signal w_MULT_3 : integer := 0;
+      signal w_MULT_4 : integer := 0;
+      signal w_MULT_5 : integer := 0;
+      signal w_MULT_6 : integer := 0;
+      signal w_MULT_7 : integer := 0;
+      signal w_MULT_8 : integer := 0;
+
         begin    
+        
          Multi_0 : entity work.multiplicator  
     generic map (
       p_QT_BITS => 8
