@@ -9,7 +9,7 @@ class MatrixMultiplier(ComponentCommonMethods):
 
 
     def __init__(self, qtPixels):
-        self.minimalComponentFileName = 'MatrixMultiplier'
+        self.minimalComponentFileName = f"MatrixMultiplier_{qtPixels}px"
         self.portMap = { 'in': [Port('i_DATA',f"signed(0 to p_QT_BITS*{qtPixels}-1)"),
                                 Port('i_KERNEL',f"signed(0 to p_QT_BITS*{qtPixels}-1)"),
                                 Port('i_ENA', 'std_logic')],
@@ -23,12 +23,10 @@ class MatrixMultiplier(ComponentCommonMethods):
         self.setInternalComponentsPortMap(qtPixels)
         self.OutputEntityAndArchitectureFile()
 
-
-
     def AddMultipliers(self, qtPixels):
         for i in range(qtPixels):
             self.addInternalComponent(Multiplicator(),f"Multi_{i}")
-    
+            
     def setInternalComponentsPortMap(self, qtPixels):
         adderParameters = {}
         for i in range(qtPixels):
@@ -39,6 +37,7 @@ class MatrixMultiplier(ComponentCommonMethods):
                           }
             self.addInternalSignalWire(f"w_MULT_{i}", 'integer', 0)
             self.setInternalComponentPortMap(f"Multi_{i}",multParameters)
+            self.setInternalComponentGenerics(f"Multi_{i}",'p_QT_BITS','p_QT_BITS')
             adderParameters[f"i_PORT_{i}"] = f"w_MULT_{i}"
         adderParameters['o_VALUE'] = 'o_VALUE'
         self.setInternalComponentPortMap('adder',adderParameters)

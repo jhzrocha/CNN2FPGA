@@ -1,0 +1,28 @@
+# Reading pref.tcl
+# do CNN2FPGAVHDL_run_msim_rtl_vhdl.do
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Model Technology ModelSim - Intel FPGA Edition vmap 2020.1 Lib Mapping Utility 2020.02 Feb 28 2020
+# vmap work rtl_work 
+# Copying C:/intelFPGA_lite/20.1/modelsim_ase/win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# 
+# vcom -93 -work work {C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+# Start time: 18:07:24 on Feb 07,2024
+# vcom -reportprogress 300 -93 -work work C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd 
+# -- Loading package STANDARD
+# init_dbinfo() DATABASE ERROR: (sqlite3_open C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/simulation/modelsim/rtl_work/_lib.qdb): unable to open database file
+# mtilibWrite(): INTERNAL ERROR: Unexpected null object encountered
+# ** Fatal: (vcom-9) Problem while writing token file "C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/simulation/modelsim/rtl_work/_temp/vcom86h3wr".
+# ** Note: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd(1): VHDL Compiler exiting
+# End time: 18:07:24 on Feb 07,2024, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0
+# ** Error: C:/intelFPGA_lite/20.1/modelsim_ase/win32aloem/vcom failed.
+# Error in macro ./CNN2FPGAVHDL_run_msim_rtl_vhdl.do line 8
+# C:/intelFPGA_lite/20.1/modelsim_ase/win32aloem/vcom failed.
+#     while executing
+# "vcom -93 -work work {C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd}"

@@ -13,17 +13,19 @@ use ieee.numeric_std.all;
     end multiplicator;
                  
     architecture arc of multiplicator is
+      signal w_O_VALUE : integer := 0;
 
         begin    
         
         
             multi:
             process(i_DATA,i_KERNEL,i_ENA)
+            
             begin
                 if (i_ENA= '1') then
-                    o_VALUE <= TO_INTEGER(signed(i_DATA) * (signed(i_KERNEL))); 
+                    w_O_VALUE <= TO_INTEGER(signed(i_DATA) * (signed(i_KERNEL))); 
                 end if;
             end process multi;
-
+            o_VALUE <= w_O_VALUE;
         
     end arc;

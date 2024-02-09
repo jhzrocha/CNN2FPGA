@@ -19,14 +19,17 @@ class Multiplicator(ComponentCommonMethods):
         self.internalOperations = """
             multi:
             process(i_DATA,i_KERNEL,i_ENA)
+            
             begin
                 if (i_ENA= '1') then
-                    o_VALUE <= TO_INTEGER(signed(i_DATA) * (signed(i_KERNEL))); 
+                    w_O_VALUE <= TO_INTEGER(signed(i_DATA) * (signed(i_KERNEL))); 
                 end if;
             end process multi;
-
+            o_VALUE <= w_O_VALUE;
         """
         super().__init__()
+        self.addInternalSignalWire('w_O_VALUE', 'integer', 0)
+
         self.generics = [Generic('p_QT_BITS','natural','8')]
         self.OutputEntityAndArchitectureFile()
 

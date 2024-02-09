@@ -5,6 +5,7 @@ class FileHandler:
         self.directoryName = directoryName
         self.directoryPath = os.path.abspath(os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir),self.directoryName))
         self.makeDirectory()
+        
 
     def makeDirectory(self):
         if not os.path.exists(self.directoryPath):

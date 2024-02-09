@@ -1,13 +1,14 @@
-from Components.adder import AdderComponent
-from Components.multiplicator import Multiplicator
-from Components.matrixMultiplier import MatrixMultiplier
-from ComponentBases.port import Port
-from FileHandler.fileHandler import FileHandler
-from Config.config import Config
-import os
-# Criando uma instância do ManipuladorDeArquivos
+from Components.convolutionalLayer import ConvolutionalLayer
+from Spinal.Spinal import Spinal
 
-multiplicador = MatrixMultiplier(9)
-multiplicador.createDesignFile()
+
+projectSpinal = Spinal()
+
+multiplicador = ConvolutionalLayer([4,4],[2,2])
+
+
+projectSpinal.setTopEntityComponent(multiplicador)
+
+projectSpinal.start()
 
 

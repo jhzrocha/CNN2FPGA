@@ -1,5 +1,5 @@
 Analysis & Synthesis report for CNN2FPGAVHDL
-Thu Jan 04 16:48:06 2024
+Wed Feb 07 18:02:50 2024
 Quartus Prime Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
 
 
@@ -17,12 +17,29 @@ Quartus Prime Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
   9. User-Specified and Inferred Latches
  10. General Register Statistics
  11. Parameter Settings for User Entity Instance: Top-level Entity: |CNN2FPGAVHDL
- 12. Parameter Settings for User Entity Instance: convolutional_unit:u_CONV
- 13. Parameter Settings for Inferred Entity Instance: convolutional_unit:u_CONV|lpm_mult:Mult0
- 14. lpm_mult Parameter Settings by Entity Instance
- 15. Post-Synthesis Netlist Statistics for Top Partition
- 16. Elapsed Time Per Partition
- 17. Analysis & Synthesis Messages
+ 12. Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier
+ 13. Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0
+ 14. Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1
+ 15. Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2
+ 16. Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3
+ 17. Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4
+ 18. Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5
+ 19. Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6
+ 20. Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7
+ 21. Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8
+ 22. Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|lpm_mult:Mult0
+ 23. Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|lpm_mult:Mult0
+ 24. Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|lpm_mult:Mult0
+ 25. Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|lpm_mult:Mult0
+ 26. Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|lpm_mult:Mult0
+ 27. Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|lpm_mult:Mult0
+ 28. Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|lpm_mult:Mult0
+ 29. Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|lpm_mult:Mult0
+ 30. Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|lpm_mult:Mult0
+ 31. lpm_mult Parameter Settings by Entity Instance
+ 32. Post-Synthesis Netlist Statistics for Top Partition
+ 33. Elapsed Time Per Partition
+ 34. Analysis & Synthesis Messages
 
 
 
@@ -49,19 +66,19 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                     ;
 +------------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Thu Jan 04 16:48:06 2024       ;
+; Analysis & Synthesis Status        ; Successful - Wed Feb 07 18:02:50 2024       ;
 ; Quartus Prime Version              ; 20.1.1 Build 720 11/11/2020 SJ Lite Edition ;
 ; Revision Name                      ; CNN2FPGAVHDL                                ;
 ; Top-level Entity Name              ; CNN2FPGAVHDL                                ;
 ; Family                             ; MAX 10                                      ;
-; Total logic elements               ; 64                                          ;
-;     Total combinational functions  ; 64                                          ;
+; Total logic elements               ; 400                                         ;
+;     Total combinational functions  ; 400                                         ;
 ;     Dedicated logic registers      ; 0                                           ;
 ; Total registers                    ; 0                                           ;
-; Total pins                         ; 83                                          ;
+; Total pins                         ; 177                                         ;
 ; Total virtual pins                 ; 0                                           ;
 ; Total memory bits                  ; 0                                           ;
-; Embedded Multiplier 9-bit elements ; 1                                           ;
+; Embedded Multiplier 9-bit elements ; 9                                           ;
 ; Total PLLs                         ; 0                                           ;
 ; UFM blocks                         ; 0                                           ;
 ; ADC blocks                         ; 0                                           ;
@@ -170,65 +187,93 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------+-------------+
 
 
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                                               ;
-+----------------------------------+-----------------+------------------------------+------------------------------------------------------------------------+---------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                           ; Library ;
-+----------------------------------+-----------------+------------------------------+------------------------------------------------------------------------+---------+
-; convolutional_unit.vhd           ; yes             ; User VHDL File               ; C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd ;         ;
-; CNN2FPGAVHDL.vhd                 ; yes             ; User VHDL File               ; C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/CNN2FPGAVHDL.vhd       ;         ;
-; lpm_mult.tdf                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/20.1/quartus/libraries/megafunctions/lpm_mult.tdf    ;         ;
-; aglobal201.inc                   ; yes             ; Megafunction                 ; c:/intelfpga_lite/20.1/quartus/libraries/megafunctions/aglobal201.inc  ;         ;
-; lpm_add_sub.inc                  ; yes             ; Megafunction                 ; c:/intelfpga_lite/20.1/quartus/libraries/megafunctions/lpm_add_sub.inc ;         ;
-; multcore.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/20.1/quartus/libraries/megafunctions/multcore.inc    ;         ;
-; bypassff.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/20.1/quartus/libraries/megafunctions/bypassff.inc    ;         ;
-; altshift.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/20.1/quartus/libraries/megafunctions/altshift.inc    ;         ;
-; db/mult_tds.tdf                  ; yes             ; Auto-Generated Megafunction  ; C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/db/mult_tds.tdf        ;         ;
-+----------------------------------+-----------------+------------------------------+------------------------------------------------------------------------+---------+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                             ;
++----------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                                         ; Library ;
++----------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------------------+---------+
+; CNN2FPGAVHDL.vhd                 ; yes             ; User VHDL File               ; C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd     ;         ;
+; MatrixMultiplier.vhd             ; yes             ; User VHDL File               ; C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/MatrixMultiplier.vhd ;         ;
+; multiplicator.vhd                ; yes             ; User VHDL File               ; C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd    ;         ;
+; Adder_9in.vhd                    ; yes             ; User VHDL File               ; C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Adder_9in.vhd        ;         ;
+; lpm_mult.tdf                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/20.1/quartus/libraries/megafunctions/lpm_mult.tdf                  ;         ;
+; aglobal201.inc                   ; yes             ; Megafunction                 ; c:/intelfpga_lite/20.1/quartus/libraries/megafunctions/aglobal201.inc                ;         ;
+; lpm_add_sub.inc                  ; yes             ; Megafunction                 ; c:/intelfpga_lite/20.1/quartus/libraries/megafunctions/lpm_add_sub.inc               ;         ;
+; multcore.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/20.1/quartus/libraries/megafunctions/multcore.inc                  ;         ;
+; bypassff.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/20.1/quartus/libraries/megafunctions/bypassff.inc                  ;         ;
+; altshift.inc                     ; yes             ; Megafunction                 ; c:/intelfpga_lite/20.1/quartus/libraries/megafunctions/altshift.inc                  ;         ;
+; db/mult_tds.tdf                  ; yes             ; Auto-Generated Megafunction  ; C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/db/mult_tds.tdf      ;         ;
++----------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------------------+---------+
 
 
-+-------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Usage Summary                                                                             ;
-+---------------------------------------------+---------------------------------------------------------------------------+
-; Resource                                    ; Usage                                                                     ;
-+---------------------------------------------+---------------------------------------------------------------------------+
-; Estimated Total logic elements              ; 64                                                                        ;
-;                                             ;                                                                           ;
-; Total combinational functions               ; 64                                                                        ;
-; Logic element usage by number of LUT inputs ;                                                                           ;
-;     -- 4 input functions                    ; 32                                                                        ;
-;     -- 3 input functions                    ; 31                                                                        ;
-;     -- <=2 input functions                  ; 1                                                                         ;
-;                                             ;                                                                           ;
-; Logic elements by mode                      ;                                                                           ;
-;     -- normal mode                          ; 33                                                                        ;
-;     -- arithmetic mode                      ; 31                                                                        ;
-;                                             ;                                                                           ;
-; Total registers                             ; 0                                                                         ;
-;     -- Dedicated logic registers            ; 0                                                                         ;
-;     -- I/O registers                        ; 0                                                                         ;
-;                                             ;                                                                           ;
-; I/O pins                                    ; 83                                                                        ;
-;                                             ;                                                                           ;
-; Embedded Multiplier 9-bit elements          ; 1                                                                         ;
-;                                             ;                                                                           ;
-; Maximum fan-out node                        ; convolutional_unit:u_CONV|lpm_mult:Mult0|mult_tds:auto_generated|mac_out2 ;
-; Maximum fan-out                             ; 32                                                                        ;
-; Total fan-out                               ; 355                                                                       ;
-; Average fan-out                             ; 1.53                                                                      ;
-+---------------------------------------------+---------------------------------------------------------------------------+
++-----------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary               ;
++---------------------------------------------+-------------+
+; Resource                                    ; Usage       ;
++---------------------------------------------+-------------+
+; Estimated Total logic elements              ; 400         ;
+;                                             ;             ;
+; Total combinational functions               ; 400         ;
+; Logic element usage by number of LUT inputs ;             ;
+;     -- 4 input functions                    ; 0           ;
+;     -- 3 input functions                    ; 392         ;
+;     -- <=2 input functions                  ; 8           ;
+;                                             ;             ;
+; Logic elements by mode                      ;             ;
+;     -- normal mode                          ; 152         ;
+;     -- arithmetic mode                      ; 248         ;
+;                                             ;             ;
+; Total registers                             ; 0           ;
+;     -- Dedicated logic registers            ; 0           ;
+;     -- I/O registers                        ; 0           ;
+;                                             ;             ;
+; I/O pins                                    ; 177         ;
+;                                             ;             ;
+; Embedded Multiplier 9-bit elements          ; 9           ;
+;                                             ;             ;
+; Maximum fan-out node                        ; i_ENA~input ;
+; Maximum fan-out                             ; 144         ;
+; Total fan-out                               ; 1554        ;
+; Average fan-out                             ; 2.01        ;
++---------------------------------------------+-------------+
 
 
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                          ;
-+------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+--------------------------------------------------------------------------------+--------------------+--------------+
-; Compilation Hierarchy Node         ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name                                                            ; Entity Name        ; Library Name ;
-+------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+--------------------------------------------------------------------------------+--------------------+--------------+
-; |CNN2FPGAVHDL                      ; 64 (0)              ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 83   ; 0            ; 0          ; |CNN2FPGAVHDL                                                                  ; CNN2FPGAVHDL       ; work         ;
-;    |convolutional_unit:u_CONV|     ; 64 (64)             ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|convolutional_unit:u_CONV                                        ; convolutional_unit ; work         ;
-;       |lpm_mult:Mult0|             ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|convolutional_unit:u_CONV|lpm_mult:Mult0                         ; lpm_mult           ; work         ;
-;          |mult_tds:auto_generated| ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|convolutional_unit:u_CONV|lpm_mult:Mult0|mult_tds:auto_generated ; mult_tds           ; work         ;
-+------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+--------------------------------------------------------------------------------+--------------------+--------------+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                                                          ;
++----------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+--------------------------------------------------------------------------------------------------------------+------------------+--------------+
+; Compilation Hierarchy Node             ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name                                                                                          ; Entity Name      ; Library Name ;
++----------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+--------------------------------------------------------------------------------------------------------------+------------------+--------------+
+; |CNN2FPGAVHDL                          ; 400 (0)             ; 0 (0)                     ; 0           ; 0          ; 9            ; 9       ; 0         ; 177  ; 0            ; 0          ; |CNN2FPGAVHDL                                                                                                ; CNN2FPGAVHDL     ; work         ;
+;    |MatrixMultiplier:MatrixMultiplier| ; 400 (0)             ; 0 (0)                     ; 0           ; 0          ; 9            ; 9       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier                                                              ; MatrixMultiplier ; work         ;
+;       |Adder_9in:adder|                ; 256 (256)           ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|Adder_9in:adder                                              ; Adder_9in        ; work         ;
+;       |multiplicator:Multi_0|          ; 16 (16)             ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0                                        ; multiplicator    ; work         ;
+;          |lpm_mult:Mult0|              ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|lpm_mult:Mult0                         ; lpm_mult         ; work         ;
+;             |mult_tds:auto_generated|  ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|lpm_mult:Mult0|mult_tds:auto_generated ; mult_tds         ; work         ;
+;       |multiplicator:Multi_1|          ; 16 (16)             ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1                                        ; multiplicator    ; work         ;
+;          |lpm_mult:Mult0|              ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|lpm_mult:Mult0                         ; lpm_mult         ; work         ;
+;             |mult_tds:auto_generated|  ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|lpm_mult:Mult0|mult_tds:auto_generated ; mult_tds         ; work         ;
+;       |multiplicator:Multi_2|          ; 16 (16)             ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2                                        ; multiplicator    ; work         ;
+;          |lpm_mult:Mult0|              ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|lpm_mult:Mult0                         ; lpm_mult         ; work         ;
+;             |mult_tds:auto_generated|  ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|lpm_mult:Mult0|mult_tds:auto_generated ; mult_tds         ; work         ;
+;       |multiplicator:Multi_3|          ; 16 (16)             ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3                                        ; multiplicator    ; work         ;
+;          |lpm_mult:Mult0|              ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|lpm_mult:Mult0                         ; lpm_mult         ; work         ;
+;             |mult_tds:auto_generated|  ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|lpm_mult:Mult0|mult_tds:auto_generated ; mult_tds         ; work         ;
+;       |multiplicator:Multi_4|          ; 16 (16)             ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4                                        ; multiplicator    ; work         ;
+;          |lpm_mult:Mult0|              ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|lpm_mult:Mult0                         ; lpm_mult         ; work         ;
+;             |mult_tds:auto_generated|  ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|lpm_mult:Mult0|mult_tds:auto_generated ; mult_tds         ; work         ;
+;       |multiplicator:Multi_5|          ; 16 (16)             ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5                                        ; multiplicator    ; work         ;
+;          |lpm_mult:Mult0|              ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|lpm_mult:Mult0                         ; lpm_mult         ; work         ;
+;             |mult_tds:auto_generated|  ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|lpm_mult:Mult0|mult_tds:auto_generated ; mult_tds         ; work         ;
+;       |multiplicator:Multi_6|          ; 16 (16)             ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6                                        ; multiplicator    ; work         ;
+;          |lpm_mult:Mult0|              ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|lpm_mult:Mult0                         ; lpm_mult         ; work         ;
+;             |mult_tds:auto_generated|  ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|lpm_mult:Mult0|mult_tds:auto_generated ; mult_tds         ; work         ;
+;       |multiplicator:Multi_7|          ; 16 (16)             ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7                                        ; multiplicator    ; work         ;
+;          |lpm_mult:Mult0|              ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|lpm_mult:Mult0                         ; lpm_mult         ; work         ;
+;             |mult_tds:auto_generated|  ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|lpm_mult:Mult0|mult_tds:auto_generated ; mult_tds         ; work         ;
+;       |multiplicator:Multi_8|          ; 16 (16)             ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8                                        ; multiplicator    ; work         ;
+;          |lpm_mult:Mult0|              ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|lpm_mult:Mult0                         ; lpm_mult         ; work         ;
+;             |mult_tds:auto_generated|  ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 1            ; 1       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|lpm_mult:Mult0|mult_tds:auto_generated ; mult_tds         ; work         ;
++----------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+--------------------------------------------------------------------------------------------------------------+------------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
 
@@ -237,11 +282,11 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +---------------------------------------+-------------+
 ; Statistic                             ; Number Used ;
 +---------------------------------------+-------------+
-; Simple Multipliers (9-bit)            ; 1           ;
+; Simple Multipliers (9-bit)            ; 9           ;
 ; Simple Multipliers (18-bit)           ; 0           ;
 ; Embedded Multiplier Blocks            ; --          ;
-; Embedded Multiplier 9-bit elements    ; 1           ;
-; Signed Embedded Multipliers           ; 1           ;
+; Embedded Multiplier 9-bit elements    ; 9           ;
+; Signed Embedded Multipliers           ; 9           ;
 ; Unsigned Embedded Multipliers         ; 0           ;
 ; Mixed Sign Embedded Multipliers       ; 0           ;
 ; Variable Sign Embedded Multipliers    ; 0           ;
@@ -250,46 +295,114 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 Note: number of Embedded Multiplier Blocks used is only available after a successful fit.
 
 
-+----------------------------------------------------------------------------------------------------+
-; User-Specified and Inferred Latches                                                                ;
-+-----------------------------------------------------+---------------------+------------------------+
-; Latch Name                                          ; Latch Enable Signal ; Free of Timing Hazards ;
-+-----------------------------------------------------+---------------------+------------------------+
-; convolutional_unit:u_CONV|o_VALUE[0]                ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[1]                ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[2]                ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[3]                ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[4]                ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[5]                ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[6]                ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[7]                ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[8]                ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[9]                ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[10]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[11]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[12]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[13]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[14]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[15]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[16]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[17]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[18]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[19]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[20]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[21]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[22]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[23]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[24]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[25]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[26]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[27]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[28]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[29]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[30]               ; i_ENA               ; yes                    ;
-; convolutional_unit:u_CONV|o_VALUE[31]               ; i_ENA               ; yes                    ;
-; Number of user-specified and inferred latches = 32  ;                     ;                        ;
-+-----------------------------------------------------+---------------------+------------------------+
-Note: All latches listed above may not be present at the end of synthesis due to various synthesis optimizations.
++--------------------------------------------------------------------------------------------------------------------+
+; User-Specified and Inferred Latches                                                                                ;
++---------------------------------------------------------------------+---------------------+------------------------+
+; Latch Name                                                          ; Latch Enable Signal ; Free of Timing Hazards ;
++---------------------------------------------------------------------+---------------------+------------------------+
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[0]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[0]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[0]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[0]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[0]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[0]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[0]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[0]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[0]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[1]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[1]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[1]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[1]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[1]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[1]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[1]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[1]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[1]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[2]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[2]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[2]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[2]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[2]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[2]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[2]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[2]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[2]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[3]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[3]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[3]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[3]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[3]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[3]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[3]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[3]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[3]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[4]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[4]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[4]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[4]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[4]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[4]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[4]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[4]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[4]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[5]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[5]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[5]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[5]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[5]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[5]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[5]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[5]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[5]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[6]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[6]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[6]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[6]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[6]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[6]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[6]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[6]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[6]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[7]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[7]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[7]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[7]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[7]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[7]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[7]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[7]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[7]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[8]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[8]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[8]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[8]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[8]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[8]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[8]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[8]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[8]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[9]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[9]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[9]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[9]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[9]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[9]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[9]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[9]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[9]  ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[10] ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[10] ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[10] ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[10] ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[10] ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[10] ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[10] ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[10] ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[10] ; i_ENA               ; yes                    ;
+; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[11] ; i_ENA               ; yes                    ;
+; Number of user-specified and inferred latches = 288                 ;                     ;                        ;
++---------------------------------------------------------------------+---------------------+------------------------+
+Table restricted to first 100 entries. Note: All latches listed above may not be present at the end of synthesis due to various synthesis optimizations.
 
 
 +------------------------------------------------------+
@@ -317,69 +430,527 @@ Note: All latches listed above may not be present at the end of synthesis due to
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
-+------------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: convolutional_unit:u_CONV ;
-+----------------+-------+-----------------------------------------------+
-; Parameter Name ; Value ; Type                                          ;
-+----------------+-------+-----------------------------------------------+
-; p_qt_bits      ; 8     ; Signed Integer                                ;
-+----------------+-------+-----------------------------------------------+
++--------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier ;
++----------------+-------+-------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                  ;
++----------------+-------+-------------------------------------------------------+
+; p_qt_bits      ; 8     ; Signed Integer                                        ;
++----------------+-------+-------------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
-+-------------------------------------------------------------------------------------------+
-; Parameter Settings for Inferred Entity Instance: convolutional_unit:u_CONV|lpm_mult:Mult0 ;
-+------------------------------------------------+----------+-------------------------------+
-; Parameter Name                                 ; Value    ; Type                          ;
-+------------------------------------------------+----------+-------------------------------+
-; AUTO_CARRY_CHAINS                              ; ON       ; AUTO_CARRY                    ;
-; IGNORE_CARRY_BUFFERS                           ; OFF      ; IGNORE_CARRY                  ;
-; AUTO_CASCADE_CHAINS                            ; ON       ; AUTO_CASCADE                  ;
-; IGNORE_CASCADE_BUFFERS                         ; OFF      ; IGNORE_CASCADE                ;
-; LPM_WIDTHA                                     ; 8        ; Untyped                       ;
-; LPM_WIDTHB                                     ; 8        ; Untyped                       ;
-; LPM_WIDTHP                                     ; 16       ; Untyped                       ;
-; LPM_WIDTHR                                     ; 16       ; Untyped                       ;
-; LPM_WIDTHS                                     ; 1        ; Untyped                       ;
-; LPM_REPRESENTATION                             ; SIGNED   ; Untyped                       ;
-; LPM_PIPELINE                                   ; 0        ; Untyped                       ;
-; LATENCY                                        ; 0        ; Untyped                       ;
-; INPUT_A_IS_CONSTANT                            ; NO       ; Untyped                       ;
-; INPUT_B_IS_CONSTANT                            ; NO       ; Untyped                       ;
-; USE_EAB                                        ; OFF      ; Untyped                       ;
-; MAXIMIZE_SPEED                                 ; 5        ; Untyped                       ;
-; DEVICE_FAMILY                                  ; MAX 10   ; Untyped                       ;
-; CARRY_CHAIN                                    ; MANUAL   ; Untyped                       ;
-; APEX20K_TECHNOLOGY_MAPPER                      ; LUT      ; TECH_MAPPER_APEX20K           ;
-; DEDICATED_MULTIPLIER_CIRCUITRY                 ; AUTO     ; Untyped                       ;
-; DEDICATED_MULTIPLIER_MIN_INPUT_WIDTH_FOR_AUTO  ; 0        ; Untyped                       ;
-; DEDICATED_MULTIPLIER_MIN_OUTPUT_WIDTH_FOR_AUTO ; 0        ; Untyped                       ;
-; CBXI_PARAMETER                                 ; mult_tds ; Untyped                       ;
-; INPUT_A_FIXED_VALUE                            ; Bx       ; Untyped                       ;
-; INPUT_B_FIXED_VALUE                            ; Bx       ; Untyped                       ;
-; USE_AHDL_IMPLEMENTATION                        ; OFF      ; Untyped                       ;
-+------------------------------------------------+----------+-------------------------------+
++------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0 ;
++----------------+-------+-----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                        ;
++----------------+-------+-----------------------------------------------------------------------------+
+; p_qt_bits      ; 8     ; Signed Integer                                                              ;
++----------------+-------+-----------------------------------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
-+----------------------------------------------------------------------------------+
-; lpm_mult Parameter Settings by Entity Instance                                   ;
-+---------------------------------------+------------------------------------------+
-; Name                                  ; Value                                    ;
-+---------------------------------------+------------------------------------------+
-; Number of entity instances            ; 1                                        ;
-; Entity Instance                       ; convolutional_unit:u_CONV|lpm_mult:Mult0 ;
-;     -- LPM_WIDTHA                     ; 8                                        ;
-;     -- LPM_WIDTHB                     ; 8                                        ;
-;     -- LPM_WIDTHP                     ; 16                                       ;
-;     -- LPM_REPRESENTATION             ; SIGNED                                   ;
-;     -- INPUT_A_IS_CONSTANT            ; NO                                       ;
-;     -- INPUT_B_IS_CONSTANT            ; NO                                       ;
-;     -- USE_EAB                        ; OFF                                      ;
-;     -- DEDICATED_MULTIPLIER_CIRCUITRY ; AUTO                                     ;
-;     -- INPUT_A_FIXED_VALUE            ; Bx                                       ;
-;     -- INPUT_B_FIXED_VALUE            ; Bx                                       ;
-+---------------------------------------+------------------------------------------+
++------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1 ;
++----------------+-------+-----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                        ;
++----------------+-------+-----------------------------------------------------------------------------+
+; p_qt_bits      ; 8     ; Signed Integer                                                              ;
++----------------+-------+-----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2 ;
++----------------+-------+-----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                        ;
++----------------+-------+-----------------------------------------------------------------------------+
+; p_qt_bits      ; 8     ; Signed Integer                                                              ;
++----------------+-------+-----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3 ;
++----------------+-------+-----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                        ;
++----------------+-------+-----------------------------------------------------------------------------+
+; p_qt_bits      ; 8     ; Signed Integer                                                              ;
++----------------+-------+-----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4 ;
++----------------+-------+-----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                        ;
++----------------+-------+-----------------------------------------------------------------------------+
+; p_qt_bits      ; 8     ; Signed Integer                                                              ;
++----------------+-------+-----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5 ;
++----------------+-------+-----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                        ;
++----------------+-------+-----------------------------------------------------------------------------+
+; p_qt_bits      ; 8     ; Signed Integer                                                              ;
++----------------+-------+-----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6 ;
++----------------+-------+-----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                        ;
++----------------+-------+-----------------------------------------------------------------------------+
+; p_qt_bits      ; 8     ; Signed Integer                                                              ;
++----------------+-------+-----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7 ;
++----------------+-------+-----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                        ;
++----------------+-------+-----------------------------------------------------------------------------+
+; p_qt_bits      ; 8     ; Signed Integer                                                              ;
++----------------+-------+-----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8 ;
++----------------+-------+-----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                        ;
++----------------+-------+-----------------------------------------------------------------------------+
+; p_qt_bits      ; 8     ; Signed Integer                                                              ;
++----------------+-------+-----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|lpm_mult:Mult0 ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; Parameter Name                                 ; Value    ; Type                                                        ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; AUTO_CARRY_CHAINS                              ; ON       ; AUTO_CARRY                                                  ;
+; IGNORE_CARRY_BUFFERS                           ; OFF      ; IGNORE_CARRY                                                ;
+; AUTO_CASCADE_CHAINS                            ; ON       ; AUTO_CASCADE                                                ;
+; IGNORE_CASCADE_BUFFERS                         ; OFF      ; IGNORE_CASCADE                                              ;
+; LPM_WIDTHA                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHB                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHP                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHR                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHS                                     ; 1        ; Untyped                                                     ;
+; LPM_REPRESENTATION                             ; SIGNED   ; Untyped                                                     ;
+; LPM_PIPELINE                                   ; 0        ; Untyped                                                     ;
+; LATENCY                                        ; 0        ; Untyped                                                     ;
+; INPUT_A_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; INPUT_B_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; USE_EAB                                        ; OFF      ; Untyped                                                     ;
+; MAXIMIZE_SPEED                                 ; 5        ; Untyped                                                     ;
+; DEVICE_FAMILY                                  ; MAX 10   ; Untyped                                                     ;
+; CARRY_CHAIN                                    ; MANUAL   ; Untyped                                                     ;
+; APEX20K_TECHNOLOGY_MAPPER                      ; LUT      ; TECH_MAPPER_APEX20K                                         ;
+; DEDICATED_MULTIPLIER_CIRCUITRY                 ; AUTO     ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_INPUT_WIDTH_FOR_AUTO  ; 0        ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_OUTPUT_WIDTH_FOR_AUTO ; 0        ; Untyped                                                     ;
+; CBXI_PARAMETER                                 ; mult_tds ; Untyped                                                     ;
+; INPUT_A_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; INPUT_B_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; USE_AHDL_IMPLEMENTATION                        ; OFF      ; Untyped                                                     ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|lpm_mult:Mult0 ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; Parameter Name                                 ; Value    ; Type                                                        ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; AUTO_CARRY_CHAINS                              ; ON       ; AUTO_CARRY                                                  ;
+; IGNORE_CARRY_BUFFERS                           ; OFF      ; IGNORE_CARRY                                                ;
+; AUTO_CASCADE_CHAINS                            ; ON       ; AUTO_CASCADE                                                ;
+; IGNORE_CASCADE_BUFFERS                         ; OFF      ; IGNORE_CASCADE                                              ;
+; LPM_WIDTHA                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHB                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHP                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHR                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHS                                     ; 1        ; Untyped                                                     ;
+; LPM_REPRESENTATION                             ; SIGNED   ; Untyped                                                     ;
+; LPM_PIPELINE                                   ; 0        ; Untyped                                                     ;
+; LATENCY                                        ; 0        ; Untyped                                                     ;
+; INPUT_A_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; INPUT_B_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; USE_EAB                                        ; OFF      ; Untyped                                                     ;
+; MAXIMIZE_SPEED                                 ; 5        ; Untyped                                                     ;
+; DEVICE_FAMILY                                  ; MAX 10   ; Untyped                                                     ;
+; CARRY_CHAIN                                    ; MANUAL   ; Untyped                                                     ;
+; APEX20K_TECHNOLOGY_MAPPER                      ; LUT      ; TECH_MAPPER_APEX20K                                         ;
+; DEDICATED_MULTIPLIER_CIRCUITRY                 ; AUTO     ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_INPUT_WIDTH_FOR_AUTO  ; 0        ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_OUTPUT_WIDTH_FOR_AUTO ; 0        ; Untyped                                                     ;
+; CBXI_PARAMETER                                 ; mult_tds ; Untyped                                                     ;
+; INPUT_A_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; INPUT_B_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; USE_AHDL_IMPLEMENTATION                        ; OFF      ; Untyped                                                     ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|lpm_mult:Mult0 ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; Parameter Name                                 ; Value    ; Type                                                        ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; AUTO_CARRY_CHAINS                              ; ON       ; AUTO_CARRY                                                  ;
+; IGNORE_CARRY_BUFFERS                           ; OFF      ; IGNORE_CARRY                                                ;
+; AUTO_CASCADE_CHAINS                            ; ON       ; AUTO_CASCADE                                                ;
+; IGNORE_CASCADE_BUFFERS                         ; OFF      ; IGNORE_CASCADE                                              ;
+; LPM_WIDTHA                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHB                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHP                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHR                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHS                                     ; 1        ; Untyped                                                     ;
+; LPM_REPRESENTATION                             ; SIGNED   ; Untyped                                                     ;
+; LPM_PIPELINE                                   ; 0        ; Untyped                                                     ;
+; LATENCY                                        ; 0        ; Untyped                                                     ;
+; INPUT_A_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; INPUT_B_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; USE_EAB                                        ; OFF      ; Untyped                                                     ;
+; MAXIMIZE_SPEED                                 ; 5        ; Untyped                                                     ;
+; DEVICE_FAMILY                                  ; MAX 10   ; Untyped                                                     ;
+; CARRY_CHAIN                                    ; MANUAL   ; Untyped                                                     ;
+; APEX20K_TECHNOLOGY_MAPPER                      ; LUT      ; TECH_MAPPER_APEX20K                                         ;
+; DEDICATED_MULTIPLIER_CIRCUITRY                 ; AUTO     ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_INPUT_WIDTH_FOR_AUTO  ; 0        ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_OUTPUT_WIDTH_FOR_AUTO ; 0        ; Untyped                                                     ;
+; CBXI_PARAMETER                                 ; mult_tds ; Untyped                                                     ;
+; INPUT_A_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; INPUT_B_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; USE_AHDL_IMPLEMENTATION                        ; OFF      ; Untyped                                                     ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|lpm_mult:Mult0 ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; Parameter Name                                 ; Value    ; Type                                                        ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; AUTO_CARRY_CHAINS                              ; ON       ; AUTO_CARRY                                                  ;
+; IGNORE_CARRY_BUFFERS                           ; OFF      ; IGNORE_CARRY                                                ;
+; AUTO_CASCADE_CHAINS                            ; ON       ; AUTO_CASCADE                                                ;
+; IGNORE_CASCADE_BUFFERS                         ; OFF      ; IGNORE_CASCADE                                              ;
+; LPM_WIDTHA                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHB                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHP                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHR                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHS                                     ; 1        ; Untyped                                                     ;
+; LPM_REPRESENTATION                             ; SIGNED   ; Untyped                                                     ;
+; LPM_PIPELINE                                   ; 0        ; Untyped                                                     ;
+; LATENCY                                        ; 0        ; Untyped                                                     ;
+; INPUT_A_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; INPUT_B_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; USE_EAB                                        ; OFF      ; Untyped                                                     ;
+; MAXIMIZE_SPEED                                 ; 5        ; Untyped                                                     ;
+; DEVICE_FAMILY                                  ; MAX 10   ; Untyped                                                     ;
+; CARRY_CHAIN                                    ; MANUAL   ; Untyped                                                     ;
+; APEX20K_TECHNOLOGY_MAPPER                      ; LUT      ; TECH_MAPPER_APEX20K                                         ;
+; DEDICATED_MULTIPLIER_CIRCUITRY                 ; AUTO     ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_INPUT_WIDTH_FOR_AUTO  ; 0        ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_OUTPUT_WIDTH_FOR_AUTO ; 0        ; Untyped                                                     ;
+; CBXI_PARAMETER                                 ; mult_tds ; Untyped                                                     ;
+; INPUT_A_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; INPUT_B_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; USE_AHDL_IMPLEMENTATION                        ; OFF      ; Untyped                                                     ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|lpm_mult:Mult0 ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; Parameter Name                                 ; Value    ; Type                                                        ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; AUTO_CARRY_CHAINS                              ; ON       ; AUTO_CARRY                                                  ;
+; IGNORE_CARRY_BUFFERS                           ; OFF      ; IGNORE_CARRY                                                ;
+; AUTO_CASCADE_CHAINS                            ; ON       ; AUTO_CASCADE                                                ;
+; IGNORE_CASCADE_BUFFERS                         ; OFF      ; IGNORE_CASCADE                                              ;
+; LPM_WIDTHA                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHB                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHP                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHR                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHS                                     ; 1        ; Untyped                                                     ;
+; LPM_REPRESENTATION                             ; SIGNED   ; Untyped                                                     ;
+; LPM_PIPELINE                                   ; 0        ; Untyped                                                     ;
+; LATENCY                                        ; 0        ; Untyped                                                     ;
+; INPUT_A_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; INPUT_B_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; USE_EAB                                        ; OFF      ; Untyped                                                     ;
+; MAXIMIZE_SPEED                                 ; 5        ; Untyped                                                     ;
+; DEVICE_FAMILY                                  ; MAX 10   ; Untyped                                                     ;
+; CARRY_CHAIN                                    ; MANUAL   ; Untyped                                                     ;
+; APEX20K_TECHNOLOGY_MAPPER                      ; LUT      ; TECH_MAPPER_APEX20K                                         ;
+; DEDICATED_MULTIPLIER_CIRCUITRY                 ; AUTO     ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_INPUT_WIDTH_FOR_AUTO  ; 0        ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_OUTPUT_WIDTH_FOR_AUTO ; 0        ; Untyped                                                     ;
+; CBXI_PARAMETER                                 ; mult_tds ; Untyped                                                     ;
+; INPUT_A_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; INPUT_B_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; USE_AHDL_IMPLEMENTATION                        ; OFF      ; Untyped                                                     ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|lpm_mult:Mult0 ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; Parameter Name                                 ; Value    ; Type                                                        ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; AUTO_CARRY_CHAINS                              ; ON       ; AUTO_CARRY                                                  ;
+; IGNORE_CARRY_BUFFERS                           ; OFF      ; IGNORE_CARRY                                                ;
+; AUTO_CASCADE_CHAINS                            ; ON       ; AUTO_CASCADE                                                ;
+; IGNORE_CASCADE_BUFFERS                         ; OFF      ; IGNORE_CASCADE                                              ;
+; LPM_WIDTHA                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHB                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHP                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHR                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHS                                     ; 1        ; Untyped                                                     ;
+; LPM_REPRESENTATION                             ; SIGNED   ; Untyped                                                     ;
+; LPM_PIPELINE                                   ; 0        ; Untyped                                                     ;
+; LATENCY                                        ; 0        ; Untyped                                                     ;
+; INPUT_A_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; INPUT_B_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; USE_EAB                                        ; OFF      ; Untyped                                                     ;
+; MAXIMIZE_SPEED                                 ; 5        ; Untyped                                                     ;
+; DEVICE_FAMILY                                  ; MAX 10   ; Untyped                                                     ;
+; CARRY_CHAIN                                    ; MANUAL   ; Untyped                                                     ;
+; APEX20K_TECHNOLOGY_MAPPER                      ; LUT      ; TECH_MAPPER_APEX20K                                         ;
+; DEDICATED_MULTIPLIER_CIRCUITRY                 ; AUTO     ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_INPUT_WIDTH_FOR_AUTO  ; 0        ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_OUTPUT_WIDTH_FOR_AUTO ; 0        ; Untyped                                                     ;
+; CBXI_PARAMETER                                 ; mult_tds ; Untyped                                                     ;
+; INPUT_A_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; INPUT_B_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; USE_AHDL_IMPLEMENTATION                        ; OFF      ; Untyped                                                     ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|lpm_mult:Mult0 ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; Parameter Name                                 ; Value    ; Type                                                        ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; AUTO_CARRY_CHAINS                              ; ON       ; AUTO_CARRY                                                  ;
+; IGNORE_CARRY_BUFFERS                           ; OFF      ; IGNORE_CARRY                                                ;
+; AUTO_CASCADE_CHAINS                            ; ON       ; AUTO_CASCADE                                                ;
+; IGNORE_CASCADE_BUFFERS                         ; OFF      ; IGNORE_CASCADE                                              ;
+; LPM_WIDTHA                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHB                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHP                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHR                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHS                                     ; 1        ; Untyped                                                     ;
+; LPM_REPRESENTATION                             ; SIGNED   ; Untyped                                                     ;
+; LPM_PIPELINE                                   ; 0        ; Untyped                                                     ;
+; LATENCY                                        ; 0        ; Untyped                                                     ;
+; INPUT_A_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; INPUT_B_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; USE_EAB                                        ; OFF      ; Untyped                                                     ;
+; MAXIMIZE_SPEED                                 ; 5        ; Untyped                                                     ;
+; DEVICE_FAMILY                                  ; MAX 10   ; Untyped                                                     ;
+; CARRY_CHAIN                                    ; MANUAL   ; Untyped                                                     ;
+; APEX20K_TECHNOLOGY_MAPPER                      ; LUT      ; TECH_MAPPER_APEX20K                                         ;
+; DEDICATED_MULTIPLIER_CIRCUITRY                 ; AUTO     ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_INPUT_WIDTH_FOR_AUTO  ; 0        ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_OUTPUT_WIDTH_FOR_AUTO ; 0        ; Untyped                                                     ;
+; CBXI_PARAMETER                                 ; mult_tds ; Untyped                                                     ;
+; INPUT_A_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; INPUT_B_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; USE_AHDL_IMPLEMENTATION                        ; OFF      ; Untyped                                                     ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|lpm_mult:Mult0 ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; Parameter Name                                 ; Value    ; Type                                                        ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; AUTO_CARRY_CHAINS                              ; ON       ; AUTO_CARRY                                                  ;
+; IGNORE_CARRY_BUFFERS                           ; OFF      ; IGNORE_CARRY                                                ;
+; AUTO_CASCADE_CHAINS                            ; ON       ; AUTO_CASCADE                                                ;
+; IGNORE_CASCADE_BUFFERS                         ; OFF      ; IGNORE_CASCADE                                              ;
+; LPM_WIDTHA                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHB                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHP                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHR                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHS                                     ; 1        ; Untyped                                                     ;
+; LPM_REPRESENTATION                             ; SIGNED   ; Untyped                                                     ;
+; LPM_PIPELINE                                   ; 0        ; Untyped                                                     ;
+; LATENCY                                        ; 0        ; Untyped                                                     ;
+; INPUT_A_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; INPUT_B_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; USE_EAB                                        ; OFF      ; Untyped                                                     ;
+; MAXIMIZE_SPEED                                 ; 5        ; Untyped                                                     ;
+; DEVICE_FAMILY                                  ; MAX 10   ; Untyped                                                     ;
+; CARRY_CHAIN                                    ; MANUAL   ; Untyped                                                     ;
+; APEX20K_TECHNOLOGY_MAPPER                      ; LUT      ; TECH_MAPPER_APEX20K                                         ;
+; DEDICATED_MULTIPLIER_CIRCUITRY                 ; AUTO     ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_INPUT_WIDTH_FOR_AUTO  ; 0        ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_OUTPUT_WIDTH_FOR_AUTO ; 0        ; Untyped                                                     ;
+; CBXI_PARAMETER                                 ; mult_tds ; Untyped                                                     ;
+; INPUT_A_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; INPUT_B_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; USE_AHDL_IMPLEMENTATION                        ; OFF      ; Untyped                                                     ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|lpm_mult:Mult0 ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; Parameter Name                                 ; Value    ; Type                                                        ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+; AUTO_CARRY_CHAINS                              ; ON       ; AUTO_CARRY                                                  ;
+; IGNORE_CARRY_BUFFERS                           ; OFF      ; IGNORE_CARRY                                                ;
+; AUTO_CASCADE_CHAINS                            ; ON       ; AUTO_CASCADE                                                ;
+; IGNORE_CASCADE_BUFFERS                         ; OFF      ; IGNORE_CASCADE                                              ;
+; LPM_WIDTHA                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHB                                     ; 8        ; Untyped                                                     ;
+; LPM_WIDTHP                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHR                                     ; 16       ; Untyped                                                     ;
+; LPM_WIDTHS                                     ; 1        ; Untyped                                                     ;
+; LPM_REPRESENTATION                             ; SIGNED   ; Untyped                                                     ;
+; LPM_PIPELINE                                   ; 0        ; Untyped                                                     ;
+; LATENCY                                        ; 0        ; Untyped                                                     ;
+; INPUT_A_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; INPUT_B_IS_CONSTANT                            ; NO       ; Untyped                                                     ;
+; USE_EAB                                        ; OFF      ; Untyped                                                     ;
+; MAXIMIZE_SPEED                                 ; 5        ; Untyped                                                     ;
+; DEVICE_FAMILY                                  ; MAX 10   ; Untyped                                                     ;
+; CARRY_CHAIN                                    ; MANUAL   ; Untyped                                                     ;
+; APEX20K_TECHNOLOGY_MAPPER                      ; LUT      ; TECH_MAPPER_APEX20K                                         ;
+; DEDICATED_MULTIPLIER_CIRCUITRY                 ; AUTO     ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_INPUT_WIDTH_FOR_AUTO  ; 0        ; Untyped                                                     ;
+; DEDICATED_MULTIPLIER_MIN_OUTPUT_WIDTH_FOR_AUTO ; 0        ; Untyped                                                     ;
+; CBXI_PARAMETER                                 ; mult_tds ; Untyped                                                     ;
+; INPUT_A_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; INPUT_B_FIXED_VALUE                            ; Bx       ; Untyped                                                     ;
+; USE_AHDL_IMPLEMENTATION                        ; OFF      ; Untyped                                                     ;
++------------------------------------------------+----------+-------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------------------+
+; lpm_mult Parameter Settings by Entity Instance                                                                 ;
++---------------------------------------+------------------------------------------------------------------------+
+; Name                                  ; Value                                                                  ;
++---------------------------------------+------------------------------------------------------------------------+
+; Number of entity instances            ; 9                                                                      ;
+; Entity Instance                       ; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|lpm_mult:Mult0 ;
+;     -- LPM_WIDTHA                     ; 8                                                                      ;
+;     -- LPM_WIDTHB                     ; 8                                                                      ;
+;     -- LPM_WIDTHP                     ; 16                                                                     ;
+;     -- LPM_REPRESENTATION             ; SIGNED                                                                 ;
+;     -- INPUT_A_IS_CONSTANT            ; NO                                                                     ;
+;     -- INPUT_B_IS_CONSTANT            ; NO                                                                     ;
+;     -- USE_EAB                        ; OFF                                                                    ;
+;     -- DEDICATED_MULTIPLIER_CIRCUITRY ; AUTO                                                                   ;
+;     -- INPUT_A_FIXED_VALUE            ; Bx                                                                     ;
+;     -- INPUT_B_FIXED_VALUE            ; Bx                                                                     ;
+; Entity Instance                       ; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|lpm_mult:Mult0 ;
+;     -- LPM_WIDTHA                     ; 8                                                                      ;
+;     -- LPM_WIDTHB                     ; 8                                                                      ;
+;     -- LPM_WIDTHP                     ; 16                                                                     ;
+;     -- LPM_REPRESENTATION             ; SIGNED                                                                 ;
+;     -- INPUT_A_IS_CONSTANT            ; NO                                                                     ;
+;     -- INPUT_B_IS_CONSTANT            ; NO                                                                     ;
+;     -- USE_EAB                        ; OFF                                                                    ;
+;     -- DEDICATED_MULTIPLIER_CIRCUITRY ; AUTO                                                                   ;
+;     -- INPUT_A_FIXED_VALUE            ; Bx                                                                     ;
+;     -- INPUT_B_FIXED_VALUE            ; Bx                                                                     ;
+; Entity Instance                       ; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|lpm_mult:Mult0 ;
+;     -- LPM_WIDTHA                     ; 8                                                                      ;
+;     -- LPM_WIDTHB                     ; 8                                                                      ;
+;     -- LPM_WIDTHP                     ; 16                                                                     ;
+;     -- LPM_REPRESENTATION             ; SIGNED                                                                 ;
+;     -- INPUT_A_IS_CONSTANT            ; NO                                                                     ;
+;     -- INPUT_B_IS_CONSTANT            ; NO                                                                     ;
+;     -- USE_EAB                        ; OFF                                                                    ;
+;     -- DEDICATED_MULTIPLIER_CIRCUITRY ; AUTO                                                                   ;
+;     -- INPUT_A_FIXED_VALUE            ; Bx                                                                     ;
+;     -- INPUT_B_FIXED_VALUE            ; Bx                                                                     ;
+; Entity Instance                       ; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|lpm_mult:Mult0 ;
+;     -- LPM_WIDTHA                     ; 8                                                                      ;
+;     -- LPM_WIDTHB                     ; 8                                                                      ;
+;     -- LPM_WIDTHP                     ; 16                                                                     ;
+;     -- LPM_REPRESENTATION             ; SIGNED                                                                 ;
+;     -- INPUT_A_IS_CONSTANT            ; NO                                                                     ;
+;     -- INPUT_B_IS_CONSTANT            ; NO                                                                     ;
+;     -- USE_EAB                        ; OFF                                                                    ;
+;     -- DEDICATED_MULTIPLIER_CIRCUITRY ; AUTO                                                                   ;
+;     -- INPUT_A_FIXED_VALUE            ; Bx                                                                     ;
+;     -- INPUT_B_FIXED_VALUE            ; Bx                                                                     ;
+; Entity Instance                       ; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|lpm_mult:Mult0 ;
+;     -- LPM_WIDTHA                     ; 8                                                                      ;
+;     -- LPM_WIDTHB                     ; 8                                                                      ;
+;     -- LPM_WIDTHP                     ; 16                                                                     ;
+;     -- LPM_REPRESENTATION             ; SIGNED                                                                 ;
+;     -- INPUT_A_IS_CONSTANT            ; NO                                                                     ;
+;     -- INPUT_B_IS_CONSTANT            ; NO                                                                     ;
+;     -- USE_EAB                        ; OFF                                                                    ;
+;     -- DEDICATED_MULTIPLIER_CIRCUITRY ; AUTO                                                                   ;
+;     -- INPUT_A_FIXED_VALUE            ; Bx                                                                     ;
+;     -- INPUT_B_FIXED_VALUE            ; Bx                                                                     ;
+; Entity Instance                       ; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|lpm_mult:Mult0 ;
+;     -- LPM_WIDTHA                     ; 8                                                                      ;
+;     -- LPM_WIDTHB                     ; 8                                                                      ;
+;     -- LPM_WIDTHP                     ; 16                                                                     ;
+;     -- LPM_REPRESENTATION             ; SIGNED                                                                 ;
+;     -- INPUT_A_IS_CONSTANT            ; NO                                                                     ;
+;     -- INPUT_B_IS_CONSTANT            ; NO                                                                     ;
+;     -- USE_EAB                        ; OFF                                                                    ;
+;     -- DEDICATED_MULTIPLIER_CIRCUITRY ; AUTO                                                                   ;
+;     -- INPUT_A_FIXED_VALUE            ; Bx                                                                     ;
+;     -- INPUT_B_FIXED_VALUE            ; Bx                                                                     ;
+; Entity Instance                       ; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|lpm_mult:Mult0 ;
+;     -- LPM_WIDTHA                     ; 8                                                                      ;
+;     -- LPM_WIDTHB                     ; 8                                                                      ;
+;     -- LPM_WIDTHP                     ; 16                                                                     ;
+;     -- LPM_REPRESENTATION             ; SIGNED                                                                 ;
+;     -- INPUT_A_IS_CONSTANT            ; NO                                                                     ;
+;     -- INPUT_B_IS_CONSTANT            ; NO                                                                     ;
+;     -- USE_EAB                        ; OFF                                                                    ;
+;     -- DEDICATED_MULTIPLIER_CIRCUITRY ; AUTO                                                                   ;
+;     -- INPUT_A_FIXED_VALUE            ; Bx                                                                     ;
+;     -- INPUT_B_FIXED_VALUE            ; Bx                                                                     ;
+; Entity Instance                       ; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|lpm_mult:Mult0 ;
+;     -- LPM_WIDTHA                     ; 8                                                                      ;
+;     -- LPM_WIDTHB                     ; 8                                                                      ;
+;     -- LPM_WIDTHP                     ; 16                                                                     ;
+;     -- LPM_REPRESENTATION             ; SIGNED                                                                 ;
+;     -- INPUT_A_IS_CONSTANT            ; NO                                                                     ;
+;     -- INPUT_B_IS_CONSTANT            ; NO                                                                     ;
+;     -- USE_EAB                        ; OFF                                                                    ;
+;     -- DEDICATED_MULTIPLIER_CIRCUITRY ; AUTO                                                                   ;
+;     -- INPUT_A_FIXED_VALUE            ; Bx                                                                     ;
+;     -- INPUT_B_FIXED_VALUE            ; Bx                                                                     ;
+; Entity Instance                       ; MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|lpm_mult:Mult0 ;
+;     -- LPM_WIDTHA                     ; 8                                                                      ;
+;     -- LPM_WIDTHB                     ; 8                                                                      ;
+;     -- LPM_WIDTHP                     ; 16                                                                     ;
+;     -- LPM_REPRESENTATION             ; SIGNED                                                                 ;
+;     -- INPUT_A_IS_CONSTANT            ; NO                                                                     ;
+;     -- INPUT_B_IS_CONSTANT            ; NO                                                                     ;
+;     -- USE_EAB                        ; OFF                                                                    ;
+;     -- DEDICATED_MULTIPLIER_CIRCUITRY ; AUTO                                                                   ;
+;     -- INPUT_A_FIXED_VALUE            ; Bx                                                                     ;
+;     -- INPUT_B_FIXED_VALUE            ; Bx                                                                     ;
++---------------------------------------+------------------------------------------------------------------------+
 
 
 +-----------------------------------------------------+
@@ -387,18 +958,18 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-----------------------+-----------------------------+
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
-; boundary_port         ; 83                          ;
-; cycloneiii_lcell_comb ; 64                          ;
-;     arith             ; 31                          ;
-;         3 data inputs ; 31                          ;
-;     normal            ; 33                          ;
-;         2 data inputs ; 1                           ;
-;         4 data inputs ; 32                          ;
-; cycloneiii_mac_mult   ; 1                           ;
-; cycloneiii_mac_out    ; 1                           ;
+; boundary_port         ; 177                         ;
+; cycloneiii_lcell_comb ; 400                         ;
+;     arith             ; 248                         ;
+;         3 data inputs ; 248                         ;
+;     normal            ; 152                         ;
+;         2 data inputs ; 8                           ;
+;         3 data inputs ; 144                         ;
+; cycloneiii_mac_mult   ; 9                           ;
+; cycloneiii_mac_out    ; 9                           ;
 ;                       ;                             ;
-; Max LUT depth         ; 5.10                        ;
-; Average LUT depth     ; 2.88                        ;
+; Max LUT depth         ; 8.10                        ;
+; Average LUT depth     ; 4.11                        ;
 +-----------------------+-----------------------------+
 
 
@@ -417,61 +988,71 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
-    Info: Processing started: Thu Jan 04 16:47:58 2024
+    Info: Processing started: Wed Feb 07 18:02:42 2024
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off CNN2FPGAVHDL -c CNN2FPGAVHDL
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 12 of the 12 processors detected
-Info (12021): Found 2 design units, including 1 entities, in source file convolutional_unit.vhd
-    Info (12022): Found design unit 1: convolutional_unit-convolutional_unit_a File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 17
-    Info (12023): Found entity 1: convolutional_unit File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 5
 Info (12021): Found 2 design units, including 1 entities, in source file cnn2fpgavhdl.vhd
-    Info (12022): Found design unit 1: CNN2FPGAVHDL-arch File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/CNN2FPGAVHDL.vhd Line: 19
-    Info (12023): Found entity 1: CNN2FPGAVHDL File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/CNN2FPGAVHDL.vhd Line: 6
-Info (12021): Found 2 design units, including 1 entities, in source file convolutional_element.vhd
-    Info (12022): Found design unit 1: convolutional_element-arch File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_element.vhd Line: 18
-    Info (12023): Found entity 1: convolutional_element File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_element.vhd Line: 5
+    Info (12022): Found design unit 1: CNN2FPGAVHDL-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 15
+    Info (12023): Found entity 1: CNN2FPGAVHDL File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 5
+Info (12021): Found 2 design units, including 1 entities, in source file matrixmultiplier.vhd
+    Info (12022): Found design unit 1: MatrixMultiplier-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/MatrixMultiplier.vhd Line: 15
+    Info (12023): Found entity 1: MatrixMultiplier File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/MatrixMultiplier.vhd Line: 5
+Info (12021): Found 2 design units, including 1 entities, in source file multiplicator.vhd
+    Info (12022): Found design unit 1: multiplicator-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 15
+    Info (12023): Found entity 1: multiplicator File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 5
+Info (12021): Found 2 design units, including 1 entities, in source file adder_9in.vhd
+    Info (12022): Found design unit 1: Adder_9in-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Adder_9in.vhd Line: 21
+    Info (12023): Found entity 1: Adder_9in File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Adder_9in.vhd Line: 5
 Info (12127): Elaborating entity "CNN2FPGAVHDL" for the top level hierarchy
-Info (12128): Elaborating entity "convolutional_unit" for hierarchy "convolutional_unit:u_CONV" File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/CNN2FPGAVHDL.vhd Line: 21
-Warning (10492): VHDL Process Statement warning at convolutional_unit.vhd(25): signal "i_VALUE" is read inside the Process Statement but isn't in the Process Statement's sensitivity list File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 25
-Warning (10492): VHDL Process Statement warning at convolutional_unit.vhd(25): signal "i_DATA" is read inside the Process Statement but isn't in the Process Statement's sensitivity list File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 25
-Warning (10492): VHDL Process Statement warning at convolutional_unit.vhd(25): signal "i_KERNEL" is read inside the Process Statement but isn't in the Process Statement's sensitivity list File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 25
-Warning (10631): VHDL Process Statement warning at convolutional_unit.vhd(19): inferring latch(es) for signal or variable "o_VALUE", which holds its previous value in one or more paths through the process File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[0]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[1]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[2]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[3]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[4]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[5]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[6]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[7]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[8]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[9]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[10]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[11]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[12]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[13]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[14]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[15]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[16]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[17]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[18]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[19]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[20]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[21]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[22]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[23]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[24]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[25]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[26]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[27]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[28]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[29]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[30]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (10041): Inferred latch for "o_VALUE[31]" at convolutional_unit.vhd(19) File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 19
-Info (278001): Inferred 1 megafunctions from design logic
-    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "convolutional_unit:u_CONV|Mult0" File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 25
-Info (12130): Elaborated megafunction instantiation "convolutional_unit:u_CONV|lpm_mult:Mult0" File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 25
-Info (12133): Instantiated megafunction "convolutional_unit:u_CONV|lpm_mult:Mult0" with the following parameter: File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/convolutional_unit.vhd Line: 25
+Info (12128): Elaborating entity "MatrixMultiplier" for hierarchy "MatrixMultiplier:MatrixMultiplier" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 19
+Info (12128): Elaborating entity "multiplicator" for hierarchy "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/MatrixMultiplier.vhd Line: 28
+Warning (10631): VHDL Process Statement warning at multiplicator.vhd(20): inferring latch(es) for signal or variable "o_VALUE", which holds its previous value in one or more paths through the process File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[0]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[1]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[2]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[3]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[4]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[5]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[6]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[7]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[8]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[9]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[10]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[11]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[12]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[13]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[14]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[15]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[16]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[17]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[18]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[19]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[20]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[21]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[22]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[23]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[24]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[25]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[26]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[27]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[28]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[29]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[30]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (10041): Inferred latch for "o_VALUE[31]" at multiplicator.vhd(20) File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+Info (12128): Elaborating entity "Adder_9in" for hierarchy "MatrixMultiplier:MatrixMultiplier|Adder_9in:adder" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/MatrixMultiplier.vhd Line: 118
+Info (278001): Inferred 9 megafunctions from design logic
+    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|Mult0" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 24
+    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|Mult0" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 24
+    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|Mult0" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 24
+    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|Mult0" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 24
+    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|Mult0" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 24
+    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|Mult0" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 24
+    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|Mult0" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 24
+    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|Mult0" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 24
+    Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|Mult0" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 24
+Info (12130): Elaborated megafunction instantiation "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|lpm_mult:Mult0" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 24
+Info (12133): Instantiated megafunction "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|lpm_mult:Mult0" with the following parameter: File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 24
     Info (12134): Parameter "LPM_WIDTHA" = "8"
     Info (12134): Parameter "LPM_WIDTHB" = "8"
     Info (12134): Parameter "LPM_WIDTHP" = "16"
@@ -482,21 +1063,164 @@ Info (12133): Instantiated megafunction "convolutional_unit:u_CONV|lpm_mult:Mult
     Info (12134): Parameter "INPUT_B_IS_CONSTANT" = "NO"
     Info (12134): Parameter "MAXIMIZE_SPEED" = "5"
 Info (12021): Found 1 design units, including 1 entities, in source file db/mult_tds.tdf
-    Info (12023): Found entity 1: mult_tds File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/db/mult_tds.tdf Line: 29
+    Info (12023): Found entity 1: mult_tds File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/db/mult_tds.tdf Line: 29
+Info (13025): Duplicate LATCH primitives merged into single LATCH primitive
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[16]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[17]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[18]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[19]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[20]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[21]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[22]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[23]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[24]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[25]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[26]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[27]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[28]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[29]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[30]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[31]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_7|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[16]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[17]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[18]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[19]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[20]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[21]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[22]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[23]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[24]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[25]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[26]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[27]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[28]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[29]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[30]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[31]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_6|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[16]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[17]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[18]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[19]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[20]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[21]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[22]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[23]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[24]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[25]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[26]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[27]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[28]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[29]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[30]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[31]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_5|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[16]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[17]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[18]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[19]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[20]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[21]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[22]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[23]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[24]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[25]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[26]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[27]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[28]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[29]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[30]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[31]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_4|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[16]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[17]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[18]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[19]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[20]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[21]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[22]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[23]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[24]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[25]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[26]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[27]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[28]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[29]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[30]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[31]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_3|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[16]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[17]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[18]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[19]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[20]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[21]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[22]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[23]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[24]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[25]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[26]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[27]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[28]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[29]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[30]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[31]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_2|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[16]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[17]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[18]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[19]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[20]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[21]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[22]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[23]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[24]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[25]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[26]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[27]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[28]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[29]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[30]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[31]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_1|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[16]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[17]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[18]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[19]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[20]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[21]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[22]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[23]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[24]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[25]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[26]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[27]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[28]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[29]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[30]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[31]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_0|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[16]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[17]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[18]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[19]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[20]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[21]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[22]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[23]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[24]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[25]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[26]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[27]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[28]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[29]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[30]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
+    Info (13026): Duplicate LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[31]" merged with LATCH primitive "MatrixMultiplier:MatrixMultiplier|multiplicator:Multi_8|o_VALUE[15]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 20
 Info (286030): Timing-Driven Synthesis is running
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Warning (21074): Design contains 1 input pin(s) that do not drive logic
-    Warning (15610): No output dependent on input pin "i_CLKn" File: C:/Users/jhzro/OneDrive/Documentos/CNN2FPGAVHDL/CNN2FPGAVHDL.vhd Line: 13
-Info (21057): Implemented 148 device resources after synthesis - the final resource count might be different
-    Info (21058): Implemented 51 input pins
+Info (21057): Implemented 586 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 145 input pins
     Info (21059): Implemented 32 output pins
-    Info (21061): Implemented 64 logic cells
-    Info (21062): Implemented 1 DSP elements
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 7 warnings
-    Info: Peak virtual memory: 4798 megabytes
-    Info: Processing ended: Thu Jan 04 16:48:06 2024
+    Info (21061): Implemented 400 logic cells
+    Info (21062): Implemented 9 DSP elements
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 2 warnings
+    Info: Peak virtual memory: 4793 megabytes
+    Info: Processing ended: Wed Feb 07 18:02:50 2024
     Info: Elapsed time: 00:00:08
-    Info: Total CPU time (on all processors): 00:00:15
+    Info: Total CPU time (on all processors): 00:00:16
 
 

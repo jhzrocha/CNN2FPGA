@@ -179,8 +179,11 @@ use ieee.numeric_std.all;"""
         self.internalComponents = {}
         self.internalSignalWires = []
 
-    def setInternalComponentGenerics(self, genericName, value):
-        for generic in self.generics:
+
+# NOME ERRADO NOME ERRADO NOME ERRADO !!!!
+    def setInternalComponentGenerics(self, internalComponentName, genericName, value): 
+        internalComponent = self.internalComponents[internalComponentName]
+        for generic in internalComponent.generics:
             if(generic.name == genericName):
                 generic.value = value
 
@@ -203,8 +206,20 @@ use ieee.numeric_std.all;"""
 
     def createDesignFile(self):
         designComponent = ComponentCommonMethods()
-        designComponent.minimalComponentFileName = 'design'
+        designComponent.minimalComponentFileName = 'top'
         designComponent.portMap = self.portMap
+        designComponent.generics = self.generics
         designComponent.addInternalComponent(deepcopy(self),self.minimalComponentFileName)
+        
+        portMapParameter = {}
 
+        for i in designComponent.portMap['in']:
+            portMapParameter[i.name] = i.name
+        for i in designComponent.portMap['out']:
+            portMapParameter[i.name] = i.name
+        
+        designComponent.setInternalComponentPortMap(self.minimalComponentFileName,portMapParameter)
         designComponent.OutputEntityAndArchitectureFile()
+        del designComponent
+
+
