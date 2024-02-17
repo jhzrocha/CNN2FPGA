@@ -8,7 +8,6 @@ multiplicador = ConvolutionalLayer([4,4],[2,2])
 
 
 projectSpinal.setTopEntityComponent(multiplicador)
-
 projectSpinal.start()
 
 

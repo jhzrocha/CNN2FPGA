@@ -190,9 +190,8 @@ use ieee.numeric_std.all;"""
     def OutputEntityAndArchitectureFile(self):
         fileHandler = FileHandler("Output")
 
-        if not fileHandler.verifyIfFileExists(f"{self.minimalComponentFileName}.vhd", "Output"):
-           fileHandler.addFile(f"{self.minimalComponentFileName}.vhd",self.getEntityAndArchitectureFile())
-        
+        fileHandler.addFile(f"{self.minimalComponentFileName}.vhd",self.getEntityAndArchitectureFile())
+       
         del fileHandler
     
     def getWireDeclarations(self):
@@ -204,6 +203,10 @@ use ieee.numeric_std.all;"""
     def addInternalSignalWire(self,name, dataType, initialValue):
         self.internalSignalWires.append(Wire(name,dataType, initialValue))
 
+    def addMultipleInternalSignalWires(self,quantity,parameters):
+        for i in range(quantity):
+            self.addInternalSignalWire(f"{parameters['name']}_{i}",parameters['dataType'],parameters['initialValue'])
+        
     def createDesignFile(self):
         designComponent = ComponentCommonMethods()
         designComponent.minimalComponentFileName = 'top'

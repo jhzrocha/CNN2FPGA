@@ -13,10 +13,13 @@ class FileHandler:
 
     def addFile(self, fileName, texto):
         filePath = os.path.join(self.directoryPath, fileName)
+        for file in os.listdir(self.directoryPath):
+            if(f"{fileName}.vhd" == file):
+                os.remove(filePath)        
         with open(filePath, 'w') as file:
             file.write(texto)
         print(f"File '{fileName}' create sucessfully on {self.directoryName}.")
-
+    
     def clean(self):
         for file in os.listdir(self.directoryPath):
             filePath = os.path.join(self.directoryPath, file)

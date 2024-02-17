@@ -10,25 +10,51 @@ use ieee.numeric_std.all;
       i_ENA : in std_logic;
       i_RST : in std_logic;
       i_CLK : in std_logic;
-      O_Value0_0 : out integer;
-      O_Value0_1 : out integer;
-      O_Value0_2 : out integer;
-      O_Value1_0 : out integer;
-      O_Value1_1 : out integer;
-      O_Value1_2 : out integer;
-      O_Value2_0 : out integer;
-      O_Value2_1 : out integer;
-      O_Value2_2 : out integer
+      O_VALUE_0_0 : out integer;
+      O_VALUE_0_1 : out integer;
+      O_VALUE_0_2 : out integer;
+      O_VALUE_1_0 : out integer;
+      O_VALUE_1_1 : out integer;
+      O_VALUE_1_2 : out integer;
+      O_VALUE_2_0 : out integer;
+      O_VALUE_2_1 : out integer;
+      O_VALUE_2_2 : out integer
         );
     end ConvolutionalLayerIm4x4K2x2;
                  
     architecture arc of ConvolutionalLayerIm4x4K2x2 is
-      signal w_DATA : signed(0 to p_QT_BITS*{qtKernelPixels[0]*qtKernelPixels[1]}-1) := i_DATA(0*p_QT_BITS to p_QT_BITS*1-1);
+      signal w_DATA : signed(0 to p_QT_BITS*4-1) := i_DATA(0*p_QT_BITS to p_QT_BITS*1-1);
       signal w_MATRIX_MULT_O : integer := 0;
+      signal w_OPTION : unsigned(0 to 4-1) := "0000";
+      signal w_VALUE_O_0_0 : integer := 0;
+      signal w_VALUE_O_0_1 : integer := 0;
+      signal w_VALUE_O_0_2 : integer := 0;
+      signal w_VALUE_O_1_0 : integer := 0;
+      signal w_VALUE_O_1_1 : integer := 0;
+      signal w_VALUE_O_1_2 : integer := 0;
+      signal w_VALUE_O_2_0 : integer := 0;
+      signal w_VALUE_O_2_1 : integer := 0;
+      signal w_VALUE_O_2_2 : integer := 0;
 
         begin    
         
-         MatrixMultiplier : entity work.MatrixMultiplier_4px  
+         switcher : entity work.Switcher_9  
+    
+    port map (
+        i_OPTION  => w_OPTION,
+        i_ENA  => i_ENA,
+        i_VALUE  => w_MATRIX_MULT_O,
+        o_PORT_0  => w_VALUE_O_0_0,
+        o_PORT_1  => w_VALUE_O_0_1,
+        o_PORT_2  => w_VALUE_O_0_2,
+        o_PORT_3  => w_VALUE_O_1_0,
+        o_PORT_4  => w_VALUE_O_1_1,
+        o_PORT_5  => w_VALUE_O_1_2,
+        o_PORT_6  => w_VALUE_O_2_0,
+        o_PORT_7  => w_VALUE_O_2_1,
+        o_PORT_8  => w_VALUE_O_2_2
+    );
+ MatrixMultiplier : entity work.MatrixMultiplier_4px  
     generic map (
       p_QT_BITS => 8
     )
@@ -39,13 +65,15 @@ use ieee.numeric_std.all;
         o_VALUE  => w_MATRIX_MULT_O
     );
 
-            multi:
-            process(i_ENA,i_CLK,i_RST)            
+            proc:
+            process(rising_edge(i_CLK))            
             begin
                 if (i_ENA= '1') then
-                    w_O_VALUE <= TO_INTEGER(signed(i_DATA) * (signed(i_KERNEL))); 
+                    for i in 0 to 9 loop
+                        
+                    end loop;
                 end if;
-            end process multi;
+            end process proc;
 
         
     end arc;

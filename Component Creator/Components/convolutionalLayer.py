@@ -2,6 +2,7 @@ from ComponentBases.ComponentCommonMethods import ComponentCommonMethods
 from ComponentBases.port import Port
 from ComponentBases.generic import Generic
 from Components.matrixMultiplier import MatrixMultiplier
+from Components.switcher import Switcher
 
 
 
@@ -17,21 +18,27 @@ class ConvolutionalLayer(ComponentCommonMethods):
                                 Port('i_CLK', 'std_logic')],
                           'out': []                           
                         }
-        self.setOutputPorts(qtimagePixels,qtKernelPixels)
         self.generics = [Generic('p_QT_BITS','natural','8')]
-        self.internalOperations = """
-            multi:
-            process(i_ENA,i_CLK,i_RST)            
+        self.internalOperations = f"""
+            proc:
+            process(i_ENA)            
             begin
                 if (i_ENA= '1') then
-                    w_O_VALUE <= TO_INTEGER(signed(i_DATA) * (signed(i_KERNEL))); 
+                    for i in 0 to {self.getQtOutputs(qtimagePixels,qtKernelPixels)} loop
+                        
+                        wait on w_MATRIX_MULT_O;
+                        
+                    end loop;
                 end if;
-            end process multi;
+            end process proc;
 
-        """        
+        """
         super().__init__()
-        self.addInternalSignalWire('w_DATA', 'signed(0 to p_QT_BITS*{qtKernelPixels[0]*qtKernelPixels[1]}-1)', 'i_DATA(0*p_QT_BITS to p_QT_BITS*1-1)')
+        self.addInternalSignalWire('w_DATA', f"signed(0 to p_QT_BITS*{qtKernelPixels[0]*qtKernelPixels[1]}-1)", 'i_DATA(0*p_QT_BITS to p_QT_BITS*1-1)')
         self.addInternalSignalWire('w_MATRIX_MULT_O', 'integer', 0)
+        self.addInternalComponent(Switcher(self.getQtOutputs(qtimagePixels,qtKernelPixels)), 'switcher')
+        self.setOutputPortsAndSwitcher(qtimagePixels,qtKernelPixels)
+
 
 
         self.addInternalComponent(MatrixMultiplier(qtKernelPixels[0]*qtKernelPixels[1]), 'MatrixMultiplier')
@@ -41,11 +48,26 @@ class ConvolutionalLayer(ComponentCommonMethods):
                                         'o_VALUE':'w_MATRIX_MULT_O'
                                    }        
         self.setInternalComponentPortMap('MatrixMultiplier',matrixMultiplierPortmap)
+
         self.OutputEntityAndArchitectureFile()
 
 
-    def setOutputPorts(self, qtimagePixels, qtKernelPixels):
+    def setOutputPortsAndSwitcher(self, qtimagePixels, qtKernelPixels):
+        qtPorts = 0
+        self.addInternalSignalWire('w_OPTION','unsigned(0 to 4-1)','"0000"')
+        internalSwitcherParameters = {'i_ENA':'i_ENA',
+                                      'i_VALUE' :'w_MATRIX_MULT_O',
+                                      'i_OPTION' : 'w_OPTION'}
         for i in range((qtimagePixels[0] - qtKernelPixels[0])+1):
             for j in range((qtimagePixels[1] - qtKernelPixels[1])+1):
-                self.addOutputPortByParameters(f"O_Value{i}_{j}",'integer', f"w_VALUE_O{i}_{j}")
-              
+                self.addInternalSignalWire(f"w_VALUE_O_{i}_{j}",'integer',0)
+                self.addOutputPortByParameters(f"O_VALUE_{i}_{j}",'integer', f"w_VALUE_O_{i}_{j}")
+                internalSwitcherParameters[f"o_PORT_{qtPorts}"] = f"w_VALUE_O_{i}_{j}"
+                qtPorts = qtPorts+1
+
+        self.setInternalComponentPortMap('switcher',internalSwitcherParameters)
+    
+    def getQtOutputs(self, qtimagePixels, qtKernelPixels):
+        return (((qtimagePixels[0]-qtKernelPixels[0])+1)*((qtimagePixels[1]-qtKernelPixels[1])+1))
+    
+
