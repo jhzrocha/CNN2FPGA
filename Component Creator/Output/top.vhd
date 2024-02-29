@@ -3,7 +3,7 @@ use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
                  
     entity top is
-        generic (p_QT_BITS : natural := 8);
+        generic (p_QT_BITS : natural := 1);
         port (
       i_DATA : in signed(0 to p_QT_BITS*16-1);
       i_KERNEL : in signed(0 to p_QT_BITS*4-1);
@@ -28,7 +28,7 @@ use ieee.numeric_std.all;
         
          ConvolutionalLayerIm4x4K2x2 : entity work.ConvolutionalLayerIm4x4K2x2  
     generic map (
-      p_QT_BITS => 8
+      p_QT_BITS => 1
     )
     port map (
         i_DATA  => i_DATA,

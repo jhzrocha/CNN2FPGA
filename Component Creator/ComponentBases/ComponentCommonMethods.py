@@ -14,6 +14,8 @@ class ComponentCommonMethods:
     portMap = {}
     internalComponents = {}
     internalSignalWires = []
+    internalVariables = []
+
 
     importHeader = """library IEEE;
 use IEEE.std_logic_1164.all;
@@ -178,9 +180,8 @@ use ieee.numeric_std.all;"""
     def resetParameters(self):
         self.internalComponents = {}
         self.internalSignalWires = []
+        self.internalVariables = []
 
-
-# NOME ERRADO NOME ERRADO NOME ERRADO !!!!
     def setInternalComponentGenerics(self, internalComponentName, genericName, value): 
         internalComponent = self.internalComponents[internalComponentName]
         for generic in internalComponent.generics:
@@ -197,15 +198,30 @@ use ieee.numeric_std.all;"""
     def getWireDeclarations(self):
         declaration = ''
         for signal in self.internalSignalWires:
-            declaration = declaration + f"      signal {signal.name} : {signal.dataType} := {signal.initialValue};\n"
+            if signal.initialValue != '':
+                declaration = declaration + f"      signal {signal.name} : {signal.dataType} := {signal.initialValue};\n"
+            else:
+                declaration = declaration + f"      signal {signal.name} : {signal.dataType};\n"
+        for variable in self.internalVariables:
+            if variable.initialValue != '':
+                declaration = declaration + f"      variable {variable.name} : {variable.dataType} := {variable.initialValue};\n"
+            else:
+                declaration = declaration + f"      variable {variable.name} : {variable.dataType};\n"
         return declaration
 
     def addInternalSignalWire(self,name, dataType, initialValue):
         self.internalSignalWires.append(Wire(name,dataType, initialValue))
+    
+    def addInternalVariable(self,name, dataType, initialValue):
+        self.internalVariables.append(Wire(name,dataType, initialValue))
 
     def addMultipleInternalSignalWires(self,quantity,parameters):
         for i in range(quantity):
             self.addInternalSignalWire(f"{parameters['name']}_{i}",parameters['dataType'],parameters['initialValue'])
+    
+    def addMultipleInternalVariables(self,quantity,parameters):
+        for i in range(quantity):
+            self.addInternalVariable(f"{parameters['name']}_{i}",parameters['dataType'],parameters['initialValue'])
         
     def createDesignFile(self):
         designComponent = ComponentCommonMethods()

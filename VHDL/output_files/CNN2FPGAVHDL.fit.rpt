@@ -1,5 +1,5 @@
 Fitter report for CNN2FPGAVHDL
-Fri Feb 16 11:18:45 2024
+Tue Feb 20 20:08:51 2024
 Quartus Prime Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
 
 
@@ -54,7 +54,7 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------+
 ; Fitter Summary                                                                   ;
 +------------------------------------+---------------------------------------------+
-; Fitter Status                      ; Failed - Fri Feb 16 11:18:45 2024           ;
+; Fitter Status                      ; Failed - Tue Feb 20 20:08:51 2024           ;
 ; Quartus Prime Version              ; 20.1.1 Build 720 11/11/2020 SJ Lite Edition ;
 ; Revision Name                      ; CNN2FPGAVHDL                                ;
 ; Top-level Entity Name              ; CNN2FPGAVHDL                                ;
@@ -2636,8 +2636,8 @@ Warning (169069): Following 32 pins have nothing, GND, or VCC driving datain por
     Info (169070): Pin o_PORT_0[31] has GND driving its datain port File: C:/Users/jhzro/OneDrive/Área de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 11
 Error: Quartus Prime Fitter was unsuccessful. 2 errors, 5 warnings
     Error: Peak virtual memory: 4927 megabytes
-    Error: Processing ended: Fri Feb 16 11:18:45 2024
-    Error: Elapsed time: 00:00:01
+    Error: Processing ended: Tue Feb 20 20:08:51 2024
+    Error: Elapsed time: 00:00:02
     Error: Total CPU time (on all processors): 00:00:02
 
 

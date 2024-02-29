@@ -1,5 +1,5 @@
 Analysis & Synthesis report for CNN2FPGAVHDL
-Fri Feb 16 11:18:43 2024
+Tue Feb 20 20:08:48 2024
 Quartus Prime Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
 
 
@@ -47,7 +47,7 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                     ;
 +------------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Fri Feb 16 11:18:43 2024       ;
+; Analysis & Synthesis Status        ; Successful - Tue Feb 20 20:08:48 2024       ;
 ; Quartus Prime Version              ; 20.1.1 Build 720 11/11/2020 SJ Lite Edition ;
 ; Revision Name                      ; CNN2FPGAVHDL                                ;
 ; Top-level Entity Name              ; CNN2FPGAVHDL                                ;
@@ -415,16 +415,13 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
-    Info: Processing started: Fri Feb 16 11:18:35 2024
+    Info: Processing started: Tue Feb 20 20:08:36 2024
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off CNN2FPGAVHDL -c CNN2FPGAVHDL
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 12 of the 12 processors detected
 Info (12021): Found 2 design units, including 1 entities, in source file cnn2fpgavhdl.vhd
     Info (12022): Found design unit 1: CNN2FPGAVHDL-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 23
     Info (12023): Found entity 1: CNN2FPGAVHDL File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 5
-Info (12021): Found 2 design units, including 1 entities, in source file matrixmultiplier.vhd
-    Info (12022): Found design unit 1: MatrixMultiplier-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/MatrixMultiplier.vhd Line: 15
-    Info (12023): Found entity 1: MatrixMultiplier File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/MatrixMultiplier.vhd Line: 5
 Info (12021): Found 2 design units, including 1 entities, in source file multiplicator.vhd
     Info (12022): Found design unit 1: multiplicator-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 15
     Info (12023): Found entity 1: multiplicator File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 5
@@ -434,6 +431,18 @@ Info (12021): Found 2 design units, including 1 entities, in source file adder_9
 Info (12021): Found 2 design units, including 1 entities, in source file multiplexer_9.vhd
     Info (12022): Found design unit 1: Multiplexer_9-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Multiplexer_9.vhd Line: 23
     Info (12023): Found entity 1: Multiplexer_9 File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Multiplexer_9.vhd Line: 5
+Info (12021): Found 2 design units, including 1 entities, in source file convolutionallayerim4x4k2x2.vhd
+    Info (12022): Found design unit 1: ConvolutionalLayerIm4x4K2x2-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/ConvolutionalLayerIm4x4K2x2.vhd Line: 25
+    Info (12023): Found entity 1: ConvolutionalLayerIm4x4K2x2 File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/ConvolutionalLayerIm4x4K2x2.vhd Line: 5
+Info (12021): Found 2 design units, including 1 entities, in source file switcher_9.vhd
+    Info (12022): Found design unit 1: Switcher_9-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Switcher_9.vhd Line: 23
+    Info (12023): Found entity 1: Switcher_9 File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Switcher_9.vhd Line: 5
+Info (12021): Found 2 design units, including 1 entities, in source file matrixmultiplier_4px.vhd
+    Info (12022): Found design unit 1: MatrixMultiplier_4px-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/MatrixMultiplier_4px.vhd Line: 15
+    Info (12023): Found entity 1: MatrixMultiplier_4px File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/MatrixMultiplier_4px.vhd Line: 5
+Info (12021): Found 2 design units, including 1 entities, in source file adder_4in.vhd
+    Info (12022): Found design unit 1: Adder_4in-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Adder_4in.vhd Line: 16
+    Info (12023): Found entity 1: Adder_4in File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Adder_4in.vhd Line: 5
 Info (12127): Elaborating entity "CNN2FPGAVHDL" for the top level hierarchy
 Info (12128): Elaborating entity "Multiplexer_9" for hierarchy "Multiplexer_9:Multiplexer_9" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 27
 Warning (10540): VHDL Signal Declaration warning at Multiplexer_9.vhd(24): used explicit default value for signal "w_VALUE_0" because signal was never assigned a value File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Multiplexer_9.vhd Line: 24
@@ -742,9 +751,9 @@ Info (21057): Implemented 593 device resources after synthesis - the final resou
     Info (21059): Implemented 288 output pins
     Info (21061): Implemented 268 logic cells
 Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 43 warnings
-    Info: Peak virtual memory: 4795 megabytes
-    Info: Processing ended: Fri Feb 16 11:18:43 2024
-    Info: Elapsed time: 00:00:08
+    Info: Peak virtual memory: 4793 megabytes
+    Info: Processing ended: Tue Feb 20 20:08:48 2024
+    Info: Elapsed time: 00:00:12
     Info: Total CPU time (on all processors): 00:00:14
 
 

@@ -25,6 +25,15 @@ use ieee.numeric_std.all;
     architecture arc of ConvolutionalLayerIm4x4K2x2 is
       signal w_OPTION : unsigned(0 to 4-1) := "0000";
       signal w_DATA : signed(0 to p_QT_BITS*4-1);
+      signal w_VALUE_O_0_0 : integer := 0;
+      signal w_VALUE_O_0_1 : integer := 0;
+      signal w_VALUE_O_0_2 : integer := 0;
+      signal w_VALUE_O_1_0 : integer := 0;
+      signal w_VALUE_O_1_1 : integer := 0;
+      signal w_VALUE_O_1_2 : integer := 0;
+      signal w_VALUE_O_2_0 : integer := 0;
+      signal w_VALUE_O_2_1 : integer := 0;
+      signal w_VALUE_O_2_2 : integer := 0;
       signal w_MATRIX_MULT_O : integer := 0;
 
         begin    
@@ -35,15 +44,15 @@ use ieee.numeric_std.all;
         i_OPTION  => w_OPTION,
         i_ENA  => i_ENA,
         i_VALUE  => w_MATRIX_MULT_O,
-        o_PORT_0  => O_VALUE_0_0,
-        o_PORT_1  => O_VALUE_0_1,
-        o_PORT_2  => O_VALUE_0_2,
-        o_PORT_3  => O_VALUE_1_0,
-        o_PORT_4  => O_VALUE_1_1,
-        o_PORT_5  => O_VALUE_1_2,
-        o_PORT_6  => O_VALUE_2_0,
-        o_PORT_7  => O_VALUE_2_1,
-        o_PORT_8  => O_VALUE_2_2
+        o_PORT_0  => w_VALUE_O_0_0,
+        o_PORT_1  => w_VALUE_O_0_1,
+        o_PORT_2  => w_VALUE_O_0_2,
+        o_PORT_3  => w_VALUE_O_1_0,
+        o_PORT_4  => w_VALUE_O_1_1,
+        o_PORT_5  => w_VALUE_O_1_2,
+        o_PORT_6  => w_VALUE_O_2_0,
+        o_PORT_7  => w_VALUE_O_2_1,
+        o_PORT_8  => w_VALUE_O_2_2
     );
  MatrixMultiplier : entity work.MatrixMultiplier_4px  
     generic map (
