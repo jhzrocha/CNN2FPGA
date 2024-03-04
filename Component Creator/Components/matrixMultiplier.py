@@ -16,7 +16,6 @@ class MatrixMultiplier(ComponentCommonMethods):
                          'out': [Port('o_VALUE','integer')] 
                 }
         self.generics = [Generic('p_QT_BITS','natural','8')]
-        super().__init__()
 
         self.AddMultipliers(qtPixels)
         self.addInternalComponent(AdderComponent(qtPixels), 'adder')

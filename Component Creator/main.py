@@ -1,13 +1,12 @@
-from Components.convolutionalLayer import ConvolutionalLayer
+from Components.add import Add
 from Spinal.Spinal import Spinal
 
 
 projectSpinal = Spinal()
 
-multiplicador = ConvolutionalLayer([4,4],[2,2])
+registrador1 = Add(32)
 
-
-projectSpinal.setTopEntityComponent(multiplicador)
+projectSpinal.setTopEntityComponent(registrador1)
 projectSpinal.start()
 
 

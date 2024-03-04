@@ -16,8 +16,6 @@ class AdderComponent(ComponentCommonMethods):
       o_VALUE <= {};           
     end process add;
     """
-    super().__init__()
-
     self.addMultipleGeneratedInputPorts(qtInputPorts, 'integer')
 
     self.OutputEntityAndArchitectureFile()

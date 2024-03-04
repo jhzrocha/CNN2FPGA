@@ -24,40 +24,36 @@ use ieee.numeric_std.all;"""
     entityDeclaration = """
     entity {} is
         {}
-        port (
-{}
+        port ({}
         );
     end {};"""
     internalOperations = ''
     architectureDeclaration = """
     architecture arc of {} is
 {}
-        begin    
-        
-        {}
+{}
+        begin{}
     end arc;"""
 
     processment = ''
 
-    genericCall = """generic map (
-      {}
-    )"""
-    
+    genericCall = """
+        generic map (
+            {}
+        )"""    
 
-    call =  """ {} : entity work.{}  
+    call =  """ 
+        {} : entity work.{}{}
+        port map (
     {}
-    port map (
-{}
-    );\n"""
+        );\n"""
+
+    signalWiresDeclarations = ''
+    variableWiresDeclarations = ''
 
     genericsDeclaration = 'generic ({});'
 
-    def __init__(self):
-        self.resetParameters()
-        if (len(self.internalOperations) > 0):
-            self.setProcessment(self.internalOperations)
-    
-        
+       
     def addGenericByParameters(self, name, dataType, initialValue):
         newGeneric = Generic(name, dataType, initialValue)
         self.generics.append(newGeneric)
@@ -82,13 +78,16 @@ use ieee.numeric_std.all;"""
         genericCall = ''
         if self.getGenericObjectCall() != '':
             genericCall = self.genericCall.format(self.getGenericObjectCall())
-        
         callPortMap = ''
+        isFirst = True
         for i in self.portMap['in']:
-            callPortMap = callPortMap + f"        {i.name}  => {i.connection},\n"
+            if(isFirst):
+                callPortMap = callPortMap + f"        {i.name}  => {i.connection},\n"
+                isFirst = False
+            else:
+                callPortMap = callPortMap + f"            {i.name}  => {i.connection},\n"
         for i in self.portMap['out']:
-            callPortMap = callPortMap + f"        {i.name}  => {i.connection},\n"
-
+                callPortMap = callPortMap + f"            {i.name}  => {i.connection},\n"
         if callPortMap.endswith(',\n'):
             callPortMap = callPortMap[:-2]
         
@@ -113,10 +112,15 @@ use ieee.numeric_std.all;"""
 
     def getEntityDeclaration(self):
         callPortMap = ''
+        first = True
         for i in self.portMap['in']:
-            callPortMap = callPortMap + f'      {i.name} : in {i.dataType};\n'
+            if (first):
+                callPortMap = callPortMap + f'{i.name} : in {i.dataType};\n'
+                first = False
+            else:
+                callPortMap = callPortMap + f'              {i.name} : in {i.dataType};\n'
         for i in self.portMap['out']:
-            callPortMap = callPortMap + f'      {i.name} : out {i.dataType};\n'
+            callPortMap = callPortMap + f'              {i.name} : out {i.dataType};\n'
                 
         if callPortMap.endswith(';\n'):
             callPortMap = callPortMap[:-2]
@@ -139,7 +143,8 @@ use ieee.numeric_std.all;"""
 
     def getArchitectureDeclaration(self):
         processment = self.getInternalComponentDeclarations() + self.processment
-        return self.architectureDeclaration.format(self.minimalComponentFileName, self.getWireDeclarations(), processment)
+        self.generateWireDeclarations()
+        return self.architectureDeclaration.format(self.minimalComponentFileName, self.signalWiresDeclarations, self.variableWiresDeclarations, processment)
     
     def setProcessment(self, internalOperations):
         self.processment = internalOperations
@@ -152,8 +157,11 @@ use ieee.numeric_std.all;"""
         return file
     
             
-    def addInternalComponent(self, component, componentCallName):
-        self.internalComponents[componentCallName] = deepcopy(component)
+    def addInternalComponent(self, component, componentCallName, portmap=None):
+        if (not self.verifyIfInternalComponentAlreadyExists(componentCallName)):
+            self.internalComponents[componentCallName] = deepcopy(component)
+        if(portmap):
+            self.setInternalComponentPortMap(componentCallName,portmap)
     
     def addMultipleInternalComponentDeclarations(self,component, quantity):
         for i in range(quantity):
@@ -177,10 +185,6 @@ use ieee.numeric_std.all;"""
                 if port.name == portMapParameter:
                     port.connection = portMapParameters[portMapParameter]
     
-    def resetParameters(self):
-        self.internalComponents = {}
-        self.internalSignalWires = []
-        self.internalVariables = []
 
     def setInternalComponentGenerics(self, internalComponentName, genericName, value): 
         internalComponent = self.internalComponents[internalComponentName]
@@ -189,31 +193,35 @@ use ieee.numeric_std.all;"""
                 generic.value = value
 
     def OutputEntityAndArchitectureFile(self):
+        if (len(self.internalOperations) > 0):
+            self.setProcessment(self.internalOperations)
         fileHandler = FileHandler("Output")
-
         fileHandler.addFile(f"{self.minimalComponentFileName}.vhd",self.getEntityAndArchitectureFile())
        
         del fileHandler
     
-    def getWireDeclarations(self):
-        declaration = ''
+    def generateWireDeclarations(self):
         for signal in self.internalSignalWires:
             if signal.initialValue != '':
-                declaration = declaration + f"      signal {signal.name} : {signal.dataType} := {signal.initialValue};\n"
+                self.signalWiresDeclarations = self.signalWiresDeclarations + f"        signal {signal.name} : {signal.dataType} := {signal.initialValue};\n"
             else:
-                declaration = declaration + f"      signal {signal.name} : {signal.dataType};\n"
+                self.signalWiresDeclarations = self.signalWiresDeclarations + f"        signal {signal.name} : {signal.dataType};\n"
         for variable in self.internalVariables:
             if variable.initialValue != '':
-                declaration = declaration + f"      variable {variable.name} : {variable.dataType} := {variable.initialValue};\n"
+                self.variableWiresDeclarations = self.variableWiresDeclarations + f"        variable {variable.name} : {variable.dataType} := {variable.initialValue};\n"
             else:
-                declaration = declaration + f"      variable {variable.name} : {variable.dataType};\n"
-        return declaration
+                self.variableWiresDeclarations = self.variableWiresDeclarations + f"        variable {variable.name} : {variable.dataType};\n"
 
-    def addInternalSignalWire(self,name, dataType, initialValue):
-        self.internalSignalWires.append(Wire(name,dataType, initialValue))
+    def addInternalSignalWire(self,name, dataType, initialValue=''):
+        newWire = Wire(name,dataType, initialValue)
+        if not self.verifyIfWireAlreadyExists(newWire.name, self.internalSignalWires):
+            self.internalSignalWires.append(newWire)
     
-    def addInternalVariable(self,name, dataType, initialValue):
-        self.internalVariables.append(Wire(name,dataType, initialValue))
+    def addInternalVariable(self,name, dataType, initialValue =''):
+        newWire = Wire(name,dataType, initialValue)
+        if not self.verifyIfWireAlreadyExists(newWire.name, self.internalVariables):
+            self.internalVariables.append(newWire)
+        
 
     def addMultipleInternalSignalWires(self,quantity,parameters):
         for i in range(quantity):
@@ -226,6 +234,9 @@ use ieee.numeric_std.all;"""
     def createDesignFile(self):
         designComponent = ComponentCommonMethods()
         designComponent.minimalComponentFileName = 'top'
+        designComponent.internalComponents = {}
+        designComponent.internalSignalWires = {}
+        designComponent.internalVariables = {}
         designComponent.portMap = self.portMap
         designComponent.generics = self.generics
         designComponent.addInternalComponent(deepcopy(self),self.minimalComponentFileName)
@@ -242,3 +253,18 @@ use ieee.numeric_std.all;"""
         del designComponent
 
 
+    def verifyIfWireAlreadyExists(self, elementName, array):
+        for x in array:
+            if elementName == x.name:
+                return True
+        return False
+
+    def verifyIfInternalComponentAlreadyExists(self, componentCallName):
+        if componentCallName in self.internalComponents:
+            return True
+        return False
+  
+    def startInstance(self):
+        self.internalComponents = {}
+        self.internalSignalWires = []
+        self.internalVariables = []

@@ -3,48 +3,30 @@ use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
                  
     entity top is
-        generic (p_QT_BITS : natural := 1);
-        port (
-      i_DATA : in signed(0 to p_QT_BITS*16-1);
-      i_KERNEL : in signed(0 to p_QT_BITS*4-1);
-      i_ENA : in std_logic;
-      i_RST : in std_logic;
-      i_CLK : in std_logic;
-      O_VALUE_0_0 : out integer;
-      O_VALUE_0_1 : out integer;
-      O_VALUE_0_2 : out integer;
-      O_VALUE_1_0 : out integer;
-      O_VALUE_1_1 : out integer;
-      O_VALUE_1_2 : out integer;
-      O_VALUE_2_0 : out integer;
-      O_VALUE_2_1 : out integer;
-      O_VALUE_2_2 : out integer
+        
+        port (a : in std_logic_vector(31 DOWNTO 0);
+              b : in std_logic_vector(31 DOWNTO 0);
+              cin : in std_logic;
+              sum1 : out std_logic_vector(31 DOWNTO 0);
+              cout : out std_logic;
+              overflow : out std_logic;
+              underflow : out std_logic
         );
     end top;
                  
     architecture arc of top is
 
-        begin    
-        
-         ConvolutionalLayerIm4x4K2x2 : entity work.ConvolutionalLayerIm4x4K2x2  
-    generic map (
-      p_QT_BITS => 1
-    )
-    port map (
-        i_DATA  => i_DATA,
-        i_KERNEL  => i_KERNEL,
-        i_ENA  => i_ENA,
-        i_RST  => i_RST,
-        i_CLK  => i_CLK,
-        O_VALUE_0_0  => O_VALUE_0_0,
-        O_VALUE_0_1  => O_VALUE_0_1,
-        O_VALUE_0_2  => O_VALUE_0_2,
-        O_VALUE_1_0  => O_VALUE_1_0,
-        O_VALUE_1_1  => O_VALUE_1_1,
-        O_VALUE_1_2  => O_VALUE_1_2,
-        O_VALUE_2_0  => O_VALUE_2_0,
-        O_VALUE_2_1  => O_VALUE_2_1,
-        O_VALUE_2_2  => O_VALUE_2_2
-    );
+
+        begin 
+        add32 : entity work.add32
+        port map (
+            a  => a,
+            b  => b,
+            cin  => cin,
+            sum1  => sum1,
+            cout  => cout,
+            overflow  => overflow,
+            underflow  => underflow
+        );
 
     end arc;

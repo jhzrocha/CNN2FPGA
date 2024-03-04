@@ -35,7 +35,6 @@ class ConvolutionalLayer(ComponentCommonMethods):
         """
         self.setOutputPorts(qtimagePixels,qtKernelPixels)
 
-        super().__init__()
         self.setInternalComponents(qtimagePixels, qtKernelPixels)
         self.addInternalSignalWire('w_MATRIX_MULT_O', 'integer', 0)
         matrixMultiplierPortmap = {'i_DATA': 'w_DATA',

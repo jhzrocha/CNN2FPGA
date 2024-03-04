@@ -27,7 +27,6 @@ class Multiplicator(ComponentCommonMethods):
             end process multi;
             o_VALUE <= w_O_VALUE;
         """
-        super().__init__()
         self.addInternalSignalWire('w_O_VALUE', 'integer', 0)
 
         self.generics = [Generic('p_QT_BITS','natural','8')]
