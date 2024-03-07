@@ -15,6 +15,7 @@ use ieee.numeric_std.all;
     end add32;
                  
     architecture arc of add32 is
+        type w_arr is array(2 downto 0) of aaa;
         signal w_SIGNAL_BIT : std_logic;
         signal w_OVERFLOW : std_logic;
         signal w_UNDERFLOW : std_logic;

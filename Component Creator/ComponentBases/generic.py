@@ -11,3 +11,5 @@ class Generic:
         self.initialValue = initialValue
         self.value = self.initialValue
 
+    def getDeclaration(self):
+        return f"{self.name} : {self.dataType} := {self.value};\n"

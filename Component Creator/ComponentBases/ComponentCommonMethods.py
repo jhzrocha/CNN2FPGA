@@ -1,7 +1,7 @@
 from ComponentBases.port import Port
 from ComponentBases.generic import Generic
 from ComponentBases.wire import Wire
-
+from ComponentBases.type import Type
 from copy import deepcopy
 from FileHandler.fileHandler import FileHandler
 
@@ -12,9 +12,11 @@ class ComponentCommonMethods:
     
     generics = []
     portMap = {}
+
     internalComponents = {}
     internalSignalWires = []
     internalVariables = []
+    internalTypes = []
 
 
     importHeader = """library IEEE;
@@ -30,7 +32,7 @@ use ieee.numeric_std.all;"""
     internalOperations = ''
     architectureDeclaration = """
     architecture arc of {} is
-{}
+{}{}
 {}
         begin{}
     end arc;"""
@@ -72,7 +74,7 @@ use ieee.numeric_std.all;"""
                 
     def addMultipleGeneratedOutputPorts(self, qtPorts, dataType):
         for i in range(0, qtPorts):
-            self.addOutputPortByParameters('o_PORT_{}'.format(i), dataType)
+            self.addOutputPortByParameters(f"o_PORT_{i}", dataType)
 
     def getObjectCall(self, objectName):
         genericCall = ''
@@ -132,9 +134,14 @@ use ieee.numeric_std.all;"""
     
     def getGenericDeclaration(self):
         generics = ''
+        first = True
         if(len(self.generics) > 0):
-            for i in self.generics:
-                generics = generics + f"{i.name} : {i.dataType} := {i.value};\n"
+            for generic in self.generics:
+                if first:
+                    generics = generics + generic.getDeclaration()
+                    first = False
+                else:
+                    generics = generics + '                 ' + generic.getDeclaration()
             if generics.endswith(';\n'):
                 generics = generics[:-2]            
             generics = self.genericsDeclaration.format(generics)
@@ -144,7 +151,7 @@ use ieee.numeric_std.all;"""
     def getArchitectureDeclaration(self):
         processment = self.getInternalComponentDeclarations() + self.processment
         self.generateWireDeclarations()
-        return self.architectureDeclaration.format(self.minimalComponentFileName, self.signalWiresDeclarations, self.variableWiresDeclarations, processment)
+        return self.architectureDeclaration.format(self.minimalComponentFileName, self.getTypesDeclarations(),self.signalWiresDeclarations, self.variableWiresDeclarations, processment)
     
     def setProcessment(self, internalOperations):
         self.processment = internalOperations
@@ -268,3 +275,12 @@ use ieee.numeric_std.all;"""
         self.internalComponents = {}
         self.internalSignalWires = []
         self.internalVariables = []
+
+    def addArrayTypeOnArchitecture(self, name, type,size):
+        self.internalTypes.append(Type(name,type,size))
+
+    def getTypesDeclarations(self):
+        typesDeclarations = ''
+        for type in self.internalTypes:
+            typesDeclarations = typesDeclarations + type.getDeclaration()
+        return typesDeclarations
