@@ -34,10 +34,26 @@ class ArvoreSomaConv(ComponentCommonMethods):
         for x in range(qtInputs):
             initialization = initialization + f"            w_ENTRADAS({x})(31 downto 16) <= (others => '1') when (i_PORT_{x} (15) = '1') else (others => '0');\n"
         
+        count = 0
+        for x in range(0,qtInputs,2):
+            if x+1 > qtInputs-1:
+                break
+            else: 
+                initialization = initialization + f"            w_SUM_OUT_{count} <= STD_LOGIC_VECTOR(signed(w_ENTRADAS({x})) + signed(w_ENTRADAS({x+1})));\n"
+            count = count + 1
         
-        for x in range(0,qtInputs):
-            print(x)
-            f"w_SUM_OUT_{x} <= STD_LOGIC_VECTOR(signed(w_ENTRADAS(0)) + signed(w_ENTRADAS(1)));"
-
+        count2 = count
+        for x in range(0,count,2):
+            initialization = initialization + f"            w_SUM_OUT_{count2} <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_{x}) + signed(w_SUM_OUT_{x+1}));\n"
+            count2 = count2 + 1
         
+        count3 = count2
+        for x in range(count2,count3,2):
+            initialization = initialization + f"            w_SUM_OUT_{count3} <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_{count2-1}) + signed(w_SUM_OUT_{count2-2}));\n"
+            count3 = count3 + 1
+        
+        if (qtInputs % 2 != 0):
+            initialization = initialization + f"            o_DATA <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_{count2}) + signed(w_ENTRADAS({qtInputs-1})));\n"
+        else:
+            initialization = initialization + f"            o_DATA <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_{count2-1}) + signed(w_SUM_OUT_{count2}));\n"
         return initialization

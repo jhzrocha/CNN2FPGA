@@ -51,6 +51,13 @@ use ieee.numeric_std.all;
             w_ENTRADAS(6)(31 downto 16) <= (others => '1') when (i_PORT_6 (15) = '1') else (others => '0');
             w_ENTRADAS(7)(31 downto 16) <= (others => '1') when (i_PORT_7 (15) = '1') else (others => '0');
             w_ENTRADAS(8)(31 downto 16) <= (others => '1') when (i_PORT_8 (15) = '1') else (others => '0');
+            w_SUM_OUT_0 <= STD_LOGIC_VECTOR(signed(w_ENTRADAS(0)) + signed(w_ENTRADAS(1)));
+            w_SUM_OUT_1 <= STD_LOGIC_VECTOR(signed(w_ENTRADAS(2)) + signed(w_ENTRADAS(3)));
+            w_SUM_OUT_2 <= STD_LOGIC_VECTOR(signed(w_ENTRADAS(4)) + signed(w_ENTRADAS(5)));
+            w_SUM_OUT_3 <= STD_LOGIC_VECTOR(signed(w_ENTRADAS(6)) + signed(w_ENTRADAS(7)));
+            w_SUM_OUT_4 <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_0) + signed(w_SUM_OUT_1));
+            w_SUM_OUT_5 <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_2) + signed(w_SUM_OUT_3));
+            o_DATA <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_6) + signed(w_ENTRADAS(8)));
 
         
     end arc;
