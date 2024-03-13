@@ -68,9 +68,13 @@ use ieee.numeric_std.all;"""
         newOutputPort = Port(name,dataType,connection)
         self.portMap['out'].append(newOutputPort)
 
-    def addMultipleGeneratedInputPorts(self, qtPorts, dataType):
+    def addMultipleGeneratedInputPorts(self, qtPorts, dataType, name = ''):
         for i in range(0, qtPorts):
-            self.addInputPortByParameters('i_PORT_{}'.format(i),dataType)
+            if name =='':
+                name = f"i_PORT_{i}"
+            else:
+                name = name
+            self.addInputPortByParameters(name,dataType)
                 
     def addMultipleGeneratedOutputPorts(self, qtPorts, dataType):
         for i in range(0, qtPorts):
@@ -240,10 +244,11 @@ use ieee.numeric_std.all;"""
         
     def createDesignFile(self):
         designComponent = ComponentCommonMethods()
-        designComponent.minimalComponentFileName = 'top'
+        designComponent.minimalComponentFileName = 'CNN2FPGAVHDL'
         designComponent.internalComponents = {}
         designComponent.internalSignalWires = {}
         designComponent.internalVariables = {}
+        designComponent.internalTypes = []
         designComponent.portMap = self.portMap
         designComponent.generics = self.generics
         designComponent.addInternalComponent(deepcopy(self),self.minimalComponentFileName)

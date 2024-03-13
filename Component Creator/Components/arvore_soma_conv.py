@@ -3,12 +3,11 @@ from ComponentBases.port import Port
 
 class ArvoreSomaConv(ComponentCommonMethods):
 
-#    Não concluido
     def __init__(self, qtInputs):
         self.startInstance()
-        self.minimalComponentFileName = f"arvore_soma_conv"
+        self.minimalComponentFileName = f"arvore_soma_conv_{qtInputs}"
         self.portMap =   { 'in': [],
-                            'out': [Port('o_DATA','out STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)')]
+                            'out': [Port('o_DATA','STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)')]
                     }
         self.addGenericByParameters('i_DATA_WIDTH','INTEGER',16)
         self.addGenericByParameters('o_DATA_WIDTH','INTEGER',32)
@@ -24,36 +23,46 @@ class ArvoreSomaConv(ComponentCommonMethods):
         """
         self.OutputEntityAndArchitectureFile()
 
-
-
     def getSignalInitialization(self,qtInputs):
         initialization = ''
+        wSumWithoutConnection = []
+        wEntradasWithoutConnection = []
+        qtUsedwSum = 0
+
         for x in range(qtInputs):
             initialization = initialization + f"            w_ENTRADAS({x})(i_DATA_WIDTH-1 downto 0) <= i_PORT_{x};\n"
+            wEntradasWithoutConnection.insert(0,x)
         initialization = initialization + '\n'
+        
         for x in range(qtInputs):
             initialization = initialization + f"            w_ENTRADAS({x})(31 downto 16) <= (others => '1') when (i_PORT_{x} (15) = '1') else (others => '0');\n"
-        
-        count = 0
+
+        initialization = initialization + f"\n"
         for x in range(0,qtInputs,2):
             if x+1 > qtInputs-1:
                 break
             else: 
-                initialization = initialization + f"            w_SUM_OUT_{count} <= STD_LOGIC_VECTOR(signed(w_ENTRADAS({x})) + signed(w_ENTRADAS({x+1})));\n"
-            count = count + 1
+                initialization = initialization + f"            w_SUM_OUT_{qtUsedwSum} <= STD_LOGIC_VECTOR(signed(w_ENTRADAS({x})) + signed(w_ENTRADAS({x+1})));\n"
+                wEntradasWithoutConnection.remove(x)
+                wEntradasWithoutConnection.remove(x+1)
+                wSumWithoutConnection.insert(0,qtUsedwSum)
+            qtUsedwSum = qtUsedwSum + 1
+        initialization = initialization + f"\n"
+
+        while qtUsedwSum+1 < qtInputs-1:
+            initialization = initialization + f"            w_SUM_OUT_{qtUsedwSum} <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_{wSumWithoutConnection.pop()}) + signed(w_SUM_OUT_{wSumWithoutConnection.pop()}));\n"
+            wSumWithoutConnection.insert(0,qtUsedwSum)            
+            qtUsedwSum = qtUsedwSum + 1
         
-        count2 = count
-        for x in range(0,count,2):
-            initialization = initialization + f"            w_SUM_OUT_{count2} <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_{x}) + signed(w_SUM_OUT_{x+1}));\n"
-            count2 = count2 + 1
-        
-        count3 = count2
-        for x in range(count2,count3,2):
-            initialization = initialization + f"            w_SUM_OUT_{count3} <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_{count2-1}) + signed(w_SUM_OUT_{count2-2}));\n"
-            count3 = count3 + 1
-        
-        if (qtInputs % 2 != 0):
-            initialization = initialization + f"            o_DATA <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_{count2}) + signed(w_ENTRADAS({qtInputs-1})));\n"
+        initialization = initialization + f"\n"
+        if qtUsedwSum > 1:
+            if (len(wEntradasWithoutConnection) == 1 and len(wSumWithoutConnection) == 1):
+                initialization = initialization + f"            o_DATA <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_{wSumWithoutConnection.pop()}) + signed(w_ENTRADAS({wEntradasWithoutConnection.pop()})));\n"
+            else:
+                initialization = initialization + f"            o_DATA <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_{wSumWithoutConnection.pop()}) + signed(w_SUM_OUT_{wSumWithoutConnection.pop()}));\n"
         else:
-            initialization = initialization + f"            o_DATA <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_{count2-1}) + signed(w_SUM_OUT_{count2}));\n"
+            initialization = initialization + f"            o_DATA <= signed(w_SUM_OUT_{qtUsedwSum-1});\n"
+
+
         return initialization
+    

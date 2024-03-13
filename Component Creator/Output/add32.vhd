@@ -1,353 +1,247 @@
-library IEEE;
-use IEEE.std_logic_1164.all;
-use ieee.numeric_std.all;
-                 
-    entity add32 is
+-------------------
+-- Núcleo Convolucional
+-- 08/09/2021
+-- George
+-- R1
+
+-- Descrição
+-- Este bloco é composto por 18 registradores de deslocamento,
+-- sendo 9 para os pixels de entrada e 9 para os pesos, 1 matriz
+-- 3x3 de multiplicadores e uma arvore de somadores para
+-- 9 valores.
+-- Os valores de entrada serão de 8 bits de largura (com sinal),
+-- os resultados da multiplicação serão de 16 bits e o resultado
+-- da soma será de 32 bits.
+
+-------------------
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.STD_LOGIC_UNSIGNED.all;
+
+-- Entity
+entity nucleo_convolucional is
+  generic (i_DATA_WIDTH : INTEGER := 8;
+           w_CONV_OUT   : INTEGER := 16;           
+           o_DATA_WIDTH : INTEGER := 32);
+  
+
+  port (
+    i_CLK       : in STD_LOGIC;
+    i_CLR       : in STD_LOGIC;
+    
+    -- habilita deslocamento dos registradores
+    i_PIX_SHIFT_ENA : in STD_LOGIC;
+    i_WEIGHT_SHIFT_ENA : in STD_LOGIC;    
+
+    -- linhas de pixels
+    i_PIX_ROW_1 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+    i_PIX_ROW_2 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+    i_PIX_ROW_3 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);  
+    
+    -- habilita escrita em uma das linhas de pesos
+    i_WEIGHT_ROW_SEL : in std_logic_vector (1 downto 0);
+    
+    -- peso de entrada
+    i_WEIGHT : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+    
+    -- pixel de saida
+    o_PIX       : out STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)
+
+  );
+end nucleo_convolucional;
+
+--- Arch
+architecture arch of nucleo_convolucional is
+  
+  type t_MAT is array (2 downto 0) of STD_LOGIC_VECTOR(i_DATA_WIDTH - 1 downto 0);
+  type t_MULT_OUT_MAT is array (8 downto 0) of STD_LOGIC_VECTOR(w_CONV_OUT - 1 downto 0);
+  
+  -- registradores de deslocamento para os pixels
+  signal w_PIX_ROW_1 : t_MAT := (others =>  ( others => '0'));
+  signal w_PIX_ROW_2 : t_MAT := (others =>  ( others => '0'));
+  signal w_PIX_ROW_3 : t_MAT := (others =>  ( others => '0'));
+  
+  -- registradores de deslocamento para os pesos
+  signal w_WEIGHT_ROW_1 : t_MAT := (others =>  ( others => '0'));
+  signal w_WEIGHT_ROW_2 : t_MAT := (others =>  ( others => '0'));
+  signal w_WEIGHT_ROW_3 : t_MAT := (others =>  ( others => '0'));
+  
+  
+  -- linhas de pesos
+  signal w_i_WEIGHT_ROW_1 : STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+  signal w_i_WEIGHT_ROW_2 : STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+  signal w_i_WEIGHT_ROW_3 : STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+  
+  
+  -- saida dos multiplicadores
+  signal w_MULT_OUT : t_MULT_OUT_MAT := (others =>  ( others => '0'));
+  
+  -- Componentes
+  
+     
+  -------------------------------
+  -------------------------------
+  component demux_1x4 is 
+    PORT (  
+      i_A           : IN  std_logic_vector(7 DOWNTO 0); -- peso
+      i_SEL         : IN  std_logic_vector(1 DOWNTO 0); -- 2 bits para enderecamento entre as 3 linhas
+      o_Q, o_R, o_S : OUT std_logic_vector(7 DOWNTO 0)
+    );
+  end component;  
+  -------------------------------
+    
+  
+  component multiplicador_conv is
+    generic (i_DATA_WIDTH : INTEGER := 8;
+             o_DATA_WIDTH : INTEGER := 16);
+    port (              
+      -- dados de entrada
+      i_DATA_1 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+      i_DATA_2 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+      
+      -- dado de saida
+      o_DATA   : out STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)
+
+    );
+  end component;
+  
+  
+  component arvore_soma_conv is
+    generic (i_DATA_WIDTH : INTEGER := 16;           
+             o_DATA_WIDTH : INTEGER := 32);
+
+    port (
+      i_DATA1  : in  STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+      i_DATA2  : in  STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+      i_DATA3  : in  STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+      i_DATA4  : in  STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+      i_DATA5  : in  STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);    
+      i_DATA6  : in  STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+      i_DATA7  : in  STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+      i_DATA8  : in  STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+      i_DATA9  : in  STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+      o_DATA   : out STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)
+    );
+  end component;
+  
+begin
+  p_DESLOCAMENTO : process (i_CLR, i_CLK)
+  begin
+    -- reset
+    if (i_CLR = '1') then
+      w_PIX_ROW_1 <= (others =>  ( others => '0'));
+      w_PIX_ROW_2 <= (others =>  ( others => '0'));
+      w_PIX_ROW_3 <= (others =>  ( others => '0'));
+      
+      w_WEIGHT_ROW_1 <= (others =>  ( others => '0'));
+      w_WEIGHT_ROW_2 <= (others =>  ( others => '0'));
+      w_WEIGHT_ROW_3 <= (others =>  ( others => '0'));
+    
+    elsif (rising_edge(i_CLK)) then
+      
+      -- desloca registradores de pixels
+      if (i_PIX_SHIFT_ENA = '1') then     
+                
+        w_PIX_ROW_1(2) <= w_PIX_ROW_1(1); 
+        w_PIX_ROW_2(2) <= w_PIX_ROW_2(1);
+        w_PIX_ROW_3(2) <= w_PIX_ROW_3(1);
+      
+        w_PIX_ROW_1(1) <= w_PIX_ROW_1(0);
+        w_PIX_ROW_2(1) <= w_PIX_ROW_2(0);
+        w_PIX_ROW_3(1) <= w_PIX_ROW_3(0);
+                
+        w_PIX_ROW_1(0) <= i_PIX_ROW_1;
+        w_PIX_ROW_2(0) <= i_PIX_ROW_2;
+        w_PIX_ROW_3(0) <= i_PIX_ROW_3;
         
-        port (a : in std_logic_vector(31 DOWNTO 0);
-              b : in std_logic_vector(31 DOWNTO 0);
-              cin : in std_logic;
-              sum1 : out std_logic_vector(31 DOWNTO 0);
-              cout : out std_logic;
-              overflow : out std_logic;
-              underflow : out std_logic
-        );
-    end add32;
-                 
-    architecture arc of add32 is
-        type w_arr is array(2 downto 0) of aaa;
-        signal w_SIGNAL_BIT : std_logic;
-        signal w_OVERFLOW : std_logic;
-        signal w_UNDERFLOW : std_logic;
-        signal c_0 : std_logic;
-        signal c_1 : std_logic;
-        signal c_2 : std_logic;
-        signal c_3 : std_logic;
-        signal c_4 : std_logic;
-        signal c_5 : std_logic;
-        signal c_6 : std_logic;
-        signal c_7 : std_logic;
-        signal c_8 : std_logic;
-        signal c_9 : std_logic;
-        signal c_10 : std_logic;
-        signal c_11 : std_logic;
-        signal c_12 : std_logic;
-        signal c_13 : std_logic;
-        signal c_14 : std_logic;
-        signal c_15 : std_logic;
-        signal c_16 : std_logic;
-        signal c_17 : std_logic;
-        signal c_18 : std_logic;
-        signal c_19 : std_logic;
-        signal c_20 : std_logic;
-        signal c_21 : std_logic;
-        signal c_22 : std_logic;
-        signal c_23 : std_logic;
-        signal c_24 : std_logic;
-        signal c_25 : std_logic;
-        signal c_26 : std_logic;
-        signal c_27 : std_logic;
-        signal c_28 : std_logic;
-        signal c_29 : std_logic;
-        signal c_30 : std_logic;
-        signal w_SUM_OUT : std_logic_vector(31 DOWNTO 0);
-
-
-        begin 
-        D_adder0 : entity work.add1
-        port map (
-            a  => a(0),
-            b  => b(0),
-            cin  => cin,
-            sum  => w_SUM_OUT(0),
-            cout  => c_0
-        );
- 
-        D_adder1 : entity work.add1
-        port map (
-            a  => a(1),
-            b  => b(1),
-            cin  => c_0,
-            sum  => w_SUM_OUT(1),
-            cout  => c_1
-        );
- 
-        D_adder2 : entity work.add1
-        port map (
-            a  => a(2),
-            b  => b(2),
-            cin  => c_1,
-            sum  => w_SUM_OUT(2),
-            cout  => c_2
-        );
- 
-        D_adder3 : entity work.add1
-        port map (
-            a  => a(3),
-            b  => b(3),
-            cin  => c_2,
-            sum  => w_SUM_OUT(3),
-            cout  => c_3
-        );
- 
-        D_adder4 : entity work.add1
-        port map (
-            a  => a(4),
-            b  => b(4),
-            cin  => c_3,
-            sum  => w_SUM_OUT(4),
-            cout  => c_4
-        );
- 
-        D_adder5 : entity work.add1
-        port map (
-            a  => a(5),
-            b  => b(5),
-            cin  => c_4,
-            sum  => w_SUM_OUT(5),
-            cout  => c_5
-        );
- 
-        D_adder6 : entity work.add1
-        port map (
-            a  => a(6),
-            b  => b(6),
-            cin  => c_5,
-            sum  => w_SUM_OUT(6),
-            cout  => c_6
-        );
- 
-        D_adder7 : entity work.add1
-        port map (
-            a  => a(7),
-            b  => b(7),
-            cin  => c_6,
-            sum  => w_SUM_OUT(7),
-            cout  => c_7
-        );
- 
-        D_adder8 : entity work.add1
-        port map (
-            a  => a(8),
-            b  => b(8),
-            cin  => c_7,
-            sum  => w_SUM_OUT(8),
-            cout  => c_8
-        );
- 
-        D_adder9 : entity work.add1
-        port map (
-            a  => a(9),
-            b  => b(9),
-            cin  => c_8,
-            sum  => w_SUM_OUT(9),
-            cout  => c_9
-        );
- 
-        D_adder10 : entity work.add1
-        port map (
-            a  => a(10),
-            b  => b(10),
-            cin  => c_9,
-            sum  => w_SUM_OUT(10),
-            cout  => c_10
-        );
- 
-        D_adder11 : entity work.add1
-        port map (
-            a  => a(11),
-            b  => b(11),
-            cin  => c_10,
-            sum  => w_SUM_OUT(11),
-            cout  => c_11
-        );
- 
-        D_adder12 : entity work.add1
-        port map (
-            a  => a(12),
-            b  => b(12),
-            cin  => c_11,
-            sum  => w_SUM_OUT(12),
-            cout  => c_12
-        );
- 
-        D_adder13 : entity work.add1
-        port map (
-            a  => a(13),
-            b  => b(13),
-            cin  => c_12,
-            sum  => w_SUM_OUT(13),
-            cout  => c_13
-        );
- 
-        D_adder14 : entity work.add1
-        port map (
-            a  => a(14),
-            b  => b(14),
-            cin  => c_13,
-            sum  => w_SUM_OUT(14),
-            cout  => c_14
-        );
- 
-        D_adder15 : entity work.add1
-        port map (
-            a  => a(15),
-            b  => b(15),
-            cin  => c_14,
-            sum  => w_SUM_OUT(15),
-            cout  => c_15
-        );
- 
-        D_adder16 : entity work.add1
-        port map (
-            a  => a(16),
-            b  => b(16),
-            cin  => c_15,
-            sum  => w_SUM_OUT(16),
-            cout  => c_16
-        );
- 
-        D_adder17 : entity work.add1
-        port map (
-            a  => a(17),
-            b  => b(17),
-            cin  => c_16,
-            sum  => w_SUM_OUT(17),
-            cout  => c_17
-        );
- 
-        D_adder18 : entity work.add1
-        port map (
-            a  => a(18),
-            b  => b(18),
-            cin  => c_17,
-            sum  => w_SUM_OUT(18),
-            cout  => c_18
-        );
- 
-        D_adder19 : entity work.add1
-        port map (
-            a  => a(19),
-            b  => b(19),
-            cin  => c_18,
-            sum  => w_SUM_OUT(19),
-            cout  => c_19
-        );
- 
-        D_adder20 : entity work.add1
-        port map (
-            a  => a(20),
-            b  => b(20),
-            cin  => c_19,
-            sum  => w_SUM_OUT(20),
-            cout  => c_20
-        );
- 
-        D_adder21 : entity work.add1
-        port map (
-            a  => a(21),
-            b  => b(21),
-            cin  => c_20,
-            sum  => w_SUM_OUT(21),
-            cout  => c_21
-        );
- 
-        D_adder22 : entity work.add1
-        port map (
-            a  => a(22),
-            b  => b(22),
-            cin  => c_21,
-            sum  => w_SUM_OUT(22),
-            cout  => c_22
-        );
- 
-        D_adder23 : entity work.add1
-        port map (
-            a  => a(23),
-            b  => b(23),
-            cin  => c_22,
-            sum  => w_SUM_OUT(23),
-            cout  => c_23
-        );
- 
-        D_adder24 : entity work.add1
-        port map (
-            a  => a(24),
-            b  => b(24),
-            cin  => c_23,
-            sum  => w_SUM_OUT(24),
-            cout  => c_24
-        );
- 
-        D_adder25 : entity work.add1
-        port map (
-            a  => a(25),
-            b  => b(25),
-            cin  => c_24,
-            sum  => w_SUM_OUT(25),
-            cout  => c_25
-        );
- 
-        D_adder26 : entity work.add1
-        port map (
-            a  => a(26),
-            b  => b(26),
-            cin  => c_25,
-            sum  => w_SUM_OUT(26),
-            cout  => c_26
-        );
- 
-        D_adder27 : entity work.add1
-        port map (
-            a  => a(27),
-            b  => b(27),
-            cin  => c_26,
-            sum  => w_SUM_OUT(27),
-            cout  => c_27
-        );
- 
-        D_adder28 : entity work.add1
-        port map (
-            a  => a(28),
-            b  => b(28),
-            cin  => c_27,
-            sum  => w_SUM_OUT(28),
-            cout  => c_28
-        );
- 
-        D_adder29 : entity work.add1
-        port map (
-            a  => a(29),
-            b  => b(29),
-            cin  => c_28,
-            sum  => w_SUM_OUT(29),
-            cout  => c_29
-        );
- 
-        D_adder30 : entity work.add1
-        port map (
-            a  => a(30),
-            b  => b(30),
-            cin  => c_29,
-            sum  => w_SUM_OUT(30),
-            cout  => c_30
-        );
- 
-        D_adder31 : entity work.add1
-        port map (
-            a  => a(31),
-            b  => b(31),
-            cin  => c_30,
-            sum  => w_SIGNAL_BIT,
-            cout  => cout
-        );
-
-        w_SUM_OUT(31) <= w_SIGNAL_BIT;           
-        w_UNDERFLOW <= a(31) and b(31) and not w_SIGNAL_BIT;
-        sum1 <= "10000000000000000000000000000000" when (w_UNDERFLOW = '1') else 
-                "01111111111111111111111111111111" when (w_OVERFLOW= '1') else 
-                w_SUM_OUT;
-        overflow <=  w_OVERFLOW; 
-        underflow <= w_UNDERFLOW;
+      end if;
+      
+      -- desloca registradores de pesos
+      if (i_WEIGHT_SHIFT_ENA = '1' and i_WEIGHT_ROW_SEL = "00") then                  
+        w_WEIGHT_ROW_1(2) <= w_WEIGHT_ROW_1(1);
+        w_WEIGHT_ROW_1(1) <= w_WEIGHT_ROW_1(0);
+        w_WEIGHT_ROW_1(0) <= w_i_WEIGHT_ROW_1;
+      end if; 
+      if (i_WEIGHT_SHIFT_ENA = '1' and i_WEIGHT_ROW_SEL = "01") then       
+        w_WEIGHT_ROW_2(2) <= w_WEIGHT_ROW_2(1);
+        w_WEIGHT_ROW_2(1) <= w_WEIGHT_ROW_2(0);
+        w_WEIGHT_ROW_2(0) <= w_i_WEIGHT_ROW_2;
+      end if; 
+      if (i_WEIGHT_SHIFT_ENA = '1' and i_WEIGHT_ROW_SEL = "10") then               
+        w_WEIGHT_ROW_3(2) <= w_WEIGHT_ROW_3(1);
+        w_WEIGHT_ROW_3(1) <= w_WEIGHT_ROW_3(0);
+        w_WEIGHT_ROW_3(0) <= w_i_WEIGHT_ROW_3;      
+      end if;      
+      
+    end if;        
+  end process;
+  
+  
+  -- demultiplixa peso de entrada para linhas de pesos
+  u_DEMUX_PEX : demux_1x4  
+            port map
+            (  
+              i_A     => i_WEIGHT,      
+              i_SEL   => i_WEIGHT_ROW_SEL,      
+              o_Q     => w_i_WEIGHT_ROW_1, 
+              o_R     => w_i_WEIGHT_ROW_2, 
+              o_S     => w_i_WEIGHT_ROW_3
+            );
+    
+  
+  -- multiplicadores
+  u_MUL_0 : multiplicador_conv 
+              generic map (i_DATA_WIDTH, w_CONV_OUT)
+              port map (w_PIX_ROW_1(0), w_WEIGHT_ROW_1(0), w_MULT_OUT(0));
         
-    end arc;
+  u_MUL_1 : multiplicador_conv 
+              generic map (i_DATA_WIDTH, w_CONV_OUT)
+              port map (w_PIX_ROW_1(1), w_WEIGHT_ROW_1(1), w_MULT_OUT(1));
+  
+  u_MUL_2 : multiplicador_conv 
+              generic map (i_DATA_WIDTH, w_CONV_OUT)
+              port map (w_PIX_ROW_1(2), w_WEIGHT_ROW_1(2), w_MULT_OUT(2));
+  
+  u_MUL_3 : multiplicador_conv 
+              generic map (i_DATA_WIDTH, w_CONV_OUT)
+              port map (w_PIX_ROW_2(0), w_WEIGHT_ROW_2(0), w_MULT_OUT(3));
+  
+  u_MUL_4 : multiplicador_conv 
+              generic map (i_DATA_WIDTH, w_CONV_OUT)
+              port map (w_PIX_ROW_2(1), w_WEIGHT_ROW_2(1), w_MULT_OUT(4));
+  
+  u_MUL_5 : multiplicador_conv 
+              generic map (i_DATA_WIDTH, w_CONV_OUT)
+              port map (w_PIX_ROW_2(2), w_WEIGHT_ROW_2(2), w_MULT_OUT(5));
+  
+  u_MUL_6 : multiplicador_conv 
+              generic map (i_DATA_WIDTH, w_CONV_OUT)
+              port map (w_PIX_ROW_3(0), w_WEIGHT_ROW_3(0), w_MULT_OUT(6));
+  
+  u_MUL_7 : multiplicador_conv 
+              generic map (i_DATA_WIDTH, w_CONV_OUT)
+              port map (w_PIX_ROW_3(1), w_WEIGHT_ROW_3(1), w_MULT_OUT(7));
+  
+  u_MUL_8 : multiplicador_conv 
+              generic map (i_DATA_WIDTH, w_CONV_OUT)
+              port map (w_PIX_ROW_3(2), w_WEIGHT_ROW_3(2), w_MULT_OUT(8));
+  
+  -- arvore de soma
+  u_ARVORE_SOMA_CONV : arvore_soma_conv 
+                        generic map (w_CONV_OUT, o_DATA_WIDTH)
+                        port map (
+                         w_MULT_OUT(0),
+                         w_MULT_OUT(1),
+                         w_MULT_OUT(2),
+                         w_MULT_OUT(3),
+                         w_MULT_OUT(4),
+                         w_MULT_OUT(5),
+                         w_MULT_OUT(6),
+                         w_MULT_OUT(7),
+                         w_MULT_OUT(8),                        
+                         o_PIX 
+                        );
+            
+  
+end arch;

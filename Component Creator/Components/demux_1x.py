@@ -30,3 +30,6 @@ class Demux_1x(ComponentCommonMethods):
             internalOperation = internalOperation + '        {} <= i_A when (i_SEL ="{}") else (others => '.format(outputPort.name,self.integerToBinary(cont).zfill(self.selectionWidth) ) + " '0');\n"
             cont = cont + 1
         return internalOperation
+    
+    def getIntegerInBinaryOption(self, integer):
+        return self.integerToBinary(integer).zfill(self.selectionWidth)

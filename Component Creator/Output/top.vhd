@@ -23,7 +23,7 @@ use ieee.numeric_std.all;
 
 
         begin 
-        arvore_soma_conv : entity work.arvore_soma_conv
+        arvore_soma_conv_9 : entity work.arvore_soma_conv_9
         generic map (
             i_DATA_WIDTH => 16,
 o_DATA_WIDTH => 32

@@ -14,12 +14,13 @@ use ieee.numeric_std.all;
               i_PORT_6 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
               i_PORT_7 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
               i_PORT_8 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+              i_PORT_9 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
               o_DATA : out out STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)
         );
     end arvore_soma_conv;
                  
     architecture arc of arvore_soma_conv is
-        type t_MAT is array(8 downto 0) of STD_LOGIC_VECTOR(o_DATA_WIDTH - 1 downto 0);
+        type t_MAT is array(9 downto 0) of STD_LOGIC_VECTOR(o_DATA_WIDTH - 1 downto 0);
         signal w_SUM_OUT_0 : STD_LOGIC_VECTOR(o_DATA_WIDTH -1 downto 0);
         signal w_SUM_OUT_1 : STD_LOGIC_VECTOR(o_DATA_WIDTH -1 downto 0);
         signal w_SUM_OUT_2 : STD_LOGIC_VECTOR(o_DATA_WIDTH -1 downto 0);
@@ -28,6 +29,7 @@ use ieee.numeric_std.all;
         signal w_SUM_OUT_5 : STD_LOGIC_VECTOR(o_DATA_WIDTH -1 downto 0);
         signal w_SUM_OUT_6 : STD_LOGIC_VECTOR(o_DATA_WIDTH -1 downto 0);
         signal w_SUM_OUT_7 : STD_LOGIC_VECTOR(o_DATA_WIDTH -1 downto 0);
+        signal w_SUM_OUT_8 : STD_LOGIC_VECTOR(o_DATA_WIDTH -1 downto 0);
         signal w_ENTRADAS : t_MAT := (others =>  ( others => '0'));
 
 
@@ -41,6 +43,7 @@ use ieee.numeric_std.all;
             w_ENTRADAS(6)(i_DATA_WIDTH-1 downto 0) <= i_PORT_6;
             w_ENTRADAS(7)(i_DATA_WIDTH-1 downto 0) <= i_PORT_7;
             w_ENTRADAS(8)(i_DATA_WIDTH-1 downto 0) <= i_PORT_8;
+            w_ENTRADAS(9)(i_DATA_WIDTH-1 downto 0) <= i_PORT_9;
 
             w_ENTRADAS(0)(31 downto 16) <= (others => '1') when (i_PORT_0 (15) = '1') else (others => '0');
             w_ENTRADAS(1)(31 downto 16) <= (others => '1') when (i_PORT_1 (15) = '1') else (others => '0');
@@ -51,13 +54,19 @@ use ieee.numeric_std.all;
             w_ENTRADAS(6)(31 downto 16) <= (others => '1') when (i_PORT_6 (15) = '1') else (others => '0');
             w_ENTRADAS(7)(31 downto 16) <= (others => '1') when (i_PORT_7 (15) = '1') else (others => '0');
             w_ENTRADAS(8)(31 downto 16) <= (others => '1') when (i_PORT_8 (15) = '1') else (others => '0');
+            w_ENTRADAS(9)(31 downto 16) <= (others => '1') when (i_PORT_9 (15) = '1') else (others => '0');
+
             w_SUM_OUT_0 <= STD_LOGIC_VECTOR(signed(w_ENTRADAS(0)) + signed(w_ENTRADAS(1)));
             w_SUM_OUT_1 <= STD_LOGIC_VECTOR(signed(w_ENTRADAS(2)) + signed(w_ENTRADAS(3)));
             w_SUM_OUT_2 <= STD_LOGIC_VECTOR(signed(w_ENTRADAS(4)) + signed(w_ENTRADAS(5)));
             w_SUM_OUT_3 <= STD_LOGIC_VECTOR(signed(w_ENTRADAS(6)) + signed(w_ENTRADAS(7)));
-            w_SUM_OUT_4 <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_0) + signed(w_SUM_OUT_1));
-            w_SUM_OUT_5 <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_2) + signed(w_SUM_OUT_3));
-            o_DATA <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_6) + signed(w_ENTRADAS(8)));
+            w_SUM_OUT_4 <= STD_LOGIC_VECTOR(signed(w_ENTRADAS(8)) + signed(w_ENTRADAS(9)));
+
+            w_SUM_OUT_5 <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_0) + signed(w_SUM_OUT_1));
+            w_SUM_OUT_6 <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_2) + signed(w_SUM_OUT_3));
+            w_SUM_OUT_7 <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_4) + signed(w_SUM_OUT_5));
+
+            o_DATA <= STD_LOGIC_VECTOR(signed(w_SUM_OUT_6) + signed(w_SUM_OUT_7));
 
         
     end arc;
