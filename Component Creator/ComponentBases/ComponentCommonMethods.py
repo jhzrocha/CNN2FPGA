@@ -101,8 +101,13 @@ use ieee.numeric_std.all;"""
     
     def getGenericObjectCall(self):
         genericCall = ''
+        isFirst = True
         for generic in self.generics:
-            genericCall = genericCall + f"{generic.name} => {generic.value},\n"
+            if(isFirst):
+                genericCall = genericCall + f"{generic.name} => {generic.value},\n"
+                isFirst = False
+            else:
+                genericCall = genericCall + f"            {generic.name} => {generic.value},\n"
         if genericCall.endswith(',\n'):
             genericCall = genericCall[:-2]
         return genericCall

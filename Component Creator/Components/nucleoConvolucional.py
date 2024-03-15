@@ -1,6 +1,7 @@
 from ComponentBases.ComponentCommonMethods import ComponentCommonMethods
 from ComponentBases.port import Port
 from Components.demux_1x import Demux_1x
+from Components.multiplicador_conv import MultiplicadorConv
 class NucleoConvolucional(ComponentCommonMethods):
    
     def __init__(self, qtRows, qtColumns, qtPixelsPerRow):
@@ -38,8 +39,9 @@ class NucleoConvolucional(ComponentCommonMethods):
                                                      'dataType':'STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0)',
                                                      'initialValue':''})
         self.addInternalSignalWire(name='w_MULT_OUT',dataType='t_MULT_OUT_MAT',initialValue="(others =>  ( others => '0'))")
-        # internalDemux = Demux_1x(qtRows,) 
-        # self.addInternalComponent(internalDemux, 'u_DEMUX_PEX')
+        internalDemux = Demux_1x(qtRows) 
+        self.addInternalComponent(internalDemux, 'u_DEMUX_PEX')
+        self.addMultipleInternalComponentDeclarations(MultiplicadorConv(),self.qtRows*self.qtColumns)
         self.internalOperations = f"""
         p_DESLOCAMENTO : process (i_CLR, i_CLK)
             begin
@@ -50,6 +52,9 @@ class NucleoConvolucional(ComponentCommonMethods):
                 if (i_PIX_SHIFT_ENA = '1') then
 {self.getWhenShiftBehavior()}
                 end if;
+{self.getWeightShiftBehavior(internalDemux)}
+            end if;        
+        end process;
 """
         self.OutputEntityAndArchitectureFile()
 
@@ -73,3 +78,16 @@ class NucleoConvolucional(ComponentCommonMethods):
                 shiftBehavior = shiftBehavior + f"                  w_PIX_ROW_{pixelRowIndex}(0) <= i_PIX_ROW_{pixelRowIndex};\n"
         
         return shiftBehavior
+    
+    def getWeightShiftBehavior(self,internalDemux):
+        behavior = ''
+        for rowIndex in range(0,self.qtRows):
+            behavior = behavior + '            if (i_WEIGHT_SHIFT_ENA = ' + "'1' and i_WEIGHT_ROW_SEL = "+'"{}") then'.format(internalDemux.getIntegerInBinaryOption(rowIndex)) + '\n'
+            for x in range(self.qtRows-1,0,-1):
+                behavior = behavior + f"               w_WEIGHT_ROW_{rowIndex}({x}) <= w_WEIGHT_ROW_{rowIndex}({x-1});\n"    
+            
+            behavior = behavior + f"               w_WEIGHT_ROW_{rowIndex}({0}) <= w_i_WEIGHT_ROW_{rowIndex};\n"    
+
+            behavior = behavior + "            end if;\n"
+
+        return behavior

@@ -3,7 +3,11 @@ use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
                  
     entity multiplicador_conv is
-        generic (i_DATA_WIDTH : INTEGER := 8;
+        generic (i_DATA_WIDTH : integer := 8;
+                 w_CONV_OUT : integer := 16;
+                 o_DATA_WIDTH : integer := 32;
+                 i_WIDTH : integer := 8;
+                 i_DATA_WIDTH : INTEGER := 8;
                  o_DATA_WIDTH : INTEGER := 16);
         port (i_DATA_1  : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
               i_DATA_2 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
@@ -12,6 +16,8 @@ use ieee.numeric_std.all;
     end multiplicador_conv;
                  
     architecture arc of multiplicador_conv is
+        type t_MAT is array(1 downto 0) of STD_LOGIC_VECTOR(i_DATA_WIDTH - 1 downto 0);
+        type t_MULT_OUT_MAT is array(7 downto 0) of STD_LOGIC_VECTOR(w_CONV_OUT - 1 downto 0);
         signal w_A : STD_LOGIC_VECTOR (i_DATA_WIDTH downto 0) := (others => '0');
         signal w_B : STD_LOGIC_VECTOR (i_DATA_WIDTH downto 0) := (others => '0');
         signal w_DATA : STD_LOGIC_VECTOR (17 downto 0);
