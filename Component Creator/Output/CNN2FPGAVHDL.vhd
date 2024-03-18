@@ -5,18 +5,15 @@ use ieee.numeric_std.all;
     entity CNN2FPGAVHDL is
         generic (i_DATA_WIDTH : integer := 8;
                  w_CONV_OUT : integer := 16;
-                 o_DATA_WIDTH : integer := 32;
-                 i_WIDTH : integer := 8;
-                 i_DATA_WIDTH : INTEGER := 8;
-                 o_DATA_WIDTH : INTEGER := 16);
+                 o_DATA_WIDTH : integer := 32);
         port (i_CLK  : in STD_LOGIC;
               i_CLR : in STD_LOGIC;
               i_PIX_SHIFT_ENA : in STD_LOGIC;
               i_WEIGHT_SHIFT_ENA : in STD_LOGIC;
               i_WEIGHT : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
-              i_PIX_ROW : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
-              i_PIX_ROW : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
-              i_PIX_ROW : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+              i_PIX_ROW_0 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+              i_PIX_ROW_1 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+              i_PIX_ROW_2 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
               o_PIX : out STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)
         );
     end CNN2FPGAVHDL;
@@ -29,10 +26,7 @@ use ieee.numeric_std.all;
         generic map (
             i_DATA_WIDTH => 8,
             w_CONV_OUT => 16,
-            o_DATA_WIDTH => 32,
-            i_WIDTH => 8,
-            i_DATA_WIDTH => 8,
-            o_DATA_WIDTH => 16
+            o_DATA_WIDTH => 32
         )
         port map (
             i_CLK   => i_CLK ,
@@ -40,9 +34,9 @@ use ieee.numeric_std.all;
             i_PIX_SHIFT_ENA  => i_PIX_SHIFT_ENA,
             i_WEIGHT_SHIFT_ENA  => i_WEIGHT_SHIFT_ENA,
             i_WEIGHT  => i_WEIGHT,
-            i_PIX_ROW  => i_PIX_ROW,
-            i_PIX_ROW  => i_PIX_ROW,
-            i_PIX_ROW  => i_PIX_ROW,
+            i_PIX_ROW_0  => i_PIX_ROW_0,
+            i_PIX_ROW_1  => i_PIX_ROW_1,
+            i_PIX_ROW_2  => i_PIX_ROW_2,
             o_PIX  => o_PIX
         );
 

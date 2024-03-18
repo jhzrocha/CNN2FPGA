@@ -3,15 +3,11 @@ use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
                  
     entity multiplicador_conv is
-        generic (i_DATA_WIDTH : integer := 8;
-                 w_CONV_OUT : integer := 16;
-                 o_DATA_WIDTH : integer := 32;
-                 i_WIDTH : integer := 8;
-                 i_DATA_WIDTH : INTEGER := 8;
+        generic (i_DATA_WIDTH : INTEGER := 8;
                  o_DATA_WIDTH : INTEGER := 16);
-        port (i_DATA_1  : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+        port (i_DATA_1 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
               i_DATA_2 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
-              o_DATA    : out STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)
+              o_DATA : out STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)
         );
     end multiplicador_conv;
                  

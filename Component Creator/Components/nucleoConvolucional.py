@@ -40,8 +40,12 @@ class NucleoConvolucional(ComponentCommonMethods):
                                                      'initialValue':''})
         self.addInternalSignalWire(name='w_MULT_OUT',dataType='t_MULT_OUT_MAT',initialValue="(others =>  ( others => '0'))")
         internalDemux = Demux_1x(qtRows) 
-        self.addInternalComponent(internalDemux, 'u_DEMUX_PEX')
-        self.addMultipleInternalComponentDeclarations(MultiplicadorConv(),self.qtRows*self.qtColumns)
+        self.addInternalComponent(component=internalDemux, 
+                                  componentCallName='u_DEMUX_PEX',
+                                  portmap=self.getDemuxPortmap(),
+                                  generics={'i_WIDTH':'i_DATA_WIDTH'}
+                                  )
+        self.setMultiConvs()
         self.internalOperations = f"""
         p_DESLOCAMENTO : process (i_CLR, i_CLK)
             begin
@@ -91,3 +95,26 @@ class NucleoConvolucional(ComponentCommonMethods):
             behavior = behavior + "            end if;\n"
 
         return behavior
+    
+    def setMultiConvs(self):
+        outCounter = 0
+        for i in range(self.qtRows):
+            for j in range(self.qtColumns):
+                self.addInternalComponent(component=MultiplicadorConv(),
+                                        componentCallName=f"u_MUL_{i}",
+                                        portmap={'i_DATA_1': f"w_PIX_ROW_{i}({j})",
+                                            'i_DATA_2': f"w_WEIGHT_ROW_{i}({j})",
+                                            'o_DATA': f"w_MULT_OUT({outCounter})"},
+                                        generics={'i_DATA_WIDTH':'i_DATA_WIDTH',
+                                                  'o_DATA_WIDTH':'w_CONV_OUT'
+                                                  }
+                                        )
+                outCounter = outCounter + 1
+    
+    def getDemuxPortmap(self):
+        demuxPortmap = {'i_A':'i_WEIGHT',
+                        'i_SEL' :'i_WEIGHT_ROW_SEL'}
+        for x in range(0,self.qtRows):
+           demuxPortmap[f"o_PORT_{x}"] = f"i_PIX_ROW_{x}"
+        
+        return demuxPortmap

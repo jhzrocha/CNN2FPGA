@@ -68,13 +68,14 @@ use ieee.numeric_std.all;"""
         newOutputPort = Port(name,dataType,connection)
         self.portMap['out'].append(newOutputPort)
 
-    def addMultipleGeneratedInputPorts(self, qtPorts, dataType, name = ''):
+    def addMultipleGeneratedInputPorts(self, qtPorts, dataType, name = None):
         for i in range(0, qtPorts):
-            if name =='':
+            portName = name
+            if not name:
                 name = f"i_PORT_{i}"
             else:
-                name = name
-            self.addInputPortByParameters(name,dataType)
+                portName = f"{name}_{i}"
+            self.addInputPortByParameters(portName,dataType)
                 
     def addMultipleGeneratedOutputPorts(self, qtPorts, dataType):
         for i in range(0, qtPorts):
@@ -173,11 +174,20 @@ use ieee.numeric_std.all;"""
         return file
     
             
-    def addInternalComponent(self, component, componentCallName, portmap=None):
+    def addInternalComponent(self, component, componentCallName, portmap=None, generics=None):
+        internalComponent = deepcopy(component)
+        if(generics):
+            for genericKey in generics.keys():
+                for gen in internalComponent.generics:
+                    if gen.name == genericKey:
+                        gen.value = generics[genericKey]
         if (not self.verifyIfInternalComponentAlreadyExists(componentCallName)):
-            self.internalComponents[componentCallName] = deepcopy(component)
+            self.internalComponents[componentCallName] = internalComponent
         if(portmap):
             self.setInternalComponentPortMap(componentCallName,portmap)
+        
+
+
     
     def addMultipleInternalComponentDeclarations(self,component, quantity):
         for i in range(quantity):
@@ -285,6 +295,7 @@ use ieee.numeric_std.all;"""
         self.internalComponents = {}
         self.internalSignalWires = []
         self.internalVariables = []
+        self.generics = []
 
     def addArrayTypeOnArchitecture(self, name, type,size):
         self.internalTypes.append(Type(name,type,size))

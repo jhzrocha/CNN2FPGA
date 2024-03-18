@@ -12,11 +12,11 @@ class MultiplicadorConv(ComponentCommonMethods):
         self.addGenericByParameters('o_DATA_WIDTH','INTEGER',16)
 
         self.portMap =   { 'in': [
-                                Port('i_DATA_1 ',f"STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0)"),
+                                Port('i_DATA_1',f"STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0)"),
                                 Port('i_DATA_2',f"STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0)")
                                 ],
                             'out': [
-                                    Port('o_DATA   ',f"STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)")
+                                    Port('o_DATA',f"STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)")
                                    ] 
                     }
         self.addInternalSignalWire('w_A','STD_LOGIC_VECTOR (i_DATA_WIDTH downto 0)',"(others => '0')")
