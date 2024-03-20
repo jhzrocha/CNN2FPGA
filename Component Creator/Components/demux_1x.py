@@ -9,13 +9,13 @@ class Demux_1x(ComponentCommonMethods):
         self.minimalComponentFileName = f"demux1x{qtOutputs}"
         self.selectionWidth = len(self.integerToBinary(qtOutputs))
         self.portMap =   { 'in': [
-                                Port('i_A',f"std_logic_vector(i_WIDTH DOWNTO 0)"),
-                                Port('i_SEL',f"std_logic_vector (i_WIDTH-1 DOWNTO 0)")
+                                Port('i_A',f"std_logic_vector(i_WIDTH-1 DOWNTO 0)"),
+                                Port('i_SEL',f"std_logic_vector ({self.getOptionLength()-1} DOWNTO 0)")
                                 ],
                             'out': []
                     }
         self.addGenericByParameters(name='i_WIDTH',dataType='integer',initialValue=8)
-        self.addMultipleGeneratedOutputPorts(qtOutputs,f"std_logic_vector('i_WIDTH'-1 DOWNTO 0)")
+        self.addMultipleGeneratedOutputPorts(qtOutputs,f"std_logic_vector(i_WIDTH-1 DOWNTO 0)")
         self.internalOperations = f"""
 {self.setInternalOperations()}
         """
@@ -34,3 +34,6 @@ class Demux_1x(ComponentCommonMethods):
     
     def getIntegerInBinaryOption(self, integer):
         return self.integerToBinary(integer).zfill(self.selectionWidth)
+
+    def getOptionLength(self):
+        return len(self.integerToBinary(0).zfill(self.selectionWidth))

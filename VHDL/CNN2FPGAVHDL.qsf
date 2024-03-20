@@ -64,4 +64,7 @@ set_global_assignment -name VHDL_FILE Switcher_9.vhd
 set_global_assignment -name VHDL_FILE MatrixMultiplier_4px.vhd
 set_global_assignment -name VHDL_FILE Adder_4in.vhd
 set_global_assignment -name VHDL_FILE arvore_soma_conv_9.vhd
+set_global_assignment -name VHDL_FILE nucleoConvolucional.vhd
+set_global_assignment -name VHDL_FILE multiplicador_conv.vhd
+set_global_assignment -name VHDL_FILE demux1x3.vhd
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

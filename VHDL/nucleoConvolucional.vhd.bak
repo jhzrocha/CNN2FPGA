@@ -14,14 +14,13 @@ use ieee.numeric_std.all;
               i_PIX_ROW_0 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
               i_PIX_ROW_1 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
               i_PIX_ROW_2 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
-              i_WEIGHT_ROW_SEL : in STD_LOGIC_VECTOR (1 downto 0);
               o_PIX : out STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)
         );
     end nucleoConvolucional;
                  
     architecture arc of nucleoConvolucional is
-        type t_MAT is array(2 downto 0) of STD_LOGIC_VECTOR(i_DATA_WIDTH - 1 downto 0);
-        type t_MULT_OUT_MAT is array(8 downto 0) of STD_LOGIC_VECTOR(w_CONV_OUT - 1 downto 0);
+        type t_MAT is array(1 downto 0) of STD_LOGIC_VECTOR(i_DATA_WIDTH - 1 downto 0);
+        type t_MULT_OUT_MAT is array(7 downto 0) of STD_LOGIC_VECTOR(w_CONV_OUT - 1 downto 0);
         signal w_PIX_ROW_0 : t_MAT  := (others =>  ( others => '0'));
         signal w_PIX_ROW_1 : t_MAT  := (others =>  ( others => '0'));
         signal w_PIX_ROW_2 : t_MAT  := (others =>  ( others => '0'));
@@ -42,9 +41,9 @@ use ieee.numeric_std.all;
         port map (
             i_A  => i_WEIGHT,
             i_SEL  => i_WEIGHT_ROW_SEL,
-            o_PORT_0  => w_i_WEIGHT_ROW_0,
-            o_PORT_1  => w_i_WEIGHT_ROW_1,
-            o_PORT_2  => w_i_WEIGHT_ROW_2
+            o_PORT_0  => i_PIX_ROW_0,
+            o_PORT_1  => i_PIX_ROW_1,
+            o_PORT_2  => i_PIX_ROW_2
         );
  
         u_MUL_0 : entity work.multiplicador_conv

@@ -12,6 +12,8 @@ use ieee.numeric_std.all;
     end multiplicador_conv;
                  
     architecture arc of multiplicador_conv is
+        type t_MAT is array(1 downto 0) of STD_LOGIC_VECTOR(i_DATA_WIDTH - 1 downto 0);
+        type t_MULT_OUT_MAT is array(7 downto 0) of STD_LOGIC_VECTOR(w_CONV_OUT - 1 downto 0);
         signal w_A : STD_LOGIC_VECTOR (i_DATA_WIDTH downto 0) := (others => '0');
         signal w_B : STD_LOGIC_VECTOR (i_DATA_WIDTH downto 0) := (others => '0');
         signal w_DATA : STD_LOGIC_VECTOR (17 downto 0);

@@ -14,6 +14,7 @@ use ieee.numeric_std.all;
               i_PIX_ROW_0 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
               i_PIX_ROW_1 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
               i_PIX_ROW_2 : in STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0);
+              i_WEIGHT_ROW_SEL : in STD_LOGIC_VECTOR (1 downto 0);
               o_PIX : out STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)
         );
     end CNN2FPGAVHDL;
@@ -37,6 +38,7 @@ use ieee.numeric_std.all;
             i_PIX_ROW_0  => i_PIX_ROW_0,
             i_PIX_ROW_1  => i_PIX_ROW_1,
             i_PIX_ROW_2  => i_PIX_ROW_2,
+            i_WEIGHT_ROW_SEL  => i_WEIGHT_ROW_SEL,
             o_PIX  => o_PIX
         );
 

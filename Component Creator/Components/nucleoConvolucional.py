@@ -3,7 +3,7 @@ from ComponentBases.port import Port
 from Components.demux_1x import Demux_1x
 from Components.multiplicador_conv import MultiplicadorConv
 class NucleoConvolucional(ComponentCommonMethods):
-   
+#    Não testado
     def __init__(self, qtRows, qtColumns, qtPixelsPerRow):
         self.startInstance()
         self.qtRows = qtRows
@@ -27,8 +27,8 @@ class NucleoConvolucional(ComponentCommonMethods):
                                     initialValue=8)
         self.addGenericByParameters('w_CONV_OUT', 'integer',16)
         self.addGenericByParameters('o_DATA_WIDTH', 'integer',32)
-        self.addArrayTypeOnArchitecture('t_MAT','STD_LOGIC_VECTOR(i_DATA_WIDTH - 1 downto 0)',qtRows-1)
-        self.addArrayTypeOnArchitecture('t_MULT_OUT_MAT','STD_LOGIC_VECTOR(w_CONV_OUT - 1 downto 0)',qtRows*qtColumns-1)
+        self.addArrayTypeOnArchitecture('t_MAT','STD_LOGIC_VECTOR(i_DATA_WIDTH - 1 downto 0)',qtRows)
+        self.addArrayTypeOnArchitecture('t_MULT_OUT_MAT','STD_LOGIC_VECTOR(w_CONV_OUT - 1 downto 0)',qtRows*qtColumns)
         self.addMultipleInternalSignalWires(qtRows, {'name': 'w_PIX_ROW',
                                                      'dataType':'t_MAT ',
                                                      'initialValue':"(others =>  ( others => '0'))"})
@@ -40,6 +40,8 @@ class NucleoConvolucional(ComponentCommonMethods):
                                                      'initialValue':''})
         self.addInternalSignalWire(name='w_MULT_OUT',dataType='t_MULT_OUT_MAT',initialValue="(others =>  ( others => '0'))")
         internalDemux = Demux_1x(qtRows) 
+        self.addInputPortByParameters(name='i_WEIGHT_ROW_SEL',
+                                      dataType= f"STD_LOGIC_VECTOR ({internalDemux.getOptionLength() - 1} downto 0)")
         self.addInternalComponent(component=internalDemux, 
                                   componentCallName='u_DEMUX_PEX',
                                   portmap=self.getDemuxPortmap(),
@@ -115,6 +117,6 @@ class NucleoConvolucional(ComponentCommonMethods):
         demuxPortmap = {'i_A':'i_WEIGHT',
                         'i_SEL' :'i_WEIGHT_ROW_SEL'}
         for x in range(0,self.qtRows):
-           demuxPortmap[f"o_PORT_{x}"] = f"i_PIX_ROW_{x}"
+           demuxPortmap[f"o_PORT_{x}"] = f"w_i_WEIGHT_ROW_{x}"
         
         return demuxPortmap

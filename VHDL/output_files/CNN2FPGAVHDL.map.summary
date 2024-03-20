@@ -1,13 +1,13 @@
-Analysis & Synthesis Status : Successful - Wed Mar 13 08:27:10 2024
+Analysis & Synthesis Status : Successful - Tue Mar 19 16:06:45 2024
 Quartus Prime Version : 20.1.1 Build 720 11/11/2020 SJ Lite Edition
 Revision Name : CNN2FPGAVHDL
 Top-level Entity Name : CNN2FPGAVHDL
 Family : MAX 10
-Total logic elements : 146
-    Total combinational functions : 146
+Total logic elements : 0
+    Total combinational functions : 0
     Dedicated logic registers : 0
 Total registers : 0
-Total pins : 176
+Total pins : 70
 Total virtual pins : 0
 Total memory bits : 0
 Embedded Multiplier 9-bit elements : 0

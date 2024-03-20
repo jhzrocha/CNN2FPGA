@@ -1,5 +1,5 @@
 Analysis & Synthesis report for CNN2FPGAVHDL
-Wed Mar 13 08:27:10 2024
+Tue Mar 19 16:06:45 2024
 Quartus Prime Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
 
 
@@ -15,10 +15,17 @@ Quartus Prime Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
   7. Analysis & Synthesis Resource Utilization by Entity
   8. General Register Statistics
   9. Parameter Settings for User Entity Instance: Top-level Entity: |CNN2FPGAVHDL
- 10. Parameter Settings for User Entity Instance: arvore_soma_conv_9:arvore_soma_conv_9
- 11. Post-Synthesis Netlist Statistics for Top Partition
- 12. Elapsed Time Per Partition
- 13. Analysis & Synthesis Messages
+ 10. Parameter Settings for User Entity Instance: nucleoConvolucional:nucleoConvolucional
+ 11. Parameter Settings for User Entity Instance: nucleoConvolucional:nucleoConvolucional|demux1x3:u_DEMUX_PEX
+ 12. Parameter Settings for User Entity Instance: nucleoConvolucional:nucleoConvolucional|multiplicador_conv:u_MUL_0
+ 13. Parameter Settings for User Entity Instance: nucleoConvolucional:nucleoConvolucional|multiplicador_conv:u_MUL_1
+ 14. Parameter Settings for User Entity Instance: nucleoConvolucional:nucleoConvolucional|multiplicador_conv:u_MUL_2
+ 15. Port Connectivity Checks: "nucleoConvolucional:nucleoConvolucional|multiplicador_conv:u_MUL_2"
+ 16. Port Connectivity Checks: "nucleoConvolucional:nucleoConvolucional|multiplicador_conv:u_MUL_1"
+ 17. Port Connectivity Checks: "nucleoConvolucional:nucleoConvolucional|multiplicador_conv:u_MUL_0"
+ 18. Post-Synthesis Netlist Statistics for Top Partition
+ 19. Elapsed Time Per Partition
+ 20. Analysis & Synthesis Messages
 
 
 
@@ -45,16 +52,16 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                     ;
 +------------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Wed Mar 13 08:27:10 2024       ;
+; Analysis & Synthesis Status        ; Successful - Tue Mar 19 16:06:45 2024       ;
 ; Quartus Prime Version              ; 20.1.1 Build 720 11/11/2020 SJ Lite Edition ;
 ; Revision Name                      ; CNN2FPGAVHDL                                ;
 ; Top-level Entity Name              ; CNN2FPGAVHDL                                ;
 ; Family                             ; MAX 10                                      ;
-; Total logic elements               ; 146                                         ;
-;     Total combinational functions  ; 146                                         ;
+; Total logic elements               ; 0                                           ;
+;     Total combinational functions  ; 0                                           ;
 ;     Dedicated logic registers      ; 0                                           ;
 ; Total registers                    ; 0                                           ;
-; Total pins                         ; 176                                         ;
+; Total pins                         ; 70                                          ;
 ; Total virtual pins                 ; 0                                           ;
 ; Total memory bits                  ; 0                                           ;
 ; Embedded Multiplier 9-bit elements ; 0                                           ;
@@ -155,8 +162,8 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------+-------------+
 ; Processors                 ; Number      ;
 +----------------------------+-------------+
-; Number detected on machine ; 6           ;
-; Maximum allowed            ; 6           ;
+; Number detected on machine ; 12          ;
+; Maximum allowed            ; 12          ;
 ;                            ;             ;
 ; Average used               ; 1.00        ;
 ; Maximum used               ; 1           ;
@@ -166,56 +173,56 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------+-------------+
 
 
-+-------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                          ;
-+----------------------------------+-----------------+-----------------+----------------------------------------------------------------+---------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type       ; File Name with Absolute Path                                   ; Library ;
-+----------------------------------+-----------------+-----------------+----------------------------------------------------------------+---------+
-; CNN2FPGAVHDL.vhd                 ; yes             ; User VHDL File  ; C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd       ;         ;
-; arvore_soma_conv_9.vhd           ; yes             ; User VHDL File  ; C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/arvore_soma_conv_9.vhd ;         ;
-+----------------------------------+-----------------+-----------------+----------------------------------------------------------------+---------+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                   ;
++----------------------------------+-----------------+-----------------+-----------------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type       ; File Name with Absolute Path                                                            ; Library ;
++----------------------------------+-----------------+-----------------+-----------------------------------------------------------------------------------------+---------+
+; CNN2FPGAVHDL.vhd                 ; yes             ; User VHDL File  ; C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd        ;         ;
+; nucleoConvolucional.vhd          ; yes             ; User VHDL File  ; C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/nucleoConvolucional.vhd ;         ;
+; multiplicador_conv.vhd           ; yes             ; User VHDL File  ; C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicador_conv.vhd  ;         ;
+; demux1x3.vhd                     ; yes             ; User VHDL File  ; C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/demux1x3.vhd            ;         ;
++----------------------------------+-----------------+-----------------+-----------------------------------------------------------------------------------------+---------+
 
 
-+---------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Usage Summary                                                 ;
-+---------------------------------------------+-----------------------------------------------+
-; Resource                                    ; Usage                                         ;
-+---------------------------------------------+-----------------------------------------------+
-; Estimated Total logic elements              ; 146                                           ;
-;                                             ;                                               ;
-; Total combinational functions               ; 146                                           ;
-; Logic element usage by number of LUT inputs ;                                               ;
-;     -- 4 input functions                    ; 0                                             ;
-;     -- 3 input functions                    ; 138                                           ;
-;     -- <=2 input functions                  ; 8                                             ;
-;                                             ;                                               ;
-; Logic elements by mode                      ;                                               ;
-;     -- normal mode                          ; 8                                             ;
-;     -- arithmetic mode                      ; 138                                           ;
-;                                             ;                                               ;
-; Total registers                             ; 0                                             ;
-;     -- Dedicated logic registers            ; 0                                             ;
-;     -- I/O registers                        ; 0                                             ;
-;                                             ;                                               ;
-; I/O pins                                    ; 176                                           ;
-;                                             ;                                               ;
-; Embedded Multiplier 9-bit elements          ; 0                                             ;
-;                                             ;                                               ;
-; Maximum fan-out node                        ; arvore_soma_conv_9:arvore_soma_conv_9|Add7~38 ;
-; Maximum fan-out                             ; 13                                            ;
-; Total fan-out                               ; 638                                           ;
-; Average fan-out                             ; 1.28                                          ;
-+---------------------------------------------+-----------------------------------------------+
++-----------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary         ;
++---------------------------------------------+-------+
+; Resource                                    ; Usage ;
++---------------------------------------------+-------+
+;                                             ;       ;
+; Total combinational functions               ; 0     ;
+; Logic element usage by number of LUT inputs ;       ;
+;     -- 4 input functions                    ; 0     ;
+;     -- 3 input functions                    ; 0     ;
+;     -- <=2 input functions                  ; 0     ;
+;                                             ;       ;
+; Logic elements by mode                      ;       ;
+;     -- normal mode                          ; 0     ;
+;     -- arithmetic mode                      ; 0     ;
+;                                             ;       ;
+; Total registers                             ; 0     ;
+;     -- Dedicated logic registers            ; 0     ;
+;     -- I/O registers                        ; 0     ;
+;                                             ;       ;
+; I/O pins                                    ; 70    ;
+;                                             ;       ;
+; Embedded Multiplier 9-bit elements          ; 0     ;
+;                                             ;       ;
+; Maximum fan-out node                        ; i_CLK ;
+; Maximum fan-out                             ; 1     ;
+; Total fan-out                               ; 70    ;
+; Average fan-out                             ; 0.50  ;
++---------------------------------------------+-------+
 
 
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                       ;
-+--------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+-----------------------------------------------------+--------------------+--------------+
-; Compilation Hierarchy Node                 ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name                                 ; Entity Name        ; Library Name ;
-+--------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+-----------------------------------------------------+--------------------+--------------+
-; |CNN2FPGAVHDL                              ; 146 (0)             ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 176  ; 0            ; 0          ; |CNN2FPGAVHDL                                       ; CNN2FPGAVHDL       ; work         ;
-;    |arvore_soma_conv_9:arvore_soma_conv_9| ; 146 (146)           ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |CNN2FPGAVHDL|arvore_soma_conv_9:arvore_soma_conv_9 ; arvore_soma_conv_9 ; work         ;
-+--------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+-----------------------------------------------------+--------------------+--------------+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                 ;
++----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+--------------+--------------+
+; Compilation Hierarchy Node ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name ; Entity Name  ; Library Name ;
++----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+--------------+--------------+
+; |CNN2FPGAVHDL              ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 70   ; 0            ; 0          ; |CNN2FPGAVHDL       ; CNN2FPGAVHDL ; work         ;
++----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+--------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
 
@@ -239,21 +246,93 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +----------------+-------+-----------------------------------------------------+
 ; Parameter Name ; Value ; Type                                                ;
 +----------------+-------+-----------------------------------------------------+
-; i_DATA_WIDTH   ; 16    ; Signed Integer                                      ;
+; i_DATA_WIDTH   ; 8     ; Signed Integer                                      ;
+; w_CONV_OUT     ; 16    ; Signed Integer                                      ;
 ; o_DATA_WIDTH   ; 32    ; Signed Integer                                      ;
 +----------------+-------+-----------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
-+------------------------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: arvore_soma_conv_9:arvore_soma_conv_9 ;
-+----------------+-------+-----------------------------------------------------------+
-; Parameter Name ; Value ; Type                                                      ;
-+----------------+-------+-----------------------------------------------------------+
-; i_data_width   ; 16    ; Signed Integer                                            ;
-; o_data_width   ; 32    ; Signed Integer                                            ;
-+----------------+-------+-----------------------------------------------------------+
++--------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: nucleoConvolucional:nucleoConvolucional ;
++----------------+-------+-------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                        ;
++----------------+-------+-------------------------------------------------------------+
+; i_data_width   ; 8     ; Signed Integer                                              ;
+; w_conv_out     ; 16    ; Signed Integer                                              ;
+; o_data_width   ; 32    ; Signed Integer                                              ;
++----------------+-------+-------------------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: nucleoConvolucional:nucleoConvolucional|demux1x3:u_DEMUX_PEX ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; i_width        ; 8     ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: nucleoConvolucional:nucleoConvolucional|multiplicador_conv:u_MUL_0 ;
++----------------+-------+----------------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------------+
+; i_data_width   ; 8     ; Signed Integer                                                                         ;
+; o_data_width   ; 16    ; Signed Integer                                                                         ;
++----------------+-------+----------------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: nucleoConvolucional:nucleoConvolucional|multiplicador_conv:u_MUL_1 ;
++----------------+-------+----------------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------------+
+; i_data_width   ; 8     ; Signed Integer                                                                         ;
+; o_data_width   ; 16    ; Signed Integer                                                                         ;
++----------------+-------+----------------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: nucleoConvolucional:nucleoConvolucional|multiplicador_conv:u_MUL_2 ;
++----------------+-------+----------------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------------+
+; i_data_width   ; 8     ; Signed Integer                                                                         ;
+; o_data_width   ; 16    ; Signed Integer                                                                         ;
++----------------+-------+----------------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "nucleoConvolucional:nucleoConvolucional|multiplicador_conv:u_MUL_2"                   ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
+; Port   ; Type   ; Severity ; Details                                                                             ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
+; o_data ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "nucleoConvolucional:nucleoConvolucional|multiplicador_conv:u_MUL_1"                   ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
+; Port   ; Type   ; Severity ; Details                                                                             ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
+; o_data ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "nucleoConvolucional:nucleoConvolucional|multiplicador_conv:u_MUL_0"                   ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
+; Port   ; Type   ; Severity ; Details                                                                             ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
+; o_data ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
 
 
 +-----------------------------------------------------+
@@ -261,15 +340,13 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-----------------------+-----------------------------+
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
-; boundary_port         ; 176                         ;
-; cycloneiii_lcell_comb ; 146                         ;
-;     arith             ; 138                         ;
-;         3 data inputs ; 138                         ;
-;     normal            ; 8                           ;
-;         2 data inputs ; 8                           ;
+; boundary_port         ; 70                          ;
+; cycloneiii_lcell_comb ; 1                           ;
+;     normal            ; 1                           ;
+;         0 data inputs ; 1                           ;
 ;                       ;                             ;
-; Max LUT depth         ; 5.90                        ;
-; Average LUT depth     ; 5.49                        ;
+; Max LUT depth         ; 0.00                        ;
+; Average LUT depth     ; 0.00                        ;
 +-----------------------+-----------------------------+
 
 
@@ -288,49 +365,133 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
-    Info: Processing started: Wed Mar 13 08:26:57 2024
+    Info: Processing started: Tue Mar 19 16:06:38 2024
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off CNN2FPGAVHDL -c CNN2FPGAVHDL
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
-Info (20030): Parallel compilation is enabled and will use 6 of the 6 processors detected
+Info (20030): Parallel compilation is enabled and will use 12 of the 12 processors detected
 Info (12021): Found 2 design units, including 1 entities, in source file cnn2fpgavhdl.vhd
-    Info (12022): Found design unit 1: CNN2FPGAVHDL-arc File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 21
-    Info (12023): Found entity 1: CNN2FPGAVHDL File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 5
+    Info (12022): Found design unit 1: CNN2FPGAVHDL-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 22
+    Info (12023): Found entity 1: CNN2FPGAVHDL File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 5
 Info (12021): Found 2 design units, including 1 entities, in source file multiplicator.vhd
-    Info (12022): Found design unit 1: multiplicator-arc File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/multiplicator.vhd Line: 15
-    Info (12023): Found entity 1: multiplicator File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/multiplicator.vhd Line: 5
+    Info (12022): Found design unit 1: multiplicator-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 15
+    Info (12023): Found entity 1: multiplicator File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicator.vhd Line: 5
 Info (12021): Found 2 design units, including 1 entities, in source file adder_9in.vhd
-    Info (12022): Found design unit 1: Adder_9in-arc File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/Adder_9in.vhd Line: 21
-    Info (12023): Found entity 1: Adder_9in File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/Adder_9in.vhd Line: 5
+    Info (12022): Found design unit 1: Adder_9in-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Adder_9in.vhd Line: 21
+    Info (12023): Found entity 1: Adder_9in File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Adder_9in.vhd Line: 5
 Info (12021): Found 2 design units, including 1 entities, in source file multiplexer_9.vhd
-    Info (12022): Found design unit 1: Multiplexer_9-arc File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/Multiplexer_9.vhd Line: 23
-    Info (12023): Found entity 1: Multiplexer_9 File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/Multiplexer_9.vhd Line: 5
+    Info (12022): Found design unit 1: Multiplexer_9-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Multiplexer_9.vhd Line: 23
+    Info (12023): Found entity 1: Multiplexer_9 File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Multiplexer_9.vhd Line: 5
 Info (12021): Found 2 design units, including 1 entities, in source file convolutionallayerim4x4k2x2.vhd
-    Info (12022): Found design unit 1: ConvolutionalLayerIm4x4K2x2-arc File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/ConvolutionalLayerIm4x4K2x2.vhd Line: 25
-    Info (12023): Found entity 1: ConvolutionalLayerIm4x4K2x2 File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/ConvolutionalLayerIm4x4K2x2.vhd Line: 5
+    Info (12022): Found design unit 1: ConvolutionalLayerIm4x4K2x2-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/ConvolutionalLayerIm4x4K2x2.vhd Line: 25
+    Info (12023): Found entity 1: ConvolutionalLayerIm4x4K2x2 File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/ConvolutionalLayerIm4x4K2x2.vhd Line: 5
 Info (12021): Found 2 design units, including 1 entities, in source file switcher_9.vhd
-    Info (12022): Found design unit 1: Switcher_9-arc File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/Switcher_9.vhd Line: 23
-    Info (12023): Found entity 1: Switcher_9 File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/Switcher_9.vhd Line: 5
+    Info (12022): Found design unit 1: Switcher_9-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Switcher_9.vhd Line: 23
+    Info (12023): Found entity 1: Switcher_9 File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Switcher_9.vhd Line: 5
 Info (12021): Found 2 design units, including 1 entities, in source file matrixmultiplier_4px.vhd
-    Info (12022): Found design unit 1: MatrixMultiplier_4px-arc File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/MatrixMultiplier_4px.vhd Line: 15
-    Info (12023): Found entity 1: MatrixMultiplier_4px File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/MatrixMultiplier_4px.vhd Line: 5
+    Info (12022): Found design unit 1: MatrixMultiplier_4px-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/MatrixMultiplier_4px.vhd Line: 15
+    Info (12023): Found entity 1: MatrixMultiplier_4px File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/MatrixMultiplier_4px.vhd Line: 5
 Info (12021): Found 2 design units, including 1 entities, in source file adder_4in.vhd
-    Info (12022): Found design unit 1: Adder_4in-arc File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/Adder_4in.vhd Line: 16
-    Info (12023): Found entity 1: Adder_4in File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/Adder_4in.vhd Line: 5
+    Info (12022): Found design unit 1: Adder_4in-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Adder_4in.vhd Line: 16
+    Info (12023): Found entity 1: Adder_4in File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/Adder_4in.vhd Line: 5
 Info (12021): Found 2 design units, including 1 entities, in source file arvore_soma_conv_9.vhd
-    Info (12022): Found design unit 1: arvore_soma_conv_9-arc File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/arvore_soma_conv_9.vhd Line: 21
-    Info (12023): Found entity 1: arvore_soma_conv_9 File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/arvore_soma_conv_9.vhd Line: 5
+    Info (12022): Found design unit 1: arvore_soma_conv_9-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/arvore_soma_conv_9.vhd Line: 21
+    Info (12023): Found entity 1: arvore_soma_conv_9 File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/arvore_soma_conv_9.vhd Line: 5
+Info (12021): Found 2 design units, including 1 entities, in source file nucleoconvolucional.vhd
+    Info (12022): Found design unit 1: nucleoConvolucional-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/nucleoConvolucional.vhd Line: 22
+    Info (12023): Found entity 1: nucleoConvolucional File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/nucleoConvolucional.vhd Line: 5
+Info (12021): Found 2 design units, including 1 entities, in source file multiplicador_conv.vhd
+    Info (12022): Found design unit 1: multiplicador_conv-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicador_conv.vhd Line: 14
+    Info (12023): Found entity 1: multiplicador_conv File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/multiplicador_conv.vhd Line: 5
+Info (12021): Found 2 design units, including 1 entities, in source file demux1x3.vhd
+    Info (12022): Found design unit 1: demux1x3-arc File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/demux1x3.vhd Line: 15
+    Info (12023): Found entity 1: demux1x3 File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/demux1x3.vhd Line: 5
 Info (12127): Elaborating entity "CNN2FPGAVHDL" for the top level hierarchy
-Info (12128): Elaborating entity "arvore_soma_conv_9" for hierarchy "arvore_soma_conv_9:arvore_soma_conv_9" File: C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 25
+Info (12128): Elaborating entity "nucleoConvolucional" for hierarchy "nucleoConvolucional:nucleoConvolucional" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 26
+Warning (10541): VHDL Signal Declaration warning at nucleoConvolucional.vhd(18): used implicit default value for signal "o_PIX" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations. File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/nucleoConvolucional.vhd Line: 18
+Warning (10036): Verilog HDL or VHDL warning at nucleoConvolucional.vhd(34): object "w_MULT_OUT" assigned a value but never read File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/nucleoConvolucional.vhd Line: 34
+Info (12128): Elaborating entity "demux1x3" for hierarchy "nucleoConvolucional:nucleoConvolucional|demux1x3:u_DEMUX_PEX" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/nucleoConvolucional.vhd Line: 38
+Info (12128): Elaborating entity "multiplicador_conv" for hierarchy "nucleoConvolucional:nucleoConvolucional|multiplicador_conv:u_MUL_0" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/nucleoConvolucional.vhd Line: 50
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "o_PIX[0]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[1]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[2]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[3]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[4]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[5]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[6]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[7]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[8]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[9]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[10]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[11]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[12]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[13]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[14]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[15]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[16]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[17]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[18]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[19]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[20]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[21]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[22]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[23]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[24]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[25]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[26]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[27]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[28]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[29]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[30]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
+    Warning (13410): Pin "o_PIX[31]" is stuck at GND File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 18
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Info (21057): Implemented 322 device resources after synthesis - the final resource count might be different
-    Info (21058): Implemented 144 input pins
+Warning (21074): Design contains 38 input pin(s) that do not drive logic
+    Warning (15610): No output dependent on input pin "i_CLK" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 9
+    Warning (15610): No output dependent on input pin "i_CLR" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 10
+    Warning (15610): No output dependent on input pin "i_PIX_SHIFT_ENA" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 11
+    Warning (15610): No output dependent on input pin "i_WEIGHT_SHIFT_ENA" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 12
+    Warning (15610): No output dependent on input pin "i_WEIGHT[0]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 13
+    Warning (15610): No output dependent on input pin "i_WEIGHT[1]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 13
+    Warning (15610): No output dependent on input pin "i_WEIGHT[2]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 13
+    Warning (15610): No output dependent on input pin "i_WEIGHT[3]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 13
+    Warning (15610): No output dependent on input pin "i_WEIGHT[4]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 13
+    Warning (15610): No output dependent on input pin "i_WEIGHT[5]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 13
+    Warning (15610): No output dependent on input pin "i_WEIGHT[6]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 13
+    Warning (15610): No output dependent on input pin "i_WEIGHT[7]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 13
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_0[0]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 14
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_0[1]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 14
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_0[2]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 14
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_0[3]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 14
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_0[4]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 14
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_0[5]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 14
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_0[6]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 14
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_0[7]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 14
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_1[0]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 15
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_1[1]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 15
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_1[2]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 15
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_1[3]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 15
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_1[4]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 15
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_1[5]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 15
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_1[6]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 15
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_1[7]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 15
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_2[0]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 16
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_2[1]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 16
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_2[2]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 16
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_2[3]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 16
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_2[4]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 16
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_2[5]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 16
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_2[6]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 16
+    Warning (15610): No output dependent on input pin "i_PIX_ROW_2[7]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 16
+    Warning (15610): No output dependent on input pin "i_WEIGHT_ROW_SEL[0]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 17
+    Warning (15610): No output dependent on input pin "i_WEIGHT_ROW_SEL[1]" File: C:/Users/jhzro/OneDrive/햞ea de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/CNN2FPGAVHDL.vhd Line: 17
+Info (21057): Implemented 70 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 38 input pins
     Info (21059): Implemented 32 output pins
-    Info (21061): Implemented 146 logic cells
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 1 warning
-    Info: Peak virtual memory: 4783 megabytes
-    Info: Processing ended: Wed Mar 13 08:27:10 2024
-    Info: Elapsed time: 00:00:13
-    Info: Total CPU time (on all processors): 00:00:25
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 75 warnings
+    Info: Peak virtual memory: 4773 megabytes
+    Info: Processing ended: Tue Mar 19 16:06:45 2024
+    Info: Elapsed time: 00:00:07
+    Info: Total CPU time (on all processors): 00:00:15
 
 

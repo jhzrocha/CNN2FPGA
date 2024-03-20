@@ -296,6 +296,8 @@ use ieee.numeric_std.all;"""
         self.internalSignalWires = []
         self.internalVariables = []
         self.generics = []
+        self.internalTypes = []
+
 
     def addArrayTypeOnArchitecture(self, name, type,size):
         self.internalTypes.append(Type(name,type,size))

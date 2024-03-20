@@ -1,5 +1,5 @@
 EDA Netlist Writer report for CNN2FPGAVHDL
-Wed Mar 13 08:27:30 2024
+Tue Mar 19 16:07:01 2024
 Quartus Prime Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
 
 
@@ -37,7 +37,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------------------------------------------------------+
 ; EDA Netlist Writer Summary                                        ;
 +---------------------------+---------------------------------------+
-; EDA Netlist Writer Status ; Successful - Wed Mar 13 08:27:30 2024 ;
+; EDA Netlist Writer Status ; Successful - Tue Mar 19 16:07:01 2024 ;
 ; Revision Name             ; CNN2FPGAVHDL                          ;
 ; Top-level Entity Name     ; CNN2FPGAVHDL                          ;
 ; Family                    ; MAX 10                                ;
@@ -66,13 +66,13 @@ https://fpgasoftware.intel.com/eula.
 +---------------------------------------------------------------------------------------------------+---------------------------+
 
 
-+-----------------------------------------------------------------------------+
-; Simulation Generated Files                                                  ;
-+-----------------------------------------------------------------------------+
-; Generated Files                                                             ;
-+-----------------------------------------------------------------------------+
-; C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/simulation/modelsim/CNN2FPGAVHDL.vo ;
-+-----------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------------------+
+; Simulation Generated Files                                                                          ;
++-----------------------------------------------------------------------------------------------------+
+; Generated Files                                                                                     ;
++-----------------------------------------------------------------------------------------------------+
+; C:/Users/jhzro/OneDrive/Área de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/simulation/modelsim/CNN2FPGAVHDL.vo ;
++-----------------------------------------------------------------------------------------------------+
 
 
 +-----------------------------+
@@ -81,13 +81,13 @@ https://fpgasoftware.intel.com/eula.
 Info: *******************************************************************
 Info: Running Quartus Prime EDA Netlist Writer
     Info: Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
-    Info: Processing started: Wed Mar 13 08:27:29 2024
+    Info: Processing started: Tue Mar 19 16:07:00 2024
 Info: Command: quartus_eda --read_settings_files=off --write_settings_files=off CNN2FPGAVHDL -c CNN2FPGAVHDL
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
-Info (204019): Generated file CNN2FPGAVHDL.vo in folder "C:/Users/jhzrocha/Desktop/CNN2FPGA/VHDL/simulation/modelsim/" for EDA simulation tool
+Info (204019): Generated file CNN2FPGAVHDL.vo in folder "C:/Users/jhzro/OneDrive/Área de Trabalho/CNN2FPGA/CNN2FPGA/VHDL/simulation/modelsim/" for EDA simulation tool
 Info: Quartus Prime EDA Netlist Writer was successful. 0 errors, 1 warning
-    Info: Peak virtual memory: 4641 megabytes
-    Info: Processing ended: Wed Mar 13 08:27:30 2024
+    Info: Peak virtual memory: 4640 megabytes
+    Info: Processing ended: Tue Mar 19 16:07:01 2024
     Info: Elapsed time: 00:00:01
     Info: Total CPU time (on all processors): 00:00:01
 
