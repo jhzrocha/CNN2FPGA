@@ -68,11 +68,11 @@ use ieee.numeric_std.all;"""
         newOutputPort = Port(name,dataType,connection)
         self.portMap['out'].append(newOutputPort)
 
-    def addMultipleGeneratedInputPorts(self, qtPorts, dataType, name = None):
+    def addMultipleGeneratedInputPorts(self, qtPorts, dataType, name = ''):
         for i in range(0, qtPorts):
             portName = name
-            if not name:
-                name = f"i_PORT_{i}"
+            if name == '':
+                portName = f"i_PORT_{i}"
             else:
                 portName = f"{name}_{i}"
             self.addInputPortByParameters(portName,dataType)

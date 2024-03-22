@@ -2,6 +2,7 @@ from ComponentBases.ComponentCommonMethods import ComponentCommonMethods
 from ComponentBases.port import Port
 from Components.demux_1x import Demux_1x
 from Components.multiplicador_conv import MultiplicadorConv
+from Components.arvore_soma_conv import ArvoreSomaConv
 class NucleoConvolucional(ComponentCommonMethods):
 #    Não testado
     def __init__(self, qtRows, qtColumns, qtPixelsPerRow):
@@ -62,6 +63,8 @@ class NucleoConvolucional(ComponentCommonMethods):
             end if;        
         end process;
 """
+        self.addInternalComponent(ArvoreSomaConv(self.qtColumns*self.qtRows), 'u_ARVORE_SOMA_CONV', self.getArvoreSomaPortmap(), {'i_DATA_WIDTH':'w_CONV_OUT',
+                                                                                                                                'o_DATA_WIDTH':'o_DATA_WIDTH'})
         self.OutputEntityAndArchitectureFile()
 
     def getResetBehavior(self):
@@ -103,7 +106,7 @@ class NucleoConvolucional(ComponentCommonMethods):
         for i in range(self.qtRows):
             for j in range(self.qtColumns):
                 self.addInternalComponent(component=MultiplicadorConv(),
-                                        componentCallName=f"u_MUL_{i}",
+                                        componentCallName=f"u_MUL_{outCounter}",
                                         portmap={'i_DATA_1': f"w_PIX_ROW_{i}({j})",
                                             'i_DATA_2': f"w_WEIGHT_ROW_{i}({j})",
                                             'o_DATA': f"w_MULT_OUT({outCounter})"},
@@ -120,3 +123,11 @@ class NucleoConvolucional(ComponentCommonMethods):
            demuxPortmap[f"o_PORT_{x}"] = f"w_i_WEIGHT_ROW_{x}"
         
         return demuxPortmap
+    
+    def getArvoreSomaPortmap(self):
+        portmap = {}
+        for i in range(self.qtRows*self.qtColumns):
+            portmap[f"i_PORT_{i}"] = f"w_MULT_OUT({i})"
+        
+        portmap['o_DATA'] = 'o_PIX'
+        return portmap

@@ -53,12 +53,56 @@ use ieee.numeric_std.all;
             o_DATA_WIDTH => w_CONV_OUT
         )
         port map (
+            i_DATA_1  => w_PIX_ROW_0(0),
+            i_DATA_2  => w_WEIGHT_ROW_0(0),
+            o_DATA  => w_MULT_OUT(0)
+        );
+ 
+        u_MUL_1 : entity work.multiplicador_conv
+        generic map (
+            i_DATA_WIDTH => i_DATA_WIDTH,
+            o_DATA_WIDTH => w_CONV_OUT
+        )
+        port map (
+            i_DATA_1  => w_PIX_ROW_0(1),
+            i_DATA_2  => w_WEIGHT_ROW_0(1),
+            o_DATA  => w_MULT_OUT(1)
+        );
+ 
+        u_MUL_2 : entity work.multiplicador_conv
+        generic map (
+            i_DATA_WIDTH => i_DATA_WIDTH,
+            o_DATA_WIDTH => w_CONV_OUT
+        )
+        port map (
             i_DATA_1  => w_PIX_ROW_0(2),
             i_DATA_2  => w_WEIGHT_ROW_0(2),
             o_DATA  => w_MULT_OUT(2)
         );
  
-        u_MUL_1 : entity work.multiplicador_conv
+        u_MUL_3 : entity work.multiplicador_conv
+        generic map (
+            i_DATA_WIDTH => i_DATA_WIDTH,
+            o_DATA_WIDTH => w_CONV_OUT
+        )
+        port map (
+            i_DATA_1  => w_PIX_ROW_1(0),
+            i_DATA_2  => w_WEIGHT_ROW_1(0),
+            o_DATA  => w_MULT_OUT(3)
+        );
+ 
+        u_MUL_4 : entity work.multiplicador_conv
+        generic map (
+            i_DATA_WIDTH => i_DATA_WIDTH,
+            o_DATA_WIDTH => w_CONV_OUT
+        )
+        port map (
+            i_DATA_1  => w_PIX_ROW_1(1),
+            i_DATA_2  => w_WEIGHT_ROW_1(1),
+            o_DATA  => w_MULT_OUT(4)
+        );
+ 
+        u_MUL_5 : entity work.multiplicador_conv
         generic map (
             i_DATA_WIDTH => i_DATA_WIDTH,
             o_DATA_WIDTH => w_CONV_OUT
@@ -69,7 +113,29 @@ use ieee.numeric_std.all;
             o_DATA  => w_MULT_OUT(5)
         );
  
-        u_MUL_2 : entity work.multiplicador_conv
+        u_MUL_6 : entity work.multiplicador_conv
+        generic map (
+            i_DATA_WIDTH => i_DATA_WIDTH,
+            o_DATA_WIDTH => w_CONV_OUT
+        )
+        port map (
+            i_DATA_1  => w_PIX_ROW_2(0),
+            i_DATA_2  => w_WEIGHT_ROW_2(0),
+            o_DATA  => w_MULT_OUT(6)
+        );
+ 
+        u_MUL_7 : entity work.multiplicador_conv
+        generic map (
+            i_DATA_WIDTH => i_DATA_WIDTH,
+            o_DATA_WIDTH => w_CONV_OUT
+        )
+        port map (
+            i_DATA_1  => w_PIX_ROW_2(1),
+            i_DATA_2  => w_WEIGHT_ROW_2(1),
+            o_DATA  => w_MULT_OUT(7)
+        );
+ 
+        u_MUL_8 : entity work.multiplicador_conv
         generic map (
             i_DATA_WIDTH => i_DATA_WIDTH,
             o_DATA_WIDTH => w_CONV_OUT
@@ -78,6 +144,24 @@ use ieee.numeric_std.all;
             i_DATA_1  => w_PIX_ROW_2(2),
             i_DATA_2  => w_WEIGHT_ROW_2(2),
             o_DATA  => w_MULT_OUT(8)
+        );
+ 
+        u_ARVORE_SOMA_CONV : entity work.arvore_soma_conv_9
+        generic map (
+            i_DATA_WIDTH => w_CONV_OUT,
+            o_DATA_WIDTH => o_DATA_WIDTH
+        )
+        port map (
+            i_PORT_0  => w_MULT_OUT(0),
+            i_PORT_1  => w_MULT_OUT(1),
+            i_PORT_2  => w_MULT_OUT(2),
+            i_PORT_3  => w_MULT_OUT(3),
+            i_PORT_4  => w_MULT_OUT(4),
+            i_PORT_5  => w_MULT_OUT(5),
+            i_PORT_6  => w_MULT_OUT(6),
+            i_PORT_7  => w_MULT_OUT(7),
+            i_PORT_8  => w_MULT_OUT(8),
+            o_DATA  => o_PIX
         );
 
         p_DESLOCAMENTO : process (i_CLR, i_CLK)
