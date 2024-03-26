@@ -2,6 +2,7 @@ from ComponentBases.port import Port
 from ComponentBases.generic import Generic
 from ComponentBases.wire import Wire
 from ComponentBases.type import Type
+from ComponentBases.constant import Constant
 from copy import deepcopy
 from FileHandler.fileHandler import FileHandler
 
@@ -17,7 +18,7 @@ class ComponentCommonMethods:
     internalSignalWires = []
     internalVariables = []
     internalTypes = []
-
+    internalConstants = []
 
     importHeader = """library IEEE;
 use IEEE.std_logic_1164.all;
@@ -32,7 +33,7 @@ use ieee.numeric_std.all;"""
     internalOperations = ''
     architectureDeclaration = """
     architecture arc of {} is
-{}{}
+{}{}{}
 {}
         begin{}
     end arc;"""
@@ -126,13 +127,18 @@ use ieee.numeric_std.all;"""
         callPortMap = ''
         first = True
         for i in self.portMap['in']:
+            if(i.initialValue != ''):
+                initialValue = f":= {i.initialValue}"
+
             if (first):
-                callPortMap = callPortMap + f'{i.name} : in {i.dataType};\n'
+                callPortMap = callPortMap + f'{i.name} : in {i.dataType}{initialValue};\n'
                 first = False
             else:
-                callPortMap = callPortMap + f'              {i.name} : in {i.dataType};\n'
+                callPortMap = callPortMap + f'              {i.name} : in {i.dataType}{initialValue};\n'
         for i in self.portMap['out']:
-            callPortMap = callPortMap + f'              {i.name} : out {i.dataType};\n'
+            if(i.initialValue != ''):
+                initialValue = f":= {i.initialValue}"
+            callPortMap = callPortMap + f'              {i.name} : out {i.dataType}{initialValue};\n'
                 
         if callPortMap.endswith(';\n'):
             callPortMap = callPortMap[:-2]
@@ -161,7 +167,16 @@ use ieee.numeric_std.all;"""
     def getArchitectureDeclaration(self):
         processment = self.getInternalComponentDeclarations() + self.processment
         self.generateWireDeclarations()
-        return self.architectureDeclaration.format(self.minimalComponentFileName, self.getTypesDeclarations(),self.signalWiresDeclarations, self.variableWiresDeclarations, processment)
+        return self.architectureDeclaration.format(self.minimalComponentFileName, self.getTypesDeclarations(),self.signalWiresDeclarations, self.variableWiresDeclarations,self.getConstantsDeclarations(), processment)
+    
+    def getConstantsDeclarations(self):
+        constantsDeclarations = ''
+        for constant in self.internalConstants:
+            constantsDeclarations = constantsDeclarations + constant.getConstantDeclaration()
+        return constantsDeclarations
+
+    def addInternalConstant(self, name, dataType, value):
+        self.internalConstants.append(Constant(name=name,dataType=dataType,value=value))
     
     def setProcessment(self, internalOperations):
         self.processment = internalOperations
@@ -223,7 +238,6 @@ use ieee.numeric_std.all;"""
             self.setProcessment(self.internalOperations)
         fileHandler = FileHandler("Output")
         fileHandler.addFile(f"{self.minimalComponentFileName}.vhd",self.getEntityAndArchitectureFile())
-       
         del fileHandler
     
     def generateWireDeclarations(self):

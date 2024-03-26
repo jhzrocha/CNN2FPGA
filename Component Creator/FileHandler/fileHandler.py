@@ -1,4 +1,5 @@
 import os
+import shutil
 
 class FileHandler:
     def __init__(self, directoryName):
@@ -33,3 +34,11 @@ class FileHandler:
             return True
         else:
             return False
+    
+    def addCoreFiles(self):
+        origem = os.path.abspath(os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir),'Cores'))
+        for arquivo in os.listdir(origem):
+            caminho_origem = os.path.join(origem, arquivo)
+            if os.path.isfile(caminho_origem):
+                caminho_destino = os.path.join(self.directoryPath, arquivo)
+                shutil.copy2(caminho_origem, caminho_destino)

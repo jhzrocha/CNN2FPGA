@@ -1,14 +1,13 @@
 
-class Port:
+class Constant:
     name = ''
     dataType = ''
-    connection = ''
+    value = ''
 
-    def __init__(self, name,dataType, connection = '', initialValue = ''):
+    def __init__(self, name, dataType, value = ''):
         self.name = name
         self.dataType = dataType
-        self.connection = connection
-        self.initialValue = initialValue
+        self.value = value
     
     def setName(self, name):
         self.name = name
@@ -22,9 +21,6 @@ class Port:
     def getdataType(self):
         return self.dataType
     
-    def setConnection(self, connection):
-        self.connection = connection
-    
-    def getConnection(self):
-        return self.getConnection
+    def getConstantDeclaration(self):
+        return f"constant {self.name} : {self.dataType} := {self.value};\n"
     
