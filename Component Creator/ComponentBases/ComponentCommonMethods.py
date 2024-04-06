@@ -126,6 +126,7 @@ use ieee.numeric_std.all;"""
     def getEntityDeclaration(self):
         callPortMap = ''
         first = True
+        initialValue = ''
         for i in self.portMap['in']:
             if(i.initialValue != ''):
                 initialValue = f":= {i.initialValue}"

@@ -15,6 +15,10 @@ class Generic:
             self.value = self.initialValue
 
     def getDeclaration(self):
-        return f"{self.name} : {self.dataType} := {self.value};\n"
+        if self.value != '':
+            return f"{self.name} : {self.dataType} := {self.value};\n"
+        else:
+            return f"{self.name} : {self.dataType};\n"
+
         
     
