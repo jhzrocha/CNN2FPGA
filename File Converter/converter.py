@@ -250,7 +250,7 @@ class Converter():
                         line = self.lines[i]
                         if(line.find(');') != -1):
                             break
-                        if(line.find('=>') != -1):
+                        if(line.find('=>') != -1): 
                             portLine = line.split('--')[0].strip()
                             port = portLine.split(',')[0].split('=>')[0].strip()
                             portConexion = portLine.split(',')[0].split('=>')[1].strip()
