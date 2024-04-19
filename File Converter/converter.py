@@ -241,7 +241,7 @@ class Converter():
 
             for usedComponent in self.usedComponents:
                 portMap = {}
-                if line.find(f" : {usedComponent}") != -1: 
+                if f" : {usedComponent}" in line: 
                     splitedLine = line.split(' : ')
                     internalName = splitedLine[0].replace('\n','').strip()
                     componentName = splitedLine[1].replace('\n','').strip()                    
