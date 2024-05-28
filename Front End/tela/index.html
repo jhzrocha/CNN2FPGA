@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Código VHDL</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <img src="logo.png" alt="Interface Gráfica">
+            </div>
+            <div class="menu">
+                <div class="menu-item active">VHDL</div>
+            </div>
+        </div>
+        <div class="main-content">
+            <h1>Gerador de Código VHDL</h1>
+            <div class="form">
+                <div class="form-group">
+                    <label for="tipo-imagem">Tipo da Imagem</label>
+                    <select id="tipo-imagem" name="tipo-imagem">
+                        <option value="">Selecionar</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tamanho-imagem">Tamanho da Imagem</label>
+                    <input type="text" id="tamanho-imagem" name="tamanho-imagem">
+                </div>
+                <div class="form-group">
+                    <label for="classificador-saida">Classificador de Saída</label>
+                    <select id="classificador-saida" name="classificador-saida">
+                        <option value="">Selecionar</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantidade-classes">Quantidade de Classes</label>
+                    <input type="text" id="quantidade-classes" name="quantidade-classes">
+                </div>
+                <div class="form-group">
+                    <label for="upload-imagem">Imagem</label>
+                    <input type="file" id="upload-imagem" name="upload-imagem">
+                    <button type="button">Upload</button>
+                </div>
+                <div class="form-group">
+                    <label for="upload-pesos">Pesos e Vieses</label>
+                    <input type="file" id="upload-pesos" name="upload-pesos">
+                    <button type="button">Upload</button>
+                </div>
+            </div>
+            <div class="camadas">
+                <div class="camada">
+                    <div class="camada-title">Camada Convolucional</div>
+                    <div class="camada-subtitle">Kernel 3x3</div>
+                </div>
+                <div class="camada">
+                    <div class="camada-title">Camada Pooling</div>
+                    <div class="camada-subtitle">Max-Pooling 2x2</div>
+                </div>
+                <button class="add-camada">+</button>
+            </div>
+            <button class="gerar">Gerar</button>
+        </div>
+    </div>
+</body>
+</html>
