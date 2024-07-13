@@ -25,11 +25,11 @@ class Add(ComponentCommonMethods):
         self.addMultipleInternalSignalWires(qt_bits-1,{'name': 'c', 'dataType': 'std_logic', 'initialValue':''})
         self.addInternalSignalWire('w_SUM_OUT', f"std_logic_vector({qt_bits-1} DOWNTO 0)")
         self.addInternalComponents(qt_bits)
-        self.internalOperations = """
-        w_SUM_OUT(31) <= w_SIGNAL_BIT;           
-        w_UNDERFLOW <= a(31) and b(31) and not w_SIGNAL_BIT;
-        sum1 <= "10000000000000000000000000000000" when (w_UNDERFLOW = '1') else 
-                "01111111111111111111111111111111" when (w_OVERFLOW= '1') else 
+        self.internalOperations = f"""
+        w_SUM_OUT({qt_bits-1}) <= w_SIGNAL_BIT;           
+        w_UNDERFLOW <= a({qt_bits-1}) and b({qt_bits-1}) and not w_SIGNAL_BIT;
+        sum1 <= "1""" + '0'*(qt_bits-1)  + '"'+""" when (w_UNDERFLOW = '1') else 
+                "0""" + '1'*(qt_bits-1) + '"'+ """ when (w_OVERFLOW= '1') else 
                 w_SUM_OUT;
         overflow <=  w_OVERFLOW; 
         underflow <= w_UNDERFLOW;
@@ -55,3 +55,5 @@ class Add(ComponentCommonMethods):
                                                        'cin':f"c_{qtAdders-2}",
                                                        'sum': 'w_SIGNAL_BIT', 
                                                        'cout':'cout'})
+        
+    

@@ -3,39 +3,37 @@ from ComponentBases.port import Port
 
 class ArvoreSomaConv(ComponentCommonMethods):
 
-    def __init__(self, qtInputs):
+    def __init__(self, qtInputs, inputDataWidth, outputDataWidth):
         self.startInstance()
         self.minimalComponentFileName = f"arvore_soma_conv_{qtInputs}"
         self.portMap =   { 'in': [],
-                            'out': [Port('o_DATA','STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)')]
+                            'out': [Port('o_DATA',f'STD_LOGIC_VECTOR ({outputDataWidth-1} downto 0)')]
                     }
-        self.addGenericByParameters('i_DATA_WIDTH','INTEGER',16)
-        self.addGenericByParameters('o_DATA_WIDTH','INTEGER',32)
-        self.addMultipleGeneratedInputPorts(qtInputs,'STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0)')
+        self.addMultipleGeneratedInputPorts(qtInputs,f'STD_LOGIC_VECTOR ({inputDataWidth-1} downto 0)')
         self.addMultipleInternalSignalWires(qtInputs-1,{'name': 'w_SUM_OUT',
-                                                        'dataType': 'STD_LOGIC_VECTOR(o_DATA_WIDTH -1 downto 0)',
+                                                        'dataType': f'STD_LOGIC_VECTOR({outputDataWidth-1} downto 0)',
                                                         'initialValue':''})
-        self.addArrayTypeOnArchitecture('t_MAT','STD_LOGIC_VECTOR(o_DATA_WIDTH - 1 downto 0)',qtInputs)
+        self.addArrayTypeOnArchitecture('t_MAT',f'STD_LOGIC_VECTOR({outputDataWidth-1} downto 0)',qtInputs)
         self.addInternalSignalWire('w_ENTRADAS','t_MAT',"(others =>  ( others => '0'))")
         
         self.internalOperations = f"""
-{self.getSignalInitialization(qtInputs)}
+{self.getSignalInitialization(qtInputs,inputDataWidth,outputDataWidth)}
         """
         self.OutputEntityAndArchitectureFile()
 
-    def getSignalInitialization(self,qtInputs):
+    def getSignalInitialization(self,qtInputs,inputDataWidth,outputDataWidth):
         initialization = ''
         wSumWithoutConnection = []
         wEntradasWithoutConnection = []
         qtUsedwSum = 0
 
         for x in range(qtInputs):
-            initialization = initialization + f"            w_ENTRADAS({x})(i_DATA_WIDTH-1 downto 0) <= i_PORT_{x};\n"
+            initialization = initialization + f"            w_ENTRADAS({x})({inputDataWidth-1} downto 0) <= i_PORT_{x};\n"
             wEntradasWithoutConnection.insert(0,x)
         initialization = initialization + '\n'
         
         for x in range(qtInputs):
-            initialization = initialization + f"            w_ENTRADAS({x})(31 downto 16) <= (others => '1') when (i_PORT_{x} (15) = '1') else (others => '0');\n"
+            initialization = initialization + f"            w_ENTRADAS({x})({outputDataWidth-1} downto {inputDataWidth}) <= (others => '1') when (i_PORT_{x} ({inputDataWidth-1}) = '1') else (others => '0');\n"
 
         initialization = initialization + f"\n"
         for x in range(0,qtInputs,2):

@@ -266,7 +266,10 @@ use ieee.numeric_std.all;"""
 
     def addMultipleInternalSignalWires(self,quantity,parameters):
         for i in range(quantity):
-            self.addInternalSignalWire(f"{parameters['name']}_{i}",parameters['dataType'],parameters['initialValue'])
+            if (parameters['initialValue']):
+                self.addInternalSignalWire(f"{parameters['name']}_{i}",parameters['dataType'],parameters['initialValue'])
+            else:
+                self.addInternalSignalWire(f"{parameters['name']}_{i}",parameters['dataType'])
     
     def addMultipleInternalVariables(self,quantity,parameters):
         for i in range(quantity):
@@ -322,3 +325,6 @@ use ieee.numeric_std.all;"""
         for type in self.internalTypes:
             typesDeclarations = typesDeclarations + type.getDeclaration()
         return typesDeclarations
+    
+    def addInternalOperationLine(self, operationLine):
+        self.internalOperations = self.internalOperations + '\n' + operationLine

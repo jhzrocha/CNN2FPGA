@@ -185,12 +185,12 @@ class Converter():
             if('component' in line and 'component;' not in line):
                 componentname = line.strip().split(' ')[1]
                 self.usedComponents[componentname] = {}
+                self.usedComponents[componentname]['generic'] = []
                 internalIndex = index
                 internalLine = self.lines[internalIndex]
                 while 'end component;' not in internalLine.lower():
                     if ('generic ' in internalLine.lower() or 'generic(' in internalLine.lower() or ' generic(' in internalLine.lower()):                    
                         genericLines = ''
-                        self.usedComponents[componentname]['generic'] = []
                         while 'port' not in internalLine and 'PORT' not in internalLine and 'Port' not in internalLine:
                             genericLines = genericLines + internalLine
                             internalIndex = internalIndex + 1
@@ -240,23 +240,85 @@ class Converter():
             line = self.lines[index]
 
             for usedComponent in self.usedComponents:
+                generics = {}
                 portMap = {}
+                genericValues = []
+                portMapValues = []
+
+                analyzedMap = 0
                 if f" : {usedComponent}" in line: 
                     splitedLine = line.split(' : ')
                     internalName = splitedLine[0].replace('\n','').strip()
-                    componentName = splitedLine[1].replace('\n','').strip()                    
+                    componentName = splitedLine[1].replace('\n','').strip()
+                    
+                    self.internalComponents[componentName][internalName] = {}
+                    self.internalComponents[componentName][internalName]['generic'] = {}
+                    self.internalComponents[componentName][internalName]['portmap'] = {}
 
+                    for gen in self.usedComponents[usedComponent]['generic']:
+                      self.internalComponents[componentName][internalName]['generic'][str(gen[0])] = ''
+                    
+                    for port in self.usedComponents[usedComponent]['portmap']['in']:
+                        self.internalComponents[componentName][internalName]['portmap'][port[0]] = ''
+
+                    for port in self.usedComponents[usedComponent]['portmap']['out']:
+                        self.internalComponents[componentName][internalName]['portmap'][port[0]] = ''
+                    
                     for i in range(index,len(self.lines)-1):
                         line = self.lines[i]
                         if(line.find(');') != -1):
                             break
-                        if(line.find('=>') != -1): 
+
+                        if('generic' in line):
+                            analyzedMap = 1
+                            if('generic map' in line and '(' in line and ')' in line):
+                                genericValues = line.split('--')[0].strip().replace('generic map (','').replace('generic map(','').split(',')
+                            
+                        if('port' in line):
+                            analyzedMap = 2
+
+                        if('=>' in line and line != '('): 
                             portLine = line.split('--')[0].strip()
-                            port = portLine.split(',')[0].split('=>')[0].strip()
-                            portConexion = portLine.split(',')[0].split('=>')[1].strip()
-                            portMap[port] = portConexion
-                    
-                    self.internalComponents[componentName][internalName] = portMap
+                            name = portLine.split(',')[0].split('=>')[0].strip()
+                            value = portLine.split(',')[0].split('=>')[1].strip()
+                            if(analyzedMap == 1):                            
+                                generics[name] = value
+                            else:
+                                portMap[name] = value
+                        
+                        if('=>' not in line 
+                           and componentName not in line 
+                           and (line.strip().split('--')[0].split(',')[0].strip() != '(')  
+                           and ((line.split('--')[0].strip()[-1] == ',') 
+                                or (');' in self.lines[i+1].split('--')[0].strip()) 
+                                or (')' in self.lines[i+1].split('--')[0].strip()))):
+                            
+                            portLine = line.strip()
+                            value = portLine.split('--')[0].split(',')[0].strip()
+                            
+                            if(analyzedMap == 1):                            
+                                genericValues.append(value)
+                            else:
+                                portMapValues.append(value)
+                        
+                    if (len(genericValues) > 0):
+                        i = 0
+                        keys = list(self.internalComponents[componentName][internalName]['generic'].keys())
+                        for gen in genericValues:
+                             self.internalComponents[componentName][internalName]['generic'][keys[i]] = gen
+                             i = i + 1
+                    else:
+                        self.internalComponents[componentName][internalName]['generic'] = generics                        
+
+                    if (len(portMapValues) > 0):
+                        i = 0
+                        keys = list(self.internalComponents[componentName][internalName]['portmap'].keys())
+                        for portmap in portMapValues:
+                             self.internalComponents[componentName][internalName]['portmap'][keys[i]] = portmap
+                             i = i + 1
+                    else:
+                        self.internalComponents[componentName][internalName]['portmap'] = portMap                        
+
 
     def strip(self,array):
         for i in range(len(array)-1):
