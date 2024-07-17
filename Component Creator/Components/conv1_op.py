@@ -127,6 +127,7 @@ class Conv1Op(ComponentCommonMethods):
 
             self.addInternalSignalWire(name=f"w_MUX_I_VET_{i}",dataType="t_ARRAY_OF_LOGIC_VECTOR(0 to (2**NC_SEL_WIDTH)-1)(31 downto 0)", initialValue="(others => (others => '0'))")
 
+            # IOBUFFER ALTERADO, ALTERAR A ADIÇÃO
             IOBufferportmap = {'i_CLK'        :'i_CLK',
                                 'i_CLR'        :'i_CLR',
                                 'i_DATA'       :f"i_IN_DATA({i})",

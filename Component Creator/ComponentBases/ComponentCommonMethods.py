@@ -61,26 +61,35 @@ use ieee.numeric_std.all;"""
         newGeneric = Generic(name, dataType, initialValue)
         self.generics.append(newGeneric)
     
-    def addInputPortByParameters(self, name, dataType, connection = ''):
-        newInputPort = Port(name,dataType,connection)
+    def addInputPortByParameters(self, name, dataType, connection = '', initialValue =''):
+        newInputPort = Port(name,dataType,connection,initialValue)
         self.portMap['in'].append(newInputPort)
     
-    def addOutputPortByParameters(self, name, dataType, connection = ''):
-        newOutputPort = Port(name,dataType,connection)
+    def addOutputPortByParameters(self, name, dataType, connection = '', initialValue=''):
+        newOutputPort = Port(name,dataType,connection,initialValue)
         self.portMap['out'].append(newOutputPort)
 
-    def addMultipleGeneratedInputPorts(self, qtPorts, dataType, name = ''):
+    def addMultipleGeneratedInputPorts(self, qtPorts, dataType, name = '',initialValue=''):
         for i in range(0, qtPorts):
             portName = name
             if name == '':
                 portName = f"i_PORT_{i}"
             else:
                 portName = f"{name}_{i}"
-            self.addInputPortByParameters(portName,dataType)
+            self.addInputPortByParameters(name=portName,
+                                          dataType=dataType,
+                                          initialValue=initialValue)
                 
-    def addMultipleGeneratedOutputPorts(self, qtPorts, dataType):
+    def addMultipleGeneratedOutputPorts(self, qtPorts, dataType,name = '', initialValue = ''):
         for i in range(0, qtPorts):
-            self.addOutputPortByParameters(f"o_PORT_{i}", dataType)
+            portName = name
+            if name == '':
+                portName = f"o_PORT_{i}"
+            else:
+                portName = f"{name}_{i}"
+            self.addOutputPortByParameters(name=portName,
+                                           dataType=dataType,
+                                           initialValue=initialValue)
 
     def getObjectCall(self, objectName):
         genericCall = ''
@@ -136,10 +145,11 @@ use ieee.numeric_std.all;"""
                 first = False
             else:
                 callPortMap = callPortMap + f'              {i.name} : in {i.dataType}{initialValue};\n'
-        for i in self.portMap['out']:
-            if(i.initialValue != ''):
-                initialValue = f":= {i.initialValue}"
-            callPortMap = callPortMap + f'              {i.name} : out {i.dataType}{initialValue};\n'
+        initialValue = ''
+        for j in self.portMap['out']:
+            if(j.initialValue != ''):
+                initialValue = f":= {j.initialValue}"
+            callPortMap = callPortMap + f'              {j.name} : out {j.dataType}{initialValue};\n'
                 
         if callPortMap.endswith(';\n'):
             callPortMap = callPortMap[:-2]
@@ -315,10 +325,14 @@ use ieee.numeric_std.all;"""
         self.internalVariables = []
         self.generics = []
         self.internalTypes = []
+        self.internalConstants = []
 
 
-    def addArrayTypeOnArchitecture(self, name, type,size):
-        self.internalTypes.append(Type(name,type,size))
+    def addArrayTypeOnArchitecture(self, name, datatype, size):
+        self.internalTypes.append(Type(name=name,dataType=datatype,size=size))
+
+    def addStateTypeOnArchitecture(self, name, states):
+        self.internalTypes.append(Type(name=name,states=states,type='state'))
 
     def getTypesDeclarations(self):
         typesDeclarations = ''

@@ -22,17 +22,58 @@ class Pooling(ComponentCommonMethods):
                                                           'dataType': 't_MAT',
                                                            "initialValue":"(others =>  ( others => '0'))"})
         
-        if (poolingType.lower == 'max'):
-            self.addInternalComponent(component=GreaterComparissonTree(,pixelDataWidth))
+        poolingPortmap = self.getPoolingPortmap(qtPixelsRows,qtPixelsRows)
+        if (poolingType == 'max'):
+            self.addInternalComponent(component=GreaterComparissonTree(qtInputs=qtPixelsPerRow*qtPixelsRows,
+                                                                       dataWidth=pixelDataWidth),
+                                      componentCallName='Tree',
+                                      portmap=poolingPortmap)
         
-        if (poolingType.lower == 'avg'):
+        if (poolingType == 'avg'):
             self.addInternalComponent(component=AverageTree(qtInputs=qtPixelsPerRow*qtPixelsRows,
                                                             inputDataWidth=pixelDataWidth),
-                                      componentCallName='Tree'))
+                                      componentCallName='Tree',
+                                      portmap=poolingPortmap)
         self.internalOperations = """ """
-        self.addSumTree(qtInputs,inputDataWidth)
+        self.setInternalProcess(qtPixelsRows,qtPixelsPerRow)
         self.OutputEntityAndArchitectureFile()
 
 
+    def getPoolingPortmap(self,qtPixelsRows,qtPixelsPerRow):
+        portmap = {}
+        counter = 0
+        for i in range(0,qtPixelsRows):
+            for j in range(0,qtPixelsPerRow):
+                portmap[f'i_PIX_{counter}'] = f'w_PIX_ROW_{i}({j})'
+                counter = counter + 1
 
+        portmap['o_PIX'] = 'o_PIX'
+        return portmap
 
+    def setInternalProcess(self,qtPixelsRows,qtPixelsPerRow):
+
+        self.addInternalOperationLine('''
+        p_DESLOCAMENTO : process (i_CLR, i_CLK)
+            begin
+                if (i_CLR = '1') then ''')
+        
+        for i in range(qtPixelsRows):
+            self.addInternalOperationLine(f"                    w_PIX_ROW_{i} <= (others =>  ( others => '0'));")
+
+        self.addInternalOperationLine('''
+                elsif (rising_edge(i_CLK)) then
+                    if (i_PIX_SHIFT_ENA = '1') then ''')
+        
+        for i in range(0,qtPixelsRows):
+            for j in range(0,qtPixelsPerRow-1):            
+                self.addInternalOperationLine(f'                        w_PIX_ROW_{i}({j+1}) <= w_PIX_ROW_{i}({j});')
+
+        self.addInternalOperationLine('')
+        for i in range(0,qtPixelsRows):
+            self.addInternalOperationLine(f'                        w_PIX_ROW_{i}(0) <= i_PIX_ROW_{i};')
+
+        self.addInternalOperationLine('''
+                    end if;           
+                end if;        
+            end process;
+        ''')

@@ -4,13 +4,15 @@ use ieee.numeric_std.all;
                  
     entity CNN2FPGAVHDL is
         
-        port (i_PIX_0 : in STD_LOGIC_VECTOR (7 downto 0);
-              i_PIX_1 : in STD_LOGIC_VECTOR (7 downto 0);
-              i_PIX_2 : in STD_LOGIC_VECTOR (7 downto 0);
-              i_PIX_3 : in STD_LOGIC_VECTOR (7 downto 0);
-              i_PIX_4 : in STD_LOGIC_VECTOR (7 downto 0);
-              i_PIX_5 : in STD_LOGIC_VECTOR (7 downto 0);
-              o_PIX : out STD_LOGIC_VECTOR (7 downto 0)
+        port (i_CLK : in STD_LOGIC;
+              i_CLR : in STD_LOGIC;
+              i_GO : in STD_LOGIC;
+              o_READY : out STD_LOGIC;
+              o_PIX_SHIFT_ENA : out STD_LOGIC;
+              o_OUT_WRITE_ENA : out std_logic;
+              o_OUT_WRITE_ADDR : out std_logic_vector (9 downto 0):= (others => '0');
+              o_IN_READ_ADDR_0 : out std_logic_vector (9 downto 0):= (others => '0');
+              o_IN_READ_ADDR_1 : out std_logic_vector (9 downto 0):= (others => '0')
         );
     end CNN2FPGAVHDL;
                  
@@ -18,15 +20,17 @@ use ieee.numeric_std.all;
 
 
         begin 
-        averageTree_6 : entity work.averageTree_6
+        poolingController : entity work.poolingController
         port map (
-            i_PIX_0  => i_PIX_0,
-            i_PIX_1  => i_PIX_1,
-            i_PIX_2  => i_PIX_2,
-            i_PIX_3  => i_PIX_3,
-            i_PIX_4  => i_PIX_4,
-            i_PIX_5  => i_PIX_5,
-            o_PIX  => o_PIX
+            i_CLK  => i_CLK,
+            i_CLR  => i_CLR,
+            i_GO  => i_GO,
+            o_READY  => o_READY,
+            o_PIX_SHIFT_ENA  => o_PIX_SHIFT_ENA,
+            o_OUT_WRITE_ENA  => o_OUT_WRITE_ENA,
+            o_OUT_WRITE_ADDR  => o_OUT_WRITE_ADDR,
+            o_IN_READ_ADDR_0  => o_IN_READ_ADDR_0,
+            o_IN_READ_ADDR_1  => o_IN_READ_ADDR_1
         );
 
     end arc;
