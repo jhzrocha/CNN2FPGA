@@ -5,17 +5,19 @@ from ComponentBases.generic import Generic
 class Multiplicator(ComponentCommonMethods):
 
     
-    def __init__(self):
-        self.minimalComponentFileName = 'multiplicator'
+    def __init__(self, qtBits = 8):
+        self.minimalComponentFileName = f'multiplicator_{qtBits}b'
         self.portMap =   { 'in': [
-                                Port('i_DATA','signed(0 to p_QT_BITS-1)'),
-                                Port('i_KERNEL','signed(0 to p_QT_BITS-1)'),
+                                Port('i_DATA',f'signed(0 to {qtBits-1})'),
+                                Port('i_KERNEL',f'signed(0 to {qtBits-1})'),
                                 Port('i_ENA','std_logic')
                             ],
                         'out': [Port('o_VALUE','integer')] 
                     }
+        self.addInternalSignalWire(name='w_O_VALUE', 
+                                   dataType='integer', 
+                                   initialValue=0)
         
-
         self.internalOperations = """
             multi:
             process(i_DATA,i_KERNEL,i_ENA)
@@ -27,8 +29,6 @@ class Multiplicator(ComponentCommonMethods):
             end process multi;
             o_VALUE <= w_O_VALUE;
         """
-        self.addInternalSignalWire('w_O_VALUE', 'integer', 0)
 
-        self.generics = [Generic('p_QT_BITS','natural','8')]
         self.OutputEntityAndArchitectureFile()
 

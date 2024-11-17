@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'vhdlGenerator.apps.VhdlgeneratorConfig'
+    'vhdlGenerator.apps.VhdlgeneratorConfig',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
