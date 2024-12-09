@@ -11,23 +11,13 @@
     <link rel="stylesheet" href="./assets/style/style.css">
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid form">
         <div class="row">
-            <!-- Sidebar -->
-            <aside class="col-sm-1 bg-dark text-white p-3">
-                <div class="text-center mb-4">
-                    <img src="./assets/icons/logo.png" alt="Interface Gráfica" class="img-fluid">
-                </div>
-                <nav class="nav flex-column">
-                    <a class="nav-link text-white active" href="#">VHDL</a>
-                </nav>
-            </aside>
-
             <!-- Main Content -->
-            <main class="col-md-10 p-4">
-                <h1 class="mb-4">Gerador de Código VHDL</h1>
+            <main class="col-lg-12 p-4 ">
+                <h1 class="mb-4">CNN2FPGA</h1>
                 
-                <form class="mb-4">
+                <form class="ms-10  ">
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="tipo-imagem" class="form-label">Tipo da Imagem</label>
@@ -63,9 +53,11 @@
                     <div class="camadas mb-4" id="dropZone">
                         <button class="btn btn-outline-primary" id="addCardButton">+</button>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <button id="addCardButton" class="btn btn-primary" href="style.css" download>Gerar</button>
+                    
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" type="button">Gerar</button>
                     </div>
+
                 </form>
 
                 <!-- Drop Zone for Camadas -->
@@ -102,6 +94,55 @@
             </div>
         </div>
     </div>
+    <section class="info_section layout_padding2">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-5 info_col">
+              <div class="info_detail">
+                <h4>
+                  Info
+                </h4>
+                <p>Desenvolvido como trabalho de conclusão de Curso de engenharia da computação</p>
+              </div>
+            </div>
+            <div class="col-lg-5 mx-auto info_col">
+              <div class="info_link_box">
+                <h4>
+                  Links
+                </h4>
+                <div class="info_links">
+                  <a class="active" href="index.html">
+                    <img src="images/nav-bullet.png" alt="">
+                    Dissertação
+                  </a>
+                  <a class="" href="about.html">
+                    <img src="images/nav-bullet.png" alt="">
+                    Citação
+                  </a>
+                  <a class="" href="service.html">
+                    <img src="images/nav-bullet.png" alt="">
+                    Repositório
+                  </a>    
+                  <a class="" href="contact.html">
+                    <img src="images/nav-bullet.png" alt="">
+                    Contato
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- footer section -->
+  <section class="footer_section">
+    <div class="container">
+      <p>
+        &copy; <span id="displayYear"></span> Desenvolvido por
+        <a href="https://github.com/jhzrocha">João Heitor</a>
+      </p>
+    </div>
+  </section>
+  <!-- footer section -->
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
