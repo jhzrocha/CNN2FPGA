@@ -22,7 +22,8 @@ class ComponentCommonMethods:
 
     importHeader = """library IEEE;
 use IEEE.std_logic_1164.all;
-use ieee.numeric_std.all;"""
+use ieee.numeric_std.all;
+use work.types_pkg.all;"""
 
     entityDeclaration = """
     entity {} is
@@ -55,9 +56,10 @@ use ieee.numeric_std.all;"""
     variableWiresDeclarations = ''
 
     genericsDeclaration = 'generic ({});'
+    typesToTypesPackage = []
 
        
-    def addGenericByParameters(self, name, dataType, initialValue):
+    def addGenericByParameters(self, name, dataType, initialValue=''):
         newGeneric = Generic(name, dataType, initialValue)
         self.generics.append(newGeneric)
     
@@ -104,6 +106,7 @@ use ieee.numeric_std.all;"""
             else:
                 callPortMap = callPortMap + f"            {i.name}  => {i.connection},\n"
         for i in self.portMap['out']:
+               if (i.connection != ''):
                 callPortMap = callPortMap + f"            {i.name}  => {i.connection},\n"
         if callPortMap.endswith(',\n'):
             callPortMap = callPortMap[:-2]
@@ -145,7 +148,7 @@ use ieee.numeric_std.all;"""
                 first = False
             else:
                 callPortMap = callPortMap + f'              {i.name} : in {i.dataType}{initialValue};\n'
-        initialValue = ''
+            initialValue = ''
         for j in self.portMap['out']:
             if(j.initialValue != ''):
                 initialValue = f":= {j.initialValue}"
@@ -202,6 +205,7 @@ use ieee.numeric_std.all;"""
             
     def addInternalComponent(self, component, componentCallName, portmap=None, generics=None):
         internalComponent = deepcopy(component)
+        setattr(self, componentCallName, internalComponent)
         if(generics):
             for genericKey in generics.keys():
                 for gen in internalComponent.generics:
@@ -249,6 +253,7 @@ use ieee.numeric_std.all;"""
             self.setProcessment(self.internalOperations)
         fileHandler = FileHandler("Output")
         fileHandler.addFile(f"{self.minimalComponentFileName}.vhd",self.getEntityAndArchitectureFile())
+        fileHandler.addTypesToPackageFile(self.typesToTypesPackage)
         del fileHandler
     
     def generateWireDeclarations(self):
@@ -342,3 +347,16 @@ use ieee.numeric_std.all;"""
     
     def addInternalOperationLine(self, operationLine):
         self.internalOperations = self.internalOperations + '\n' + operationLine
+
+    def defineTypeOnTypePackage(self, type):
+        self.typesToTypesPackage.append(type)
+    
+    def getPortDataType(self,nmPort):
+        for port in self.portMap['in']:
+            if(port.getName() == nmPort):
+                return port.getdataType()
+        
+        for port in self.portMap['out']:
+            if(port.getName() == nmPort):
+                return port.getdataType()
+        return None

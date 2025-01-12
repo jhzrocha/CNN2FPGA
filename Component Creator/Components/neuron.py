@@ -9,7 +9,7 @@ class Neuron(ComponentCommonMethods):
     # Não testado
        def __init__(self, inDataWidth=8,outDataWidth=32):
               self.startInstance()
-              self.minimalComponentFileName = 'neuron'
+              self.minimalComponentFileName = f'neuron_{inDataWidth}_{outDataWidth}'
               self.portMap =   { 'in': [Port('i_CLK','STD_LOGIC'),
                                    Port('i_CLR','STD_LOGIC'),
                                    Port('i_ACC_ENA','STD_LOGIC'),

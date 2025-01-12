@@ -5,7 +5,7 @@ class ArvoreSomaConv(ComponentCommonMethods):
 
     def __init__(self, qtInputs, inputDataWidth, outputDataWidth):
         self.startInstance()
-        self.minimalComponentFileName = f"arvore_soma_conv_{qtInputs}"
+        self.minimalComponentFileName = f"arvore_soma_conv_{qtInputs}_{inputDataWidth}_{outputDataWidth}"
         self.portMap =   { 'in': [],
                             'out': [Port('o_DATA',f'STD_LOGIC_VECTOR ({outputDataWidth-1} downto 0)')]
                     }

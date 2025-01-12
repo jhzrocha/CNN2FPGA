@@ -1,13 +1,12 @@
-from Components.nucleoConvolucional import NucleoConvolucional
-from Components.parallelMultiply import ParallelMultiplicator
+from Components.io_buffer import IOBuffer
 from Spinal.Spinal import Spinal
-
+from Components.conv1_op import Conv1Op
 
 projectSpinal = Spinal()
+obj = Conv1Op()
 
-registrador1 = ParallelMultiplicator(inputQtBits=8)
+projectSpinal.setTopEntityComponent(obj)
 
-projectSpinal.setTopEntityComponent(registrador1)
 projectSpinal.start()
 
 

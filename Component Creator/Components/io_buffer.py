@@ -3,15 +3,13 @@ from ComponentBases.port import Port
 from Components.ram import RAM
 class IOBuffer(ComponentCommonMethods):
 
-#    Não testado no modelsim
+#    Testado no modelsim
     def __init__(self, qtBlocks=3, dataWidth=8, addrWidth=10, RAMsize =128):
         self.startInstance()
-        self.minimalComponentFileName = 'IOBuffer'
+        self.minimalComponentFileName = f'IOBuffer_{qtBlocks}b_{dataWidth}dw_{addrWidth}adw_{RAMsize}ramSize'
         self.portMap =   { 'in': [
                                     Port(name='i_CLK',dataType="std_logic"),
-                                    Port(name='i_CLR',dataType="std_logic"),
                                     Port(name='i_DATA',dataType=f"std_logic_vector ({dataWidth-1} downto 0)"),
-                                    Port(name='i_READ_ENA',dataType="std_logic"),
                                     Port(name='i_WRITE_ENA',dataType="std_logic"),
                                     Port(name='i_SEL_LINE',dataType=f"std_logic_vector ({len(bin(qtBlocks)[2:])-1} downto 0)"),
                                     Port(name='i_WRITE_ADDR',dataType=f"std_logic_vector ({addrWidth-1} downto 0)",initialValue="(others => '0')")
@@ -19,7 +17,7 @@ class IOBuffer(ComponentCommonMethods):
                             'out': []
                     }
 
-        self.addArrayTypeOnArchitecture(name='t_BLOCKS_ADDR',type=f'STD_LOGIC_VECTOR({addrWidth-1} downto 0)',size=3)
+        self.addArrayTypeOnArchitecture(name='t_BLOCKS_ADDR',datatype=f'STD_LOGIC_VECTOR({addrWidth-1} downto 0)',size=3)
         self.addInternalSignalWire(name='w_ADDRs',dataType='t_BLOCKS_ADDR',initialValue="(others => (others => '0'))")
         self.addInternalSignalWire(name='w_WRITE_ENA',dataType=f'STD_LOGIC_VECTOR({qtBlocks-1} downto 0)',initialValue="(others => '0')")
         

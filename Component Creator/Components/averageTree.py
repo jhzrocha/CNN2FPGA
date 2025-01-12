@@ -6,7 +6,7 @@ class AverageTree(ComponentCommonMethods):
    
     def __init__(self, qtInputs, inputDataWidth):
         self.startInstance()
-        self.minimalComponentFileName = f'averageTree_{qtInputs}'
+        self.minimalComponentFileName = f'averageTree_{qtInputs}_{inputDataWidth}'
         self.portMap =   { 'in': [],
                            'out': [
                                    Port('o_PIX',f'STD_LOGIC_VECTOR ({inputDataWidth-1} downto 0)')] 

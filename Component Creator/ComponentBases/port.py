@@ -3,6 +3,7 @@ class Port:
     name = ''
     dataType = ''
     connection = ''
+    initialValue=''
 
     def __init__(self, name,dataType, connection = '', initialValue = ''):
         self.name = name
@@ -27,4 +28,11 @@ class Port:
     
     def getConnection(self):
         return self.getConnection
+    
+    def __str__(self):
+        return f'''
+                name: {self.name}
+                dataType: {self.dataType}
+                connection: {self.connection}
+                initialValue: {self.initialValue}'''
     

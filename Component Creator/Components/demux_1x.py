@@ -3,19 +3,18 @@ from ComponentBases.port import Port
 
 class Demux_1x(ComponentCommonMethods):
 
-   
-    def __init__(self, qtOutputs):
+   #Testado
+    def __init__(self, qtOutputs, inputDataWidth = 8):
         self.startInstance()
-        self.minimalComponentFileName = f"demux1x{qtOutputs}"
+        self.minimalComponentFileName = f"demux1x{qtOutputs}_{inputDataWidth}b"
         self.selectionWidth = len(self.integerToBinary(qtOutputs))
         self.portMap =   { 'in': [
-                                Port('i_A',"std_logic_vector(i_WIDTH-1 DOWNTO 0)"),
+                                Port('i_A',f"std_logic_vector({inputDataWidth-1} DOWNTO 0)"),
                                 Port('i_SEL',f"std_logic_vector ({self.getOptionLength()-1} DOWNTO 0)")
                                 ],
                             'out': []
                     }
-        self.addGenericByParameters(name='i_WIDTH',dataType='integer',initialValue=8)
-        self.addMultipleGeneratedOutputPorts(qtOutputs,"std_logic_vector(i_WIDTH-1 DOWNTO 0)")
+        self.addMultipleGeneratedOutputPorts(qtOutputs,f"std_logic_vector({inputDataWidth-1} DOWNTO 0)")
         self.internalOperations = f"""
 {self.setInternalOperations()}
         """

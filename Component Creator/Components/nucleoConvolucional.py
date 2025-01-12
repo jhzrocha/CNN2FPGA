@@ -4,32 +4,32 @@ from Components.demux_1x import Demux_1x
 from Components.multiplicador_conv import MultiplicadorConv
 from Components.arvore_soma_conv import ArvoreSomaConv
 class NucleoConvolucional(ComponentCommonMethods):
-#    Não testado
-    def __init__(self, qtRows, qtColumns, qtPixelsPerRow):
+    
+    #Compilado
+    #Testado
+    #Não testado na prática    
+    def __init__(self, qtRows, qtColumns, qtPixelsPerRow, inputDataWidth = 8, convolutionalOutput = 16, outputDataWidth = 32):
+
         self.startInstance()
         self.qtRows = qtRows
         self.qtColumns = qtColumns
         self.qtPixelsPerRow = qtPixelsPerRow
-        self.minimalComponentFileName = f"nucleoConvolucional"
+        self.minimalComponentFileName = f"nucleoConvolucional_{qtRows}_{qtColumns}_{qtPixelsPerRow}_{inputDataWidth}_{convolutionalOutput}_{outputDataWidth}"
         self.portMap =   { 'in': [
-                                Port('i_CLK ','STD_LOGIC'),
+                                Port('i_CLK','STD_LOGIC'),
                                 Port('i_CLR','STD_LOGIC'),
                                 Port('i_PIX_SHIFT_ENA','STD_LOGIC'),
                                 Port('i_WEIGHT_SHIFT_ENA','STD_LOGIC'),
-                                Port('i_WEIGHT','STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0)')
+                                Port('i_WEIGHT',f'STD_LOGIC_VECTOR ({inputDataWidth - 1} downto 0)')
                                 ],
-                            'out': [Port('o_PIX','STD_LOGIC_VECTOR (o_DATA_WIDTH - 1 downto 0)')]
+                            'out': [Port('o_PIX',f'STD_LOGIC_VECTOR ({outputDataWidth - 1} downto 0)')]
                         }
         self.addMultipleGeneratedInputPorts(name='i_PIX_ROW', 
                                             qtPorts=qtRows,
-                                            dataType='STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0)')
-        self.addGenericByParameters(name='i_DATA_WIDTH', 
-                                    dataType='integer',
-                                    initialValue=8)
-        self.addGenericByParameters('w_CONV_OUT', 'integer',16)
-        self.addGenericByParameters('o_DATA_WIDTH', 'integer',32)
-        self.addArrayTypeOnArchitecture('t_MAT','STD_LOGIC_VECTOR(i_DATA_WIDTH - 1 downto 0)',qtRows)
-        self.addArrayTypeOnArchitecture('t_MULT_OUT_MAT','STD_LOGIC_VECTOR(w_CONV_OUT - 1 downto 0)',qtRows*qtColumns)
+                                            dataType=f'STD_LOGIC_VECTOR ({inputDataWidth - 1} downto 0)')
+
+        self.addArrayTypeOnArchitecture('t_MAT',f'STD_LOGIC_VECTOR({inputDataWidth - 1} downto 0)',qtRows)
+        self.addArrayTypeOnArchitecture('t_MULT_OUT_MAT',f'STD_LOGIC_VECTOR({convolutionalOutput-1} downto 0)', qtRows*qtColumns)
         self.addMultipleInternalSignalWires(qtRows, {'name': 'w_PIX_ROW',
                                                      'dataType':'t_MAT ',
                                                      'initialValue':"(others =>  ( others => '0'))"})
@@ -37,18 +37,17 @@ class NucleoConvolucional(ComponentCommonMethods):
                                                      'dataType':'t_MAT ',
                                                      'initialValue':"(others =>  ( others => '0'))"})
         self.addMultipleInternalSignalWires(qtRows, {'name': 'w_i_WEIGHT_ROW',
-                                                     'dataType':'STD_LOGIC_VECTOR (i_DATA_WIDTH - 1 downto 0)',
+                                                     'dataType':f'STD_LOGIC_VECTOR ({inputDataWidth-1} downto 0)',
                                                      'initialValue':''})
         self.addInternalSignalWire(name='w_MULT_OUT',dataType='t_MULT_OUT_MAT',initialValue="(others =>  ( others => '0'))")
-        internalDemux = Demux_1x(qtRows) 
+        internalDemux = Demux_1x(qtRows, inputDataWidth=inputDataWidth) 
         self.addInputPortByParameters(name='i_WEIGHT_ROW_SEL',
                                       dataType= f"STD_LOGIC_VECTOR ({internalDemux.getOptionLength() - 1} downto 0)")
         self.addInternalComponent(component=internalDemux, 
                                   componentCallName='u_DEMUX_PEX',
-                                  portmap=self.getDemuxPortmap(),
-                                  generics={'i_WIDTH':'i_DATA_WIDTH'}
+                                  portmap=self.getDemuxPortmap()
                                   )
-        self.setMultiConvs()
+        self.setMultiConvs(inputDataWidth, convolutionalOutput)
         self.internalOperations = f"""
         p_DESLOCAMENTO : process (i_CLR, i_CLK)
             begin
@@ -63,8 +62,10 @@ class NucleoConvolucional(ComponentCommonMethods):
             end if;        
         end process;
 """
-        self.addInternalComponent(ArvoreSomaConv(self.qtColumns*self.qtRows), 'u_ARVORE_SOMA_CONV', self.getArvoreSomaPortmap(), {'i_DATA_WIDTH':'w_CONV_OUT',
-                                                                                                                                'o_DATA_WIDTH':'o_DATA_WIDTH'})
+        self.addInternalComponent(ArvoreSomaConv(qtInputs= self.qtColumns*self.qtRows,
+                                                 inputDataWidth= convolutionalOutput,
+                                                 outputDataWidth= outputDataWidth
+                                                 ), 'u_ARVORE_SOMA_CONV', self.getArvoreSomaPortmap())
         self.OutputEntityAndArchitectureFile()
 
     def getResetBehavior(self):
@@ -101,18 +102,16 @@ class NucleoConvolucional(ComponentCommonMethods):
 
         return behavior
     
-    def setMultiConvs(self):
+    def setMultiConvs(self,inputDataWidth,convolutionalOutput):
         outCounter = 0
         for i in range(self.qtRows):
             for j in range(self.qtColumns):
-                self.addInternalComponent(component=MultiplicadorConv(),
+                self.addInternalComponent(component=MultiplicadorConv(inputDataWidth=inputDataWidth,
+                                                                      outputDataWidth=convolutionalOutput),
                                         componentCallName=f"u_MUL_{outCounter}",
                                         portmap={'i_DATA_1': f"w_PIX_ROW_{i}({j})",
                                             'i_DATA_2': f"w_WEIGHT_ROW_{i}({j})",
-                                            'o_DATA': f"w_MULT_OUT({outCounter})"},
-                                        generics={'i_DATA_WIDTH':'i_DATA_WIDTH',
-                                                  'o_DATA_WIDTH':'w_CONV_OUT'
-                                                  }
+                                            'o_DATA': f"w_MULT_OUT({outCounter})"}
                                         )
                 outCounter = outCounter + 1
     

@@ -1,20 +1,20 @@
 from ComponentBases.ComponentCommonMethods import ComponentCommonMethods
 from ComponentBases.port import Port
 
+    #Compilado
+    #Testado
 class Relu(ComponentCommonMethods):
 
-#    Não testado no modelsim
-    def __init__(self):
+    def __init__(self, dataWidth = 8):
         self.startInstance()
-        self.minimalComponentFileName = f"Relu"
+        self.minimalComponentFileName = f"Relu_{dataWidth}dw"
         self.portMap =   { 'in': [
-                                Port('i_PIX',f"STD_LOGIC_VECTOR (DATA_WIDTH - 1 downto 0)")
+                                Port('i_PIX',f"STD_LOGIC_VECTOR ({dataWidth-1} downto 0)")
                                 ],
-                            'out': [ Port('o_PIX',f"STD_LOGIC_VECTOR (DATA_WIDTH - 1 downto 0)")]
+                            'out': [ Port('o_PIX',f"STD_LOGIC_VECTOR ({dataWidth-1} downto 0)")]
                     }
-        self.addGenericByParameters(name='DATA_WIDTH',dataType='integer',initialValue=8)
         self.internalOperations = f"""
             -- atribui 0 aos numeros negativos, identificados pelo oitavo bit em 1
-            o_PIX <= i_PIX; -- "00000000" when (i_PIX(DATA_WIDTH - 1) = '1') else i_PIX;
+            o_PIX <= i_PIX; -- "00000000" when (i_PIX({dataWidth-1}) = '1') else i_PIX;
         """
         self.OutputEntityAndArchitectureFile()

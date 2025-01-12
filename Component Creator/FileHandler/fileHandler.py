@@ -6,7 +6,6 @@ class FileHandler:
         self.directoryName = directoryName
         self.directoryPath = os.path.abspath(os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir),self.directoryName))
         self.makeDirectory()
-        
 
     def makeDirectory(self):
         if not os.path.exists(self.directoryPath):
@@ -42,3 +41,26 @@ class FileHandler:
             if os.path.isfile(caminho_origem):
                 caminho_destino = os.path.join(self.directoryPath, arquivo)
                 shutil.copy2(caminho_origem, caminho_destino)
+    
+    def addTypesToPackageFile(self, typesToPackage):
+        if(len(typesToPackage)> 0):        
+            declarations = ''
+
+            filePath = os.path.join(self.directoryPath, 'types_pkg.vhd')
+
+            if (self.verifyIfFileExists('types_pkg', self.directoryName)):
+                with open(filePath, 'r') as file:
+                    fileContent = file.read()
+
+            for type in typesToPackage:
+                declarations = declarations + type.getDeclaration() + '\n'
+
+            defaultContent = f'''
+    LIBRARY ieee;
+    USE ieee.std_logic_1164.ALL;
+
+    PACKAGE types_pkg IS
+{declarations}
+    END PACKAGE types_pkg;'''
+            with open(filePath, 'w') as file:
+                file.write(defaultContent)

@@ -6,7 +6,7 @@ class Registrador(ComponentCommonMethods):
 
     
     def __init__(self, dataWidth = 8):
-        self.minimalComponentFileName = 'registrador'
+        self.minimalComponentFileName = f'registrador_{dataWidth}b'
         self.portMap =   { 'in': [
                                 Port('i_CLK','std_logic'),
                                 Port('i_CLR','std_logic'),

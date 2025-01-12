@@ -5,7 +5,7 @@ class GreaterComparissonTree(ComponentCommonMethods):
    
     def __init__(self, qtInputs, dataWidth):
         self.startInstance()
-        self.minimalComponentFileName = f'greaterComparissonTree_{qtInputs}'
+        self.minimalComponentFileName = f'greaterComparissonTree_{qtInputs}_{dataWidth}b'
         self.portMap =   { 'in': [],
                            'out': [
                                    Port('o_PIX',f'STD_LOGIC_VECTOR ({dataWidth-1} downto 0)')] 

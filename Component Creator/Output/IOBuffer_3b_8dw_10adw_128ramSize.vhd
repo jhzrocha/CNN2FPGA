@@ -1,13 +1,12 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.types_pkg.all;
                  
-    entity IOBuffer is
+    entity IOBuffer_3b_8dw_10adw_128ramSize is
         
         port (i_CLK : in std_logic;
-              i_CLR : in std_logic;
               i_DATA : in std_logic_vector (7 downto 0);
-              i_READ_ENA : in std_logic;
               i_WRITE_ENA : in std_logic;
               i_SEL_LINE : in std_logic_vector (1 downto 0);
               i_WRITE_ADDR : in std_logic_vector (9 downto 0):= (others => '0');
@@ -18,16 +17,16 @@ use ieee.numeric_std.all;
               o_DATA_ROW_1 : out std_logic_vector (7 downto 0);
               o_DATA_ROW_2 : out std_logic_vector (7 downto 0)
         );
-    end IOBuffer;
+    end IOBuffer_3b_8dw_10adw_128ramSize;
                  
-    architecture arc of IOBuffer is
+    architecture arc of IOBuffer_3b_8dw_10adw_128ramSize is
         type t_BLOCKS_ADDR is array(2 downto 0) of STD_LOGIC_VECTOR(9 downto 0);
         signal w_ADDRs : t_BLOCKS_ADDR := (others => (others => '0'));
         signal w_WRITE_ENA : STD_LOGIC_VECTOR(2 downto 0) := (others => '0');
 
 
         begin 
-        ram0 : entity work.RAM_10_8b
+        ram0 : entity work.RAM_10_8b_128
         port map (
             i_CLK  => i_CLK,
             i_ADDR  => w_ADDRs(0),
@@ -36,7 +35,7 @@ use ieee.numeric_std.all;
             o_DATA  => o_DATA_ROW_0
         );
  
-        ram1 : entity work.RAM_10_8b
+        ram1 : entity work.RAM_10_8b_128
         port map (
             i_CLK  => i_CLK,
             i_ADDR  => w_ADDRs(1),
@@ -45,7 +44,7 @@ use ieee.numeric_std.all;
             o_DATA  => o_DATA_ROW_1
         );
  
-        ram2 : entity work.RAM_10_8b
+        ram2 : entity work.RAM_10_8b_128
         port map (
             i_CLK  => i_CLK,
             i_ADDR  => w_ADDRs(2),
