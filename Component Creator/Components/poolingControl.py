@@ -4,7 +4,7 @@ from Components.counter import Counter
 
 class PoolingController(ComponentCommonMethods):
     # Compilado
-    # Não testado
+
     def __init__(self, qtAddrs=2, dataWidth = 8, addWidth = 10, maxAddr='0110000000'):
         self.startInstance()
         self.minimalComponentFileName = 'poolingController'
@@ -21,6 +21,17 @@ class PoolingController(ComponentCommonMethods):
         self.addMultipleGeneratedOutputPorts(qtAddrs,f'std_logic_vector ({addWidth-1} downto 0)','o_IN_READ_ADDR')       
         self.addStateTypeOnArchitecture(name='t_STATE',
                                         states=['s_IDLE','s_LOAD_PIX1','s_REG_PIX1','s_LOAD_PIX2','s_REG_PIX2','s_WRITE_OUT','s_LAST_ROW','s_END'])
+        
+        
+        self.addInternalComponent(component=Counter(dataWidth=addWidth,
+                                                    bitStep=1),
+                                  componentCallName='u_INPUT_ADDR',
+                                  portmap={'i_CLK':'i_CLK',
+                                           'i_RESET':'w_RST_IN_ADDR',
+                                           'i_INC':'w_INC_IN_ADDR',
+                                           'i_RESET_VAL':"(others => '0')",
+                                           'o_Q':'w_IN_READ_ADDR'}
+                                  )
         
         self.addInternalSignalWire('r_STATE','t_STATE')
         self.addInternalSignalWire('w_NEXT','t_STATE')
@@ -96,24 +107,16 @@ class PoolingController(ComponentCommonMethods):
 
         o_READY <= '1' when (r_STATE = s_END) else '0';
  """
-        self.addInternalComponent(component=Counter(),
-                                  componentCallName='u_INPUT_ADDR',
-                                  portmap={'i_CLK':'i_CLK',
-                                           'i_RESET':'w_RST_IN_ADDR',
-                                           'i_INC':'w_INC_IN_ADDR',
-                                           'i_RESET_VAL':"(others => '0')",
-                                           'o_Q':'w_IN_READ_ADDR'},
-                                  generics={'DATA_WIDTH':addWidth,
-                                            'STEP':1})
-        self.addInternalComponent(component=Counter(),
+
+        self.addInternalComponent(component=Counter(dataWidth=addWidth,
+                                                    bitStep=1),
                                   componentCallName='u_OUTPUT_ADDR',
                                   portmap={'i_CLK':'i_CLK',
                                            'i_RESET':'i_CLR',
                                            'i_INC':'w_INC_OUT_ADDR',
                                            'i_RESET_VAL':"(others => '0')",
-                                           'o_Q':'o_OUT_WRITE_ADDR'},
-                                  generics={'DATA_WIDTH':addWidth,
-                                            'STEP':1})
+                                           'o_Q':'o_OUT_WRITE_ADDR'}
+                                 )
         self.OutputEntityAndArchitectureFile()
 
 

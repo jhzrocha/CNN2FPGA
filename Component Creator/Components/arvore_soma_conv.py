@@ -3,7 +3,7 @@ from ComponentBases.port import Port
 
 class ArvoreSomaConv(ComponentCommonMethods):
 
-    def __init__(self, qtInputs, inputDataWidth, outputDataWidth):
+    def __init__(self, qtInputs=9, inputDataWidth=16, outputDataWidth=32):
         self.startInstance()
         self.minimalComponentFileName = f"arvore_soma_conv_{qtInputs}_{inputDataWidth}_{outputDataWidth}"
         self.portMap =   { 'in': [],

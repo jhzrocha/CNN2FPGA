@@ -1,9 +1,10 @@
 from Components.io_buffer import IOBuffer
 from Spinal.Spinal import Spinal
-from Components.conv1_op import Conv1Op
+from Components.conv1_crt import ConvCrt
+from Components.maxPooling import MaxPooling
 
 projectSpinal = Spinal()
-obj = Conv1Op()
+obj = MaxPooling()
 
 projectSpinal.setTopEntityComponent(obj)
 

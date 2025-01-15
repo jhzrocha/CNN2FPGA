@@ -150,6 +150,7 @@ use work.types_pkg.all;"""
                 callPortMap = callPortMap + f'              {i.name} : in {i.dataType}{initialValue};\n'
             initialValue = ''
         for j in self.portMap['out']:
+            initialValue = ''
             if(j.initialValue != ''):
                 initialValue = f":= {j.initialValue}"
             callPortMap = callPortMap + f'              {j.name} : out {j.dataType}{initialValue};\n'
