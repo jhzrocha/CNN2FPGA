@@ -140,6 +140,7 @@ use work.types_pkg.all;"""
         first = True
         initialValue = ''
         for i in self.portMap['in']:
+            self.verifySignalDataType(i)
             if(i.initialValue != ''):
                 initialValue = f":= {i.initialValue}"
 
@@ -150,6 +151,7 @@ use work.types_pkg.all;"""
                 callPortMap = callPortMap + f'              {i.name} : in {i.dataType}{initialValue};\n'
             initialValue = ''
         for j in self.portMap['out']:
+            self.verifySignalDataType(j)
             initialValue = ''
             if(j.initialValue != ''):
                 initialValue = f":= {j.initialValue}"
@@ -259,6 +261,7 @@ use work.types_pkg.all;"""
     
     def generateWireDeclarations(self):
         for signal in self.internalSignalWires:
+            self.verifySignalDataType(signal)
             if signal.initialValue != '':
                 self.signalWiresDeclarations = self.signalWiresDeclarations + f"        signal {signal.name} : {signal.dataType} := {signal.initialValue};\n"
             else:
@@ -355,9 +358,28 @@ use work.types_pkg.all;"""
     def getPortDataType(self,nmPort):
         for port in self.portMap['in']:
             if(port.getName() == nmPort):
-                return port.getdataType()
+                if (not self.isArrayInDataType(port.getdataType())):
+                    return port.getdataType()
+                else:
+                    return f'{port.getName()}_{self.minimalComponentFileName}'
         
         for port in self.portMap['out']:
             if(port.getName() == nmPort):
-                return port.getdataType()
+                if (not self.isArrayInDataType(port.getdataType())):
+                    return port.getdataType()
+                else:
+                    return f'{port.getName()}_{self.minimalComponentFileName}'
         return None
+    
+    def verifySignalDataType(self, signal):
+        if (self.isArrayInDataType(signal.getdataType())):
+            self.defineTypeOnTypePackage(Type(f'{signal.getName()}_{self.minimalComponentFileName}',
+                                              declaration=signal.getdataType()))
+            signal.setdataType(f'{signal.getName()}_{self.minimalComponentFileName}')
+    
+    def isArrayInDataType(self, dataType):
+        if 'array' in dataType:
+            return True
+        return False
+        
+        

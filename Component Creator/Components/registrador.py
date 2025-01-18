@@ -6,17 +6,22 @@ class Registrador(ComponentCommonMethods):
 
     
     def __init__(self, dataWidth = 8):
-        self.minimalComponentFileName = f'registrador_{dataWidth}b'
+        self.dataWidth = dataWidth
+        self.createComponent()
+        
+    def createComponent(self):    
+        self.startInstance()
+        self.minimalComponentFileName = f'registrador_{self.dataWidth}b'
         self.portMap =   { 'in': [
                                 Port('i_CLK','std_logic'),
                                 Port('i_CLR','std_logic'),
                                 Port('i_ENA','std_logic'),
-                                Port('i_A',f'std_logic_vector({dataWidth -1} DOWNTO 0)')
+                                Port('i_A',f'std_logic_vector({self.dataWidth -1} DOWNTO 0)')
                             ],
-                            'out': [Port('o_Q',f'std_logic_vector({dataWidth -1} DOWNTO 0)')] 
+                            'out': [Port('o_Q',f'std_logic_vector({self.dataWidth -1} DOWNTO 0)')] 
                     }
         
-        self.addInternalSignalWire('r_A', f'std_logic_vector({dataWidth -1} DOWNTO 0)')
+        self.addInternalSignalWire('r_A', f'std_logic_vector({self.dataWidth-1} DOWNTO 0)')
         self.internalOperations = """
             process (i_CLK, i_CLR, i_ENA, i_A)
             begin 

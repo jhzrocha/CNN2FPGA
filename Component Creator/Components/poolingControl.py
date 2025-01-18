@@ -7,7 +7,7 @@ class PoolingController(ComponentCommonMethods):
 
     def __init__(self, qtAddrs=2, dataWidth = 8, addWidth = 10, maxAddr='0110000000'):
         self.startInstance()
-        self.minimalComponentFileName = 'poolingController'
+        self.minimalComponentFileName = f'poolingController_{qtAddrs}_{dataWidth}_{addWidth}_{maxAddr}'
         self.portMap =   { 'in': [Port('i_CLK','STD_LOGIC'),
                                   Port('i_CLR','STD_LOGIC'),
                                   Port('i_GO','STD_LOGIC')],
