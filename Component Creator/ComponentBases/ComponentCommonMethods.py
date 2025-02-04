@@ -4,6 +4,7 @@ from ComponentBases.wire import Wire
 from ComponentBases.type import Type
 from ComponentBases.constant import Constant
 from copy import deepcopy
+import re
 from FileHandler.fileHandler import FileHandler
 
 
@@ -140,7 +141,7 @@ use work.types_pkg.all;"""
         first = True
         initialValue = ''
         for i in self.portMap['in']:
-            self.verifySignalDataType(i)
+            self.verifyDataType(i)
             if(i.initialValue != ''):
                 initialValue = f":= {i.initialValue}"
 
@@ -151,7 +152,7 @@ use work.types_pkg.all;"""
                 callPortMap = callPortMap + f'              {i.name} : in {i.dataType}{initialValue};\n'
             initialValue = ''
         for j in self.portMap['out']:
-            self.verifySignalDataType(j)
+            self.verifyDataType(j)
             initialValue = ''
             if(j.initialValue != ''):
                 initialValue = f":= {j.initialValue}"
@@ -261,7 +262,7 @@ use work.types_pkg.all;"""
     
     def generateWireDeclarations(self):
         for signal in self.internalSignalWires:
-            self.verifySignalDataType(signal)
+            self.verifyDataType(signal)
             if signal.initialValue != '':
                 self.signalWiresDeclarations = self.signalWiresDeclarations + f"        signal {signal.name} : {signal.dataType} := {signal.initialValue};\n"
             else:
@@ -358,28 +359,38 @@ use work.types_pkg.all;"""
     def getPortDataType(self,nmPort):
         for port in self.portMap['in']:
             if(port.getName() == nmPort):
-                if (not self.isArrayInDataType(port.getdataType())):
-                    return port.getdataType()
-                else:
-                    return f'{port.getName()}_{self.minimalComponentFileName}'
+                self.verifyDataType(port)
+                return port.getdataType()
         
         for port in self.portMap['out']:
             if(port.getName() == nmPort):
-                if (not self.isArrayInDataType(port.getdataType())):
-                    return port.getdataType()
-                else:
-                    return f'{port.getName()}_{self.minimalComponentFileName}'
+                self.verifyDataType(port)
+                return port.getdataType()
         return None
+
+    def verifyDataType(self, subcomponent):
+        if (self.isArrayInDataType(subcomponent.getdataType())):
+            if(not self.verifyIfArrayWithOneElement(subcomponent)):
+                self.defineTypeOnTypePackage(Type(f'{subcomponent.getName()}_{self.minimalComponentFileName}',
+                                                declaration=subcomponent.getdataType()))
+                subcomponent.setdataType(f'{subcomponent.getName()}_{self.minimalComponentFileName}')
+            else:
+                subcomponent.setdataType(subcomponent.getdataType().split('of')[-1].strip())
+                self.verifyInitialValue(subcomponent)
     
-    def verifySignalDataType(self, signal):
-        if (self.isArrayInDataType(signal.getdataType())):
-            self.defineTypeOnTypePackage(Type(f'{signal.getName()}_{self.minimalComponentFileName}',
-                                              declaration=signal.getdataType()))
-            signal.setdataType(f'{signal.getName()}_{self.minimalComponentFileName}')
-    
+    def verifyInitialValue(self, subcomponent):
+        if subcomponent.initialValue != '':
+            if subcomponent.initialValue.count('=>') > 1:
+                subcomponent.initialValue = re.sub(r"\(others\s*=>\s*\(others\s*=>\s*'0'\)\)", "(others => '0')", subcomponent.initialValue)
+
     def isArrayInDataType(self, dataType):
         if 'array' in dataType:
             return True
         return False
         
-        
+    def verifyIfArrayWithOneElement(self, signal):
+        if ('0 to 0' in signal.getdataType() or
+            '0 downto 0' in signal.getdataType()):
+            return True
+        return False
+   

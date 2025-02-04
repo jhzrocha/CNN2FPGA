@@ -1,11 +1,12 @@
-from Components.io_buffer import IOBuffer
 from Spinal.Spinal import Spinal
-from Components.fullyConnectedOperator import FullyConnectedOperator
+
+from Components.fullyConnectedLayer import FullyConnectedLayer
 
 projectSpinal = Spinal()
-obj = FullyConnectedOperator()
+obj = FullyConnectedLayer(weightsFileName='test1.mif', biasFileName='test2.mif')
 
 projectSpinal.setTopEntityComponent(obj)
 
 projectSpinal.start()
+
 

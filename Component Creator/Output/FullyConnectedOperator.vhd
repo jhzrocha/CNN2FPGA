@@ -8,7 +8,7 @@ use work.types_pkg.all;
         port (i_CLK : in std_logic;
               i_CLR : in std_logic;
               i_PIX : in std_logic_vector(7 downto 0);
-              i_WEIGHT : in i_WEIGHT_FullyConnectedOperator;
+              i_WEIGHT : in std_logic_vector(7 downto 0);
               i_REG_PIX_ENA : in std_logic;
               i_REG_WEIGHT_ENA : in std_logic;
               i_BIAS_SCALE : in std_logic_vector(31 downto 0);
@@ -24,15 +24,15 @@ use work.types_pkg.all;
     end FullyConnectedOperator;
                  
     architecture arc of FullyConnectedOperator is
-        signal w_NFC_OUT : w_NFC_OUT_FullyConnectedOperator := (others => (others => '0'));
-        signal w_ADD_BIAS_OUT : w_ADD_BIAS_OUT_FullyConnectedOperator := (others => (others => '0'));
-        signal w_A : w_A_FullyConnectedOperator := (others => (others => '0'));
+        signal w_NFC_OUT : std_logic_vector(31 downto 0) := (others => '0');
+        signal w_ADD_BIAS_OUT : std_logic_vector(31 downto 0) := (others => '0');
+        signal w_A : std_logic_vector(31 downto 0) := (others => '0');
         signal w_B : std_logic_vector(31 downto 0) := (others => '0');
-        signal w_SCALE_OUT : w_SCALE_OUT_FullyConnectedOperator := (others => (others => '0'));
-        signal w_CAST_OUT : w_CAST_OUT_FullyConnectedOperator := (others => (others => '0'));
-        signal w_SHIFT_OUT : w_SHIFT_OUT_FullyConnectedOperator := (others => (others => '0'));
-        signal w_OFFSET_OUT : w_OFFSET_OUT_FullyConnectedOperator := (others => (others => '0'));
-        signal w_CLIP_OUT : w_CLIP_OUT_FullyConnectedOperator := (others => (others => '0'));
+        signal w_SCALE_OUT : std_logic_vector(63 downto 0) := (others => '0');
+        signal w_CAST_OUT : std_logic_vector(31 downto 0) := (others => '0');
+        signal w_SHIFT_OUT : std_logic_vector(31 downto 0) := (others => '0');
+        signal w_OFFSET_OUT : std_logic_vector(31 downto 0) := (others => '0');
+        signal w_CLIP_OUT : std_logic_vector(7 downto 0) := (others => '0');
         signal r_REG_OUT : o_PIX_FullyConnectedOperator := (others => (others => '0'));
         signal w_BIAS_ADDR : std_logic_vector(0 downto 0) := (others => '0');
         signal w_SCALE : std_logic_vector(31 downto 0) := (others => '0');
@@ -84,8 +84,8 @@ use work.types_pkg.all;
             i_REG_WEIGHT_ENA  => i_REG_WEIGHT_ENA,
             i_ACC_CLR  => i_ACC_CLR,
             i_PIX  => i_PIX,
-            i_WEIGHT  => i_WEIGHT(0),
-            o_PIX  => w_NFC_OUT(0)
+            i_WEIGHT  => i_WEIGHT,
+            o_PIX  => w_NFC_OUT
         );
  
         u_REG_BIAS_0 : entity work.registrador_32b
@@ -102,7 +102,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_0,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(0)
         );
  
@@ -111,7 +111,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_1,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(1)
         );
  
@@ -120,7 +120,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_2,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(2)
         );
  
@@ -129,7 +129,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_3,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(3)
         );
  
@@ -138,7 +138,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_4,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(4)
         );
  
@@ -147,7 +147,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_5,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(5)
         );
  
@@ -156,7 +156,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_6,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(6)
         );
  
@@ -165,7 +165,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_7,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(7)
         );
  
@@ -174,7 +174,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_8,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(8)
         );
  
@@ -183,7 +183,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_9,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(9)
         );
  
@@ -192,7 +192,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_10,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(10)
         );
  
@@ -201,7 +201,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_11,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(11)
         );
  
@@ -210,7 +210,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_12,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(12)
         );
  
@@ -219,7 +219,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_13,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(13)
         );
  
@@ -228,7 +228,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_14,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(14)
         );
  
@@ -237,7 +237,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_15,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(15)
         );
  
@@ -246,7 +246,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_16,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(16)
         );
  
@@ -255,7 +255,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_17,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(17)
         );
  
@@ -264,7 +264,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_18,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(18)
         );
  
@@ -273,7 +273,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_19,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(19)
         );
  
@@ -282,7 +282,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_20,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(20)
         );
  
@@ -291,7 +291,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_21,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(21)
         );
  
@@ -300,7 +300,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_22,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(22)
         );
  
@@ -309,7 +309,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_23,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(23)
         );
  
@@ -318,7 +318,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_24,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(24)
         );
  
@@ -327,7 +327,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_25,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(25)
         );
  
@@ -336,7 +336,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_26,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(26)
         );
  
@@ -345,7 +345,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_27,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(27)
         );
  
@@ -354,7 +354,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_28,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(28)
         );
  
@@ -363,7 +363,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_29,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(29)
         );
  
@@ -372,7 +372,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_30,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(30)
         );
  
@@ -381,7 +381,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_31,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(31)
         );
  
@@ -390,7 +390,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_32,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(32)
         );
  
@@ -399,7 +399,7 @@ use work.types_pkg.all;
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_33,
-            i_A  => w_CLIP_OUT(0),
+            i_A  => w_CLIP_OUT,
             o_Q  => r_REG_OUT(33)
         );
  

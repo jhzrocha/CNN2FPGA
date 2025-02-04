@@ -5,15 +5,15 @@ from Components.neuron import Neuron
 from Components.registrador import Registrador
 from Components.oneHotEncoder import OneHotEncoder
 
-
+#Compilado
 class FullyConnectedOperator(ComponentCommonMethods):
     
     #NUM_UNITS - nrUnits
     #BIAS_ADDRESS_WIDTH - biasAddressWidth
     #SCALE_FACTOR - scaleFactor
     #SCALE_SHIFT - scaleShift
-#DATA_WIDTH - dataWidth
-    def __init__(self, nrUnits=1, biasAddressWidth=6, scaleFactor='"01000000000000000000000000000000"', scaleShift=7, dataWidth =8):
+    #DATA_WIDTH - dataWidth
+    def __init__(self, nrUnits=2, biasAddressWidth=6, scaleFactor='"01000000000000000000000000000000"', scaleShift=7, dataWidth =8):
         self.nrUnits = nrUnits
         self.biasAddressWidth = biasAddressWidth
         self.scaleFactor = scaleFactor
@@ -101,8 +101,8 @@ class FullyConnectedOperator(ComponentCommonMethods):
                                                 'i_REG_WEIGHT_ENA': 'i_REG_WEIGHT_ENA',
                                                 'i_ACC_CLR'       : 'i_ACC_CLR',
                                                 'i_PIX'           : f'i_PIX',
-                                                'i_WEIGHT'        : f'i_WEIGHT({i})',
-                                                'o_PIX'           : f'w_NFC_OUT({i})'})
+                                                'i_WEIGHT'        : f"i_WEIGHT{f'({i})' if i > 0 else ''}",
+                                                'o_PIX'           : f"w_NFC_OUT{f'({i})' if i > 0 else ''}"})
             self.addInternalComponent(component=Registrador(dataWidth=32),
                                       componentCallName=f'u_REG_BIAS_{i}',
                                       portmap={ 'i_CLK' : 'i_CLK',
@@ -112,16 +112,16 @@ class FullyConnectedOperator(ComponentCommonMethods):
                                                 'o_Q'   : f'w_REG_BIAS_OUT_{i}'})
             
             self.addInternalSignalWire(f'w_REG_BIAS_ENA_w_BIAS_ADDR_{i}', dataType='std_logic')
-            self.addInternalOperationLine(f'     w_REG_BIAS_ENA_w_BIAS_ADDR_{i}   <= i_REG_BIAS_ENA and w_BIAS_ADDR({i});')
+            self.addInternalOperationLine(f"     w_REG_BIAS_ENA_w_BIAS_ADDR_{i}   <= i_REG_BIAS_ENA and w_BIAS_ADDR{f'({i})' if i>1 else ''};")
 
-            self.addInternalOperationLine(f'     w_ADD_BIAS_OUT({i})   <= std_logic_vector(signed(w_NFC_OUT({i})) + signed(w_REG_BIAS_OUT_{i}));')
-            self.addInternalOperationLine(f'     w_A({i})(31 downto 0) <= w_ADD_BIAS_OUT({i});')
-            self.addInternalOperationLine(f'     w_SCALE_OUT({i}) <= std_logic_vector(signed(w_A({i})) * signed({self.scaleFactor}));')
-            self.addInternalOperationLine(f'     w_CAST_OUT({i}) <= w_SCALE_OUT({i})(62 downto 31);')
-            self.addInternalOperationLine(f'     w_SHIFT_OUT({i})({31-self.scaleShift} downto 0)  <= w_CAST_OUT({i})(31 downto {self.scaleShift});')
-            self.addInternalOperationLine(f"     w_SHIFT_OUT({i})(31 downto {31-self.scaleShift}) <= (others => '1') when (w_CAST_OUT({i})(31) = '1') else (others => '0');")
-            self.addInternalOperationLine(f"     w_OFFSET_OUT({i}) <= w_SHIFT_OUT({i}) + std_logic_vector(to_unsigned(82, 32));")
-            self.addInternalOperationLine(f"     w_CLIP_OUT({i}) <= w_OFFSET_OUT({i})(7 downto 0);")
+            self.addInternalOperationLine(f'     w_ADD_BIAS_OUT{f"({i})" if i>1 else ""}   <= std_logic_vector(signed(w_NFC_OUT{f"({i})" if i>1 else ""}) + signed(w_REG_BIAS_OUT_{i}));')
+            self.addInternalOperationLine(f'     w_A{f"({i})" if i>1 else ""}(31 downto 0) <= w_ADD_BIAS_OUT{f"({i})" if i>1 else ""};')
+            self.addInternalOperationLine(f'     w_SCALE_OUT{f"({i})" if i>1 else ""} <= std_logic_vector(signed(w_A{f"({i})" if i>1 else ""}) * signed({self.scaleFactor}));')
+            self.addInternalOperationLine(f'     w_CAST_OUT{f"({i})" if i>1 else ""} <= w_SCALE_OUT{f"({i})" if i>1 else ""}(62 downto 31);')
+            self.addInternalOperationLine(f'     w_SHIFT_OUT{f"({i})" if i>1 else ""}({31-self.scaleShift} downto 0)  <= w_CAST_OUT{f"({i})" if i>1 else ""}(31 downto {self.scaleShift});')
+            self.addInternalOperationLine(f"     w_SHIFT_OUT{f'({i})' if i>1 else ''}(31 downto {31-self.scaleShift}) <= (others => '1') when (w_CAST_OUT{f'({i})' if i>1 else ''}(31) = '1') else (others => '0');")
+            self.addInternalOperationLine(f"     w_OFFSET_OUT{f'({i})' if i>1 else ''} <= w_SHIFT_OUT{f'({i})' if i>1 else ''} + std_logic_vector(to_unsigned(82, 32));")
+            self.addInternalOperationLine(f"     w_CLIP_OUT{f'({i})' if i>1 else ''} <= w_OFFSET_OUT{f'({i})' if i>1 else ''}(7 downto 0);")
 
     def generateOutBuffer(self):
         for i in range(0, 34):
@@ -132,5 +132,5 @@ class FullyConnectedOperator(ComponentCommonMethods):
                                         portmap={ 'i_CLK' : 'i_CLK',
                                                 'i_CLR' : 'i_REG_OUT_CLR',
                                                 'i_ENA' : f'w_REG_BIAS_ENA_w_BIAS_ADDR_{i}',
-                                                'i_A'   : f'w_CLIP_OUT(0)',
+                                                'i_A'   : f'w_CLIP_OUT{f"(0)" if self.nrUnits>1 else ""}',
                                                 'o_Q'   : f'r_REG_OUT({i})'})

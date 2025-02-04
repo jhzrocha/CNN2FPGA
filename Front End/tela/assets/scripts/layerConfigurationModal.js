@@ -29,17 +29,29 @@ export class LayerConfigurationModal {
         const newLayerType= layerType.cloneNode(true); // Clone the element (true for deep clone)
         layerType.parentNode.replaceChild(newLayerType, layerType);
         
-        this.loadInputValueFromDatabase(newModalTitle,layerId);
-        this.loadInputValueFromDatabase(newLayerType,layerId);        
+        this.loadInputValueFromLocalstorage(newModalTitle,layerId);
+        this.loadInputValueFromLocalstorage(newLayerType,layerId);        
+        
         this.addUpdateDatahandlerEvent(newModalTitle,layerId);
-        this.addUpdateDatahandlerEvent(newLayerType,layerId);
+
+        this.updateModalLayerType(newLayerType, layerId)
     }
 
-    loadInputValueFromDatabase(element, layerId){
+    loadInputValueFromLocalstorage(element, layerId){
         element.value = this.dataHandler.getLayerAttribute(layerId, element.getAttribute('attributeName'))
     }
 
-    addUpdateDatahandlerEvent(element, layerId){
+    updateModalLayerType(newLayerType, layerId){
+        this.addUpdateDatahandlerEvent(newLayerType,layerId);
+        this.addUpdateFormEvent(newLayerType,layerId);
+
+    }
+
+    addUpdateFormEvent(newLayerType,layerId){
+
+    }
+
+    addUpdateDatahandlerEvent(element, layerId) {
         const attribute = element.getAttribute('attributeName');
         element.addEventListener('blur', ()=>{
             if(element.value != undefined && element.value != this.dataHandler.getLayerAttribute(layerId, attribute)){
@@ -56,4 +68,6 @@ export class LayerConfigurationModal {
         cardTitle.textContent = this.dataHandler.getLayerAttribute(layerID, cardTitle.getAttribute('attributeName'));
         cardSubtitle.textContent = layerType[this.dataHandler.getLayerAttribute(layerID, cardSubtitle.getAttribute('attributeName'))];
     }
+
+    
 }

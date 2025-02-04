@@ -20,7 +20,7 @@ class FullyConnectedControl(ComponentCommonMethods):
     def createComponent(self):
     
         self.startInstance()
-        self.minimalComponentFileName = f'fullyConnected_{self.weightAddressWidth}_{self.biasAddressWidth}_{self.addWidth}_{self.lastFeature}'
+        self.minimalComponentFileName = f'fullyConnectedControl_{self.weightAddressWidth}_{self.biasAddressWidth}_{self.addWidth}'
         self.portMap =   { 'in': [
                                 Port('i_CLK','std_logic'),
                                 Port('i_CLR','std_logic'),

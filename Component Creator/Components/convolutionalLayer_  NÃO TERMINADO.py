@@ -3,13 +3,13 @@ from ComponentBases.port import Port
 from ComponentBases.generic import Generic
 from Components.matrixMultiplier import MatrixMultiplier
 from Components.switcher import Switcher
-
+from MemoryInitializationComponents.memoryInitializationComponent import MemoryInitializationComponent
 
 
 class ConvolutionalLayer(ComponentCommonMethods):
 
 
-    def __init__(self, qtimagePixels = [], qtKernelPixels = []):
+    def __init__(self, qtimagePixels = [], qtKernelPixels = [], weightFileName='',weightAdressWidth = 8 biasFileName=''):
         self.minimalComponentFileName = f"ConvolutionalLayerIm{qtimagePixels[0]}x{qtimagePixels[1]}K{qtKernelPixels[0]}x{qtKernelPixels[1]}"
         self.portMap = { 'in': [Port('i_DATA',f"signed(0 to p_QT_BITS*{qtimagePixels[0]*qtimagePixels[1]}-1)"),
                                 Port('i_KERNEL',f"signed(0 to p_QT_BITS*{qtKernelPixels[0]*qtKernelPixels[1]}-1)"),
@@ -43,6 +43,12 @@ class ConvolutionalLayer(ComponentCommonMethods):
                                         'o_VALUE':'w_MATRIX_MULT_O'
                                    }        
         self.setInternalComponentPortMap('MatrixMultiplier',matrixMultiplierPortmap)
+
+        # self.addInternalComponent(MemoryInitializationComponent(type='conv1_weights',
+        #                                                         initFileName=weightFileName,
+        #                                                         dataWidth=8,
+        #                                                         dataDepth=10,
+        #                                                         fpgaType='Cyclone V'))
 
         self.OutputEntityAndArchitectureFile()
 
