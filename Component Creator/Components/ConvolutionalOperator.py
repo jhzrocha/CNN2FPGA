@@ -12,7 +12,7 @@ from Components.counter import Counter
 from ComponentBases.type import Type
 from Components.genericDemultiplexer import GenericDemultiplexer
 #    Não testado
-class Conv1Op(ComponentCommonMethods):
+class ConvolutionalOperator(ComponentCommonMethods):
 
     # C : integer := 3;  -- iFMAP Chanels (filter Chanels also) qtChanels
     # R : integer := 3; -- filter Height 
@@ -48,7 +48,7 @@ class Conv1Op(ComponentCommonMethods):
     def createComponent(self):
     
         self.startInstance()
-        self.minimalComponentFileName = f'conv1_op_{self.qtBlocks}b_{self.qtRows}r_{self.qtColumns}c_{self.qtPixelsPerRow}ppr_{self.qtChanels}c_{self.qtFilters}f_{self.weightShiftAddrWidth}wsa_{self.oneHotEncoderWidthInput}ohe_{self.dataWidth}dw_{self.dataWidthNC}dwn_{self.addrWidths}adw_{self.outputDataWidthSelBuffers}odwsb_{self.biasAddressWidth}baw'
+        self.minimalComponentFileName = f'ConvolutionalOperator_{self.qtBlocks}b_{self.qtRows}r_{self.qtColumns}c_{self.qtPixelsPerRow}ppr_{self.qtChanels}c_{self.qtFilters}f_{self.weightShiftAddrWidth}wsa_{self.oneHotEncoderWidthInput}ohe_{self.dataWidth}dw_{self.dataWidthNC}dwn_{self.addrWidths}adw_{self.outputDataWidthSelBuffers}odwsb_{self.biasAddressWidth}baw'
 
         #Adicionado antes das portas pelo tamanho de i_NC_O_SEL depender do tamanho de portas
         multiplexer = Multiplexer(qtInputs=4, dataWidth=self.dataWidthNC)

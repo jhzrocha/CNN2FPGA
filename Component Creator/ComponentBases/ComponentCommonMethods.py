@@ -6,7 +6,7 @@ from ComponentBases.constant import Constant
 from copy import deepcopy
 import re
 from FileHandler.fileHandler import FileHandler
-
+import Config.config
 
 class ComponentCommonMethods:
     
@@ -14,7 +14,7 @@ class ComponentCommonMethods:
     
     generics = []
     portMap = {}
-
+    
     internalComponents = {}
     internalSignalWires = []
     internalVariables = []
@@ -111,7 +111,6 @@ use work.types_pkg.all;"""
                 callPortMap = callPortMap + f"            {i.name}  => {i.connection},\n"
         if callPortMap.endswith(',\n'):
             callPortMap = callPortMap[:-2]
-        
         return self.call.format(objectName,self.minimalComponentFileName,genericCall,callPortMap)
     
     def getGenericObjectCall(self):

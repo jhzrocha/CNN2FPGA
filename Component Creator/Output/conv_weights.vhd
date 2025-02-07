@@ -36,7 +36,7 @@ use ieee.std_logic_1164.all;
 library altera_mf;
 use altera_mf.altera_mf_components.all;
 
-entity conv1_weights is
+entity conv_weights is
 	generic (
 		init_file_name : string  := "conv1.mif";
 		DATA_WIDTH     : integer := 8;
@@ -48,8 +48,8 @@ entity conv1_weights is
 		rden    : in std_logic := '1';
 		q       : out std_logic_vector (DATA_WIDTH - 1 downto 0)
 	);
-end conv1_weights;
-architecture SYN of conv1_weights is
+end conv_weights;
+architecture SYN of conv_weights is
 
 	signal sub_wire0 : std_logic_vector (7 downto 0);
 

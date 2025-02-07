@@ -37,7 +37,7 @@ library altera_mf;
 use altera_mf.altera_mf_components.all;
 
 -- armazena bias e scale down multipliers
-entity conv1_bias is
+entity conv_bias is
 	generic (
 		init_file_name : string  := "conv1_bias.mif";
 		DATA_WIDTH     : integer := 32;
@@ -49,8 +49,8 @@ entity conv1_bias is
 		clock   : in std_logic := '1';
 		q       : out std_logic_vector (DATA_WIDTH - 1 downto 0)
 	);
-end conv1_bias;
-architecture SYN of conv1_bias is
+end conv_bias;
+architecture SYN of conv_bias is
 
 	signal sub_wire0 : std_logic_vector (31 downto 0);
 

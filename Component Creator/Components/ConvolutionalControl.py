@@ -4,7 +4,7 @@ from Components.counter import Counter
 
 #Compilado
 
-class ConvCrt(ComponentCommonMethods):
+class ConvolutionalControl(ComponentCommonMethods):
 
     # ADDR_WIDTH - addWidth
     # NC_ADDRESS_WIDTH - ncAddrWidth
@@ -46,7 +46,7 @@ class ConvCrt(ComponentCommonMethods):
 
     def createComponent(self):
         self.startInstance()
-        self.minimalComponentFileName = f'conv1_crt_{self.addWidth}dw_{self.ncAddrWidth}ncaw_{self.ncSelWidth}ncsw_{self.ifMapWidth}ifmw_{self.lengthWeightAddress}lwaw_{self.lengthBiasAddress}lbaw_{self.outSelWidthBuffers}oswb_{self.qtFiltersPerChannel}qfpc_{self.qtWeights}qw_{self.qtBias}qb_{self.qtRows}qr_{self.qtCols}qc_{self.qtChannels}qc_{self.qtFilters}qf'.replace('"','')
+        self.minimalComponentFileName = f'ConvolutionalControl_{self.addWidth}dw_{self.ncAddrWidth}ncaw_{self.ncSelWidth}ncsw_{self.ifMapWidth}ifmw_{self.lengthWeightAddress}lwaw_{self.lengthBiasAddress}lbaw_{self.outSelWidthBuffers}oswb_{self.qtFiltersPerChannel}qfpc_{self.qtWeights}qw_{self.qtBias}qb_{self.qtRows}qr_{self.qtCols}qc_{self.qtChannels}qc_{self.qtFilters}qf'.replace('"','')
         self.portMap =   { 'in': [
                                 Port('i_CLK','std_logic'),
                                 Port('i_CLR','std_logic'),

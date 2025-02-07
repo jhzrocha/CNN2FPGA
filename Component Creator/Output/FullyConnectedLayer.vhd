@@ -9,7 +9,7 @@ use work.types_pkg.all;
               i_CLR : in std_logic;
               i_GO : in std_logic;
               i_PIX : in std_logic_vector(7 downto 0):= (others => '0');
-              o_PIX : out o_PIX_FullyConnectedLayer:= (others => (others => '0'));
+              o_PIX : out o_PIX_FullyConnectedOperator:= (others => (others => '0'));
               o_READ_ADDR : out std_logic_vector(7 downto 0);
               o_READY : out std_logic
         );
@@ -96,6 +96,6 @@ use work.types_pkg.all;
         );
 
   o_READ_ADDR <= w_IN_READ_ADDR;
-  w_WEIGHT(0) <= w_ROM_OUT;
+  w_WEIGHT<= w_ROM_OUT;
         
     end arc;

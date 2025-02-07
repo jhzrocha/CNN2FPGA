@@ -15,7 +15,7 @@ class FullyConnectedLayer(ComponentCommonMethods):
     #NUM_UNITS             : integer          := 1;
     #SCALE_SHIFT           : integer          := 7
     def __init__(self, dataWidth=8, addWidth=8, weightAddressWidth=13, biasAddressWidth=6,numWeightFilterCha='"1000"', lastWeight='"1000110000000"', lastBias='"100100"', lastFeature='"10000000"',
-                 numChannels=64, numUnits=1, scaleShift=7, weightsFileName='', weightsFileDataWidth=8, biasFileName ='', biasFileDataWidth=32, fpgaDevice='Cyclone V'):
+                 numChannels=64, numUnits=1, scaleShift=7, weightsFileName='', weightsFileDataWidth=8, biasFileName ='', biasFileDataWidth=32):
         self.dataWidth = dataWidth
         self.addWidth = addWidth
         self.weightAddressWidth = weightAddressWidth
@@ -31,7 +31,6 @@ class FullyConnectedLayer(ComponentCommonMethods):
         self.weightsFileDataWidth = weightsFileDataWidth
         self.biasFileName = biasFileName
         self.biasFileDataWidth = biasFileDataWidth
-        self.fpgaDevice = fpgaDevice
         self.createComponent()
     
     
@@ -39,6 +38,11 @@ class FullyConnectedLayer(ComponentCommonMethods):
     
         self.startInstance()
         self.minimalComponentFileName = f'FullyConnectedLayer'
+        
+        self.fullyConnectedOperator = FullyConnectedOperator(nrUnits=self.numUnits, 
+                                                                   biasAddressWidth=self.biasAddressWidth, 
+                                                                   scaleShift=self.scaleShift, 
+                                                                   dataWidth =self.dataWidth)
         self.portMap =   { 'in': [
                                 Port('i_CLK','std_logic'),
                                 Port('i_CLR','std_logic'),
@@ -46,7 +50,7 @@ class FullyConnectedLayer(ComponentCommonMethods):
                                 Port('i_PIX',f'std_logic_vector({self.dataWidth-1} downto 0)', initialValue="(others => '0')")
                                 ],
                             'out': [
-                                Port(name='o_PIX',dataType=f"array (0 to 34) of std_logic_vector({self.dataWidth-1} downto 0)", initialValue="(others => (others => '0'))"),
+                                Port(name='o_PIX',dataType= self.fullyConnectedOperator.getPortDataType('o_PIX'), initialValue="(others => (others => '0'))"),
                                 Port(name='o_READ_ADDR',dataType=f"std_logic_vector(7 downto 0)"),
                                 Port(name='o_READY',dataType=f"std_logic")
                                    ] 
@@ -69,8 +73,7 @@ class FullyConnectedLayer(ComponentCommonMethods):
         self.addInternalComponent(component=MemoryInitializationComponent(type='conv_weights',
                                                                           initFileName= self.weightsFileName,
                                                                          dataWidth=self.weightsFileDataWidth,
-                                                                         dataDepth=self.weightAddressWidth,
-                                                                         fpgaType=self.fpgaDevice),
+                                                                         dataDepth=self.weightAddressWidth),
                                     componentCallName='u_ROM_WEIGHTS',
                                     portmap={'address':'w_WEIGHT_READ_ADDR',
                                              'clock':'i_CLK',
@@ -80,8 +83,7 @@ class FullyConnectedLayer(ComponentCommonMethods):
         self.addInternalComponent(component=MemoryInitializationComponent(type='conv_bias',
                                                                           initFileName= self.biasFileName,
                                                                          dataWidth=self.biasFileDataWidth,
-                                                                         dataDepth=self.biasAddressWidth,
-                                                                         fpgaType=self.fpgaDevice),
+                                                                         dataDepth=self.biasAddressWidth),
                                     componentCallName='u_ROM_BIAS',
                                     portmap={'address':'w_BIAS_READ_ADDR',
                                              'clken':"'1'",
@@ -107,10 +109,7 @@ class FullyConnectedLayer(ComponentCommonMethods):
                                             'o_BIAS_READ_ADDR' : 'w_BIAS_READ_ADDR',
                                             'o_IN_READ_ADDR' : 'w_IN_READ_ADDR'})
         
-        self.addInternalComponent(component=FullyConnectedOperator(nrUnits=self.numUnits, 
-                                                                   biasAddressWidth=self.biasAddressWidth, 
-                                                                   scaleShift=self.scaleShift, 
-                                                                   dataWidth =self.dataWidth),
+        self.addInternalComponent(component=self.fullyConnectedOperator,
                                     componentCallName='u_OPERACIONAL',
                                     portmap={
                                             'i_CLK':'i_CLK',
@@ -129,9 +128,9 @@ class FullyConnectedLayer(ComponentCommonMethods):
                                             'i_REG_OUT_ADDR':'w_REG_OUT_ADDR',
                                             'o_PIX':'o_PIX'        
                                     })
-        self.internalOperations = """
+        self.internalOperations = f"""
   o_READ_ADDR <= w_IN_READ_ADDR;
-  w_WEIGHT(0) <= w_ROM_OUT;
+  w_WEIGHT{f"(0)" if self.numUnits>1 else ""}<= w_ROM_OUT;
         """
         self.OutputEntityAndArchitectureFile()
 

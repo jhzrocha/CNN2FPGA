@@ -2,11 +2,13 @@ from ComponentBases.ComponentCommonMethods import ComponentCommonMethods
 from ComponentBases.port import Port
 from FileHandler.fileHandler import FileHandler
 from ComponentBases.generic import Generic
+import Config.config
+
 class MemoryInitializationComponent(ComponentCommonMethods):
     
-    def __init__(self, type, initFileName, dataWidth, dataDepth, fpgaType='Cyclone V'):
+    def __init__(self, type, initFileName, dataWidth, dataDepth):
         self.type = type
-        self.fpgaType = fpgaType
+        self.fpgaType = Config.config.FPGADevice
         self.initFileName = initFileName
         self.dataWidth = dataWidth
         self.dataDepth = dataDepth
