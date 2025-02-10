@@ -1,0 +1,1 @@
+FPGADevice= "Cyclone V"
