@@ -6,9 +6,6 @@ class FileHandler:
     def __init__(self, directoryName):
         self.directoryName = directoryName
         self.directoryPath = os.path.abspath(os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir),self.directoryName))
-        self.outputInServer = os.path.abspath(
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, "output")
-        )
         self.makeDirectory()
 
     def makeDirectory(self):
@@ -76,6 +73,3 @@ class FileHandler:
             if os.path.isfile(caminho_origem):
                 caminho_destino = os.path.join(self.directoryPath, arquivo)
                 shutil.copy2(caminho_origem, caminho_destino)
-
-    def createZip(self, nome_zip):
-        #create zip file

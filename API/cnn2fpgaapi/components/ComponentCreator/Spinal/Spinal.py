@@ -1,8 +1,6 @@
 from FileHandler.fileHandler import FileHandler
 
 class Spinal():
-
-
     
     def start(self):
         self.topEntityComponent.createDesignFile()

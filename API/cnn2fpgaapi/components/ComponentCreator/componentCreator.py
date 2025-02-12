@@ -1,8 +1,5 @@
 from Spinal.Spinal import Spinal
-
 from Components.fullyConnectedLayer import FullyConnectedLayer
-from FileHandler.fileHandler import FileHandler
-
 
 class ComponentCreator():
 
