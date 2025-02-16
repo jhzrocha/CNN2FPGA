@@ -8,10 +8,13 @@ use work.types_pkg.all;
         port (i_CLK : in std_logic;
               i_CLR : in std_logic;
               i_GO : in std_logic;
-              i_PIX : in std_logic_vector(7 downto 0):= (others => '0');
-              o_PIX : out o_PIX_FullyConnectedOperator:= (others => (others => '0'));
-              o_READ_ADDR : out std_logic_vector(7 downto 0);
-              o_READY : out std_logic
+              i_IN_DATA : in t_i_IN_DATA_poolingOperator_6_8_10:= (others => (others => '0'));
+              i_IN_WRITE_ENA : in std_logic;
+              i_IN_WRITE_ADDR : in std_logic_vector (9 downto 0):= (others => '0');
+              i_IN_SEL_LINE : in std_logic_vector (1 downto 0);
+              i_OUT_READ_ADDR_0 : in std_logic_vector (9 downto 0):= (others => '0');
+              o_READY : out std_logic;
+              o_BUFFER_OUT : out t_i_IN_DATA_poolingOperator_6_8_10
         );
     end CNN2FPGAVHDL;
                  
@@ -19,15 +22,18 @@ use work.types_pkg.all;
 
 
         begin 
-        FullyConnectedLayer : entity work.FullyConnectedLayer
+        PoolingLayer_6_2_8_10_0110000000 : entity work.PoolingLayer_6_2_8_10_0110000000
         port map (
             i_CLK  => i_CLK,
             i_CLR  => i_CLR,
             i_GO  => i_GO,
-            i_PIX  => i_PIX,
-            o_PIX  => o_PIX,
-            o_READ_ADDR  => o_READ_ADDR,
-            o_READY  => o_READY
+            i_IN_DATA  => i_IN_DATA,
+            i_IN_WRITE_ENA  => i_IN_WRITE_ENA,
+            i_IN_WRITE_ADDR  => i_IN_WRITE_ADDR,
+            i_IN_SEL_LINE  => i_IN_SEL_LINE,
+            i_OUT_READ_ADDR_0  => i_OUT_READ_ADDR_0,
+            o_READY  => o_READY,
+            o_BUFFER_OUT  => o_BUFFER_OUT
         );
 
     end arc;

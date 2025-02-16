@@ -1,15 +1,15 @@
 
 const poolingFormInputsEnum = Object.freeze({
-    fields : [ {label: "Pesos",
-                attribute: "weights",
-                inputType: "file"
+    fields : [ {label: "Tipo",
+                attribute: "poolingType",
+                inputType: "text"
                 },
-                {label: "Bias",
-                    attribute: "bias",
-                    inputType: "file"
+                {label: "Linhas no Kernel",
+                    attribute: "qtRows",
+                    inputType: "number"
                 },
-                {label: "Tamanho do Kernel",
-                    attribute: "kernelSize",
+                {label: "Colunas no Kernel",
+                    attribute: "qtCols",
                     inputType: "number"
                 }
             ]

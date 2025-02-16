@@ -1,11 +1,11 @@
 from ComponentBases.ComponentCommonMethods import ComponentCommonMethods
 from ComponentBases.port import Port
 
-class ArvoreSomaConv(ComponentCommonMethods):
+class SumTree(ComponentCommonMethods):
 
     def __init__(self, qtInputs=9, inputDataWidth=16, outputDataWidth=32):
         self.startInstance()
-        self.minimalComponentFileName = f"arvore_soma_conv_{qtInputs}_{inputDataWidth}_{outputDataWidth}"
+        self.minimalComponentFileName = f"SumTree_{qtInputs}_{inputDataWidth}_{outputDataWidth}"
         self.portMap =   { 'in': [],
                             'out': [Port('o_DATA',f'STD_LOGIC_VECTOR ({outputDataWidth-1} downto 0)')]
                     }

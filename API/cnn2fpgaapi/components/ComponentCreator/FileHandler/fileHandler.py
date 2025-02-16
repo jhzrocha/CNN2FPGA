@@ -1,6 +1,5 @@
 import os
 import shutil
-import zipfile
 
 class FileHandler:
     def __init__(self, directoryName):
@@ -73,3 +72,4 @@ class FileHandler:
             if os.path.isfile(caminho_origem):
                 caminho_destino = os.path.join(self.directoryPath, arquivo)
                 shutil.copy2(caminho_origem, caminho_destino)
+

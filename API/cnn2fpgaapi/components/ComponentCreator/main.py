@@ -1,4 +1,11 @@
-from componentCreator import ComponentCreator
+from Spinal.Spinal import Spinal
+from Components.poolingOperator import PoolingOperator
+from Components.poolingLayer import PoolingLayer
 
-ComponentCreator()
+projectSpinal = Spinal()
+obj = PoolingLayer()
+projectSpinal.setTopEntityComponent(obj)
+
+projectSpinal.start()
+
 

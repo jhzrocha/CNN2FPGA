@@ -3,20 +3,20 @@ use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.types_pkg.all;
                  
-    entity Counter_8dw_1bs is
+    entity Counter_10dw_1bs is
         
         port (i_CLK : in std_logic;
               i_RESET : in std_logic;
               i_INC : in std_logic;
-              i_RESET_VAL : in std_logic_vector(7 downto 0):= (others => '0');
-              o_Q : out std_logic_vector(7 downto 0)
+              i_RESET_VAL : in std_logic_vector(9 downto 0):= (others => '0');
+              o_Q : out std_logic_vector(9 downto 0)
         );
-    end Counter_8dw_1bs;
+    end Counter_10dw_1bs;
                  
-    architecture arc of Counter_8dw_1bs is
-        signal r_CNT : std_logic_vector (7 downto 0) := (others => '0');
+    architecture arc of Counter_10dw_1bs is
+        signal r_CNT : std_logic_vector (9 downto 0) := (others => '0');
 
-constant c_STEP : std_logic_vector (7 downto 0) := std_logic_vector(to_unsigned(1, 8));
+constant c_STEP : std_logic_vector (9 downto 0) := std_logic_vector(to_unsigned(1, 10));
 
         begin
             process (i_CLK, i_RESET, i_INC, i_RESET_VAL)

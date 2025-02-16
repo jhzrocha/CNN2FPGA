@@ -3,7 +3,7 @@ from ComponentBases.port import Port
 
 
 #Compilado
-class ComparisonTree(ComponentCommonMethods):
+class MaxComparisonTree(ComponentCommonMethods):
     def __init__(self, qtInputs=4, dataWidth=8):
         self.qtInputs = qtInputs
         self.dataWidth = dataWidth
@@ -14,7 +14,7 @@ class ComparisonTree(ComponentCommonMethods):
     def createComponent(self):
     
         self.startInstance()
-        self.minimalComponentFileName = f'ComparisonTree_{self.qtInputs}i_{self.dataWidth}dw'
+        self.minimalComponentFileName = f'MaxComparisonTree_{self.qtInputs}i_{self.dataWidth}dw'
         self.portMap =   { 'in': [
 
                                 ],
