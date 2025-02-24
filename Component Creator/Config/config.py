@@ -1,1 +1,1 @@
-FPGADevice= "Cyclone V"
+FPGADevice= "Max 10" #Cyclone V"

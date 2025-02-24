@@ -15,7 +15,7 @@ class FullyConnectedLayer(ComponentCommonMethods):
     #NUM_UNITS             : integer          := 1;
     #SCALE_SHIFT           : integer          := 7
     def __init__(self, dataWidth=8, addWidth=8, weightAddressWidth=13, biasAddressWidth=6,numWeightFilterCha='"1000"', lastWeight='"1000110000000"', lastBias='"100100"', lastFeature='"10000000"',
-                 numChannels=64, numUnits=1, scaleShift=7, weightsFileName='', weightsFileDataWidth=8, biasFileName ='', biasFileDataWidth=32):
+                 numChannels=64, numUnits=2, scaleShift=7, weightsFileName='', weightsFileDataWidth=8, biasFileName ='', biasFileDataWidth=32):
         self.dataWidth = dataWidth
         self.addWidth = addWidth
         self.weightAddressWidth = weightAddressWidth
@@ -66,7 +66,8 @@ class FullyConnectedLayer(ComponentCommonMethods):
         self.addInternalSignalWire(name='w_WEIGHT_READ_ADDR', dataType=f"std_logic_vector({self.weightAddressWidth-1} downto 0)")
         self.addInternalSignalWire(name='w_BIAS_READ_ADDR',   dataType=f"std_logic_vector({self.biasAddressWidth-1} downto 0)")
         self.addInternalSignalWire(name='w_IN_READ_ADDR',     dataType=f"std_logic_vector (7 downto 0)")
-        self.addInternalSignalWire(name='w_WEIGHT',           dataType=f"array (0 to {self.numUnits-1}) of of std_logic_vector({self.dataWidth-1} downto 0)" ,initialValue= "(others => (others => '0'))")
+        wweightDataType = self.fullyConnectedOperator.getPortDataType(('i_WEIGHT'))
+        self.addInternalSignalWire(name='w_WEIGHT',           dataType=wweightDataType ,initialValue= "(others => (others => '0'))" if 'array' in wweightDataType else "(others => '0')")
         self.addInternalSignalWire(name='w_ROM_OUT',          dataType=f"std_logic_vector ({self.dataWidth-1} downto 0)"                           , initialValue= "(others => '0')")
         self.addInternalSignalWire(name='w_BIAS_SCALE',       dataType=f"std_logic_vector(31 downto 0)")
 

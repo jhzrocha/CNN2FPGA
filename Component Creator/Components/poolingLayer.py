@@ -4,15 +4,19 @@ from ComponentBases.type import Type
 from Components.poolingControl import PoolingController
 from Components.poolingOperator import PoolingOperator
 
+#Compilado
 class PoolingLayer(ComponentCommonMethods):
 
     def __init__(self, qtChannels=6,qtAddrs=2, dataWidth = 8, addrWidth = 10, maxAddr='0110000000', 
-                 poolingType='Max', qtPixelRows=2, qtPixelsPerRow=2, qtBlocksBufferIn=2,qtBlocksBufferOut=1):
+                 poolingType='MAX', qtRows=2, qtCols=2):
         self.qtChannels = qtChannels
         self.qtAddrs = qtAddrs
         self.dataWidth = dataWidth
         self.addrWidth = addrWidth
         self.maxAddr = maxAddr
+        self.poolingType = poolingType
+        self.qtRows = qtRows
+        self.qtCols = qtCols
         self.createComponent()
         
     def createComponent(self):    
@@ -20,7 +24,9 @@ class PoolingLayer(ComponentCommonMethods):
         self.minimalComponentFileName = f'PoolingLayer_{self.qtChannels}_{self.qtAddrs}_{self.dataWidth}_{self.addrWidth}_{self.maxAddr}'        
         poolingOperator = PoolingOperator(dataWidth=self.dataWidth,
                                           addrWidth=self.addrWidth,
-                                          qtChannels=self.qtChannels)
+                                          qtChannels=self.qtChannels,
+                                          qtRows= self.qtRows,
+                                          qtCols= self.qtCols)
         self.portMap =   { 'in': [
                                   Port('i_CLK','std_logic'),
                                   Port('i_CLR','std_logic'),

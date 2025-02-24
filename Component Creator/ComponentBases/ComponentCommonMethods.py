@@ -16,6 +16,8 @@ class ComponentCommonMethods:
     portMap = {}
     
     internalComponents = {}
+    internalComponentsPortmaps = {}
+
     internalSignalWires = []
     internalVariables = []
     internalTypes = []
@@ -217,10 +219,8 @@ use work.types_pkg.all;"""
         if (not self.verifyIfInternalComponentAlreadyExists(componentCallName)):
             self.internalComponents[componentCallName] = internalComponent
         if(portmap):
+            self.internalComponentsPortmaps[componentCallName] = portmap
             self.setInternalComponentPortMap(componentCallName,portmap)
-        
-
-
     
     def addMultipleInternalComponentDeclarations(self,component, quantity):
         for i in range(quantity):
@@ -239,11 +239,48 @@ use work.types_pkg.all;"""
         for portMapParameter in portMapParameters.keys():
             for port in internalComponent.portMap['in']:
                 if port.name == portMapParameter:
+                    # if(type(portMapParameters[portMapParameter]) != dict):
+                    #     self.verifyIfConnectedWithPortOrSignal(internalComponent = internalComponent,
+                    #                                             internalComponentPort= portMapParameter, 
+                    #                                            internalConnection = portMapParameters[portMapParameter])                        
+                    # else:
+                    #     self.verifyInternalComponentDatatype(port,
+                    #                                          internalComponentConnection = portMapParameters[portMapParameter]['port'],
+                    #                                          otherInternalComponentCallName=portMapParameters[portMapParameter]['name']
+                    #                                          )
                     port.connection = portMapParameters[portMapParameter]
             for port in internalComponent.portMap['out']:
                 if port.name == portMapParameter:
+                    # if(type(portMapParameters[portMapParameter]) != dict):
+                    #     self.verifyIfConnectedWithPortOrSignal(internalComponent = internalComponent,
+                    #                                             internalComponentPort= portMapParameter, 
+                    #                                            internalConnection = portMapParameters[portMapParameter])                        
+                    # else:
+                    #     self.verifyInternalComponentDatatype(port,
+                    #                                          internalComponentConnection = portMapParameters[portMapParameter]['port'],
+                    #                                          otherInternalComponentCallName=portMapParameters[portMapParameter]['name']
+                    #                                          )
                     port.connection = portMapParameters[portMapParameter]
     
+    
+    def verifyIfConnectedWithPortOrSignal(self, internalComponent, internalComponentPort, internalConnection):
+        internalSignal = self.getInternalSignal(internalConnection)
+        if(internalSignal != None):
+            self.verifyIfSameDataType(internalComponent.getPortDataType(internalComponentPort), internalSignal)
+        port = self.getPort(internalConnection)
+        if(port != None):
+            self.verifyIfSameDataType(internalComponent.getPortDataType(internalComponentPort), port)
+        
+    def verifyIfSameDataType(self, port, object):
+        if(port.dataType != object.dataType):
+            object.dataType == port.dataType
+    
+    def verifyInternalComponentDatatype(self, internalComponentPort, internalComponentConnection, otherInternalComponentCallName):
+        otherInternalComponent = self.getInternalComponentByCallName(otherInternalComponentCallName)
+
+        if(otherInternalComponent != None):
+            if(internalComponentPort.dataType != otherInternalComponent.getPortDataType(internalComponentConnection)):
+                internalComponentPort.dataType = otherInternalComponent.getPortDataType(internalComponentConnection)
 
     def setInternalComponentGenerics(self, internalComponentName, genericName, value): 
         internalComponent = self.internalComponents[internalComponentName]
@@ -355,7 +392,17 @@ use work.types_pkg.all;"""
     def defineTypeOnTypePackage(self, type):
         self.typesToTypesPackage.append(type)
     
-    def getPortDataType(self,nmPort):
+    def getPort(self, nmPort):
+        for port in self.portMap['in']:
+            if(port.getName() == nmPort):
+                return port
+        
+        for port in self.portMap['out']:
+            if(port.getName() == nmPort):
+                return port
+        return None
+    
+    def getPortDataType(self, nmPort):
         for port in self.portMap['in']:
             if(port.getName() == nmPort):
                 self.verifyDataType(port)
@@ -367,6 +414,18 @@ use work.types_pkg.all;"""
                 return port.getdataType()
         return None
 
+    def getInternalSignal(self, nmSignal):
+        for signal in self.internalSignalWires:
+            if signal.name == nmSignal:
+                return signal
+        return None
+    
+    def getInternalComponentByCallName(self, internalComponentCallName):
+        for internalComponentCallName in self.internalComponents.keys():
+            if internalComponentCallName == internalComponentCallName:
+                return self.internalComponents[internalComponentCallName]
+        return None
+
     def verifyDataType(self, subcomponent):
         if (self.isArrayInDataType(subcomponent.getdataType())):
             if(not self.verifyIfArrayWithOneElement(subcomponent)):
@@ -376,6 +435,20 @@ use work.types_pkg.all;"""
             else:
                 subcomponent.setdataType(subcomponent.getdataType().split('of')[-1].strip())
                 self.verifyInitialValue(subcomponent)
+        if (self.isVectorOfOneElement(subcomponent.getdataType())):
+            subcomponent.setdataType(subcomponent.getdataType().replace('std_logic_vector(0 downto 0)', 'std_logic'))
+            if(self.isInitialValueForVector(subcomponent.initialValue)):
+                subcomponent.initialValue = "(others => '0')"
+    
+    def isInitialValueForVector(self, initialValue):
+        if "(others => (others => '0'))" in initialValue:
+            return True
+        return False
+
+    def isVectorOfOneElement(self, dataType):
+        if 'std_logic_vector(0 downto 0)' in dataType:
+            return True
+        return False
     
     def verifyInitialValue(self, subcomponent):
         if subcomponent.initialValue != '':

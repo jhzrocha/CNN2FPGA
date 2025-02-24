@@ -48,8 +48,10 @@ export class LayerConfigurationModal {
     }
 
     loadInputValueFromLocalstorage(element, layerId){
-        if (element.type != "file"){
-            element.value = this.dataHandler.getLayerAttribute(layerId, element.getAttribute('attributeName'))
+        const valueOnLocalStorage = this.dataHandler.getLayerAttribute(layerId, element.getAttribute('attributeName'));
+
+        if (element.type != "file" && valueOnLocalStorage){
+            element.value = valueOnLocalStorage;
         }
     }
 
@@ -71,20 +73,41 @@ export class LayerConfigurationModal {
         
         let label = document.createElement("label");
         label.textContent = field.label;
+        label.setAttribute("for", field.attribute);
         label.classList.add("form-label");
-
-        let input = document.createElement("input");
-        input.setAttribute("attributeName", field.attribute);
-        input.setAttribute("type", field.inputType);
-        input.classList.add("form-control");
-        this.addUpdateDatahandlerEvent(input, this.layerId);
-        this.loadInputValueFromLocalstorage(input,this.layerId);
-        
         div.appendChild(label);
-        div.appendChild(input);
+        if(field.inputType != 'select'){
+            let input = document.createElement("input");
+            input.setAttribute("attributeName", field.attribute);
+            input.setAttribute("type", field.inputType);
+            input.setAttribute("name", field.attribute);
+            input.classList.add("form-control");
+            if (field.placeholder){
+                input.setAttribute("placeholder", field.placeholder);
+            }
+            this.addUpdateDatahandlerEvent(input, this.layerId);
+            this.loadInputValueFromLocalstorage(input,this.layerId);
+            div.appendChild(input);
+        } else {
+            let select = document.createElement('select');
+            select.setAttribute("attributeName", field.attribute);
+            select.setAttribute("type", field.inputType);
+            select.setAttribute("name", field.attribute);
+            select.classList.add("form-control");
 
+            field.options.forEach((option) =>{
+                let optionElement = document.createElement('option');
+                optionElement.setAttribute("value", option.value);
+                optionElement.value = option.value;      
+                optionElement.textContent = option.label;  
+                select.appendChild(optionElement);     
+            });
+            this.addUpdateDatahandlerEvent(select, this.layerId);
+            this.loadInputValueFromLocalstorage(select,this.layerId);
+            div.appendChild(select);
+        }        
         return div;
-    }
+    }   
 
     setInputsByEnum(updatedForm, inputEnum){
         inputEnum.fields.forEach(field => {

@@ -14,7 +14,6 @@ class Relu(ComponentCommonMethods):
                             'out': [ Port('o_PIX',f"STD_LOGIC_VECTOR ({dataWidth-1} downto 0)")]
                     }
         self.internalOperations = f"""
-            -- atribui 0 aos numeros negativos, identificados pelo oitavo bit em 1
-            o_PIX <= i_PIX; -- "00000000" when (i_PIX({dataWidth-1}) = '1') else i_PIX;
+            o_PIX <= (others => '0') when (i_PIX({dataWidth} - 1) = '1') else i_PIX;
         """
         self.OutputEntityAndArchitectureFile()

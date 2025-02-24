@@ -26,7 +26,7 @@ use work.types_pkg.all;
         signal w_WEIGHT_READ_ADDR : std_logic_vector(12 downto 0);
         signal w_BIAS_READ_ADDR : std_logic_vector(5 downto 0);
         signal w_IN_READ_ADDR : std_logic_vector (7 downto 0);
-        signal w_WEIGHT : std_logic_vector(7 downto 0) := (others => '0');
+        signal w_WEIGHT : std_logic_vector(7 downto 0) := (others => (others => '0'));
         signal w_ROM_OUT : std_logic_vector (7 downto 0) := (others => '0');
         signal w_BIAS_SCALE : std_logic_vector(31 downto 0);
 
@@ -34,7 +34,7 @@ use work.types_pkg.all;
         begin 
         u_ROM_WEIGHTS : entity work.conv_weights
         generic map (
-            init_file_name => "conv1.mif",
+            init_file_name => "",
             DATA_WIDTH => 8,
             DATA_DEPTH => 13
         )
@@ -47,7 +47,7 @@ use work.types_pkg.all;
  
         u_ROM_BIAS : entity work.conv_bias
         generic map (
-            init_file_name => "conv2_bias.mif",
+            init_file_name => "",
             DATA_WIDTH => 32,
             DATA_DEPTH => 6
         )

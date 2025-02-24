@@ -6,7 +6,7 @@ use work.types_pkg.all;
     entity One_Hot_Encoder_6x1 is
         
         port (i_DATA : in std_logic_vector(5 downto 0);
-              o_DATA : out std_logic_vector(0 downto 0)
+              o_DATA : out std_logic
         );
     end One_Hot_Encoder_6x1;
                  
@@ -18,9 +18,9 @@ use work.types_pkg.all;
             begin
                 for i in 0 to 0 loop
                     if (i = to_integer(unsigned(i_DATA))) then 
-                        o_DATA(i) <= '1';
+                        o_DATA <= '1';
                     else
-                        o_DATA(i) <= '0'; 
+                        o_DATA <= '0'; 
                     end if;
                 end loop;
             end process;

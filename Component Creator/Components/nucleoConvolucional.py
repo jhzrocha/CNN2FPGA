@@ -2,7 +2,7 @@ from ComponentBases.ComponentCommonMethods import ComponentCommonMethods
 from ComponentBases.port import Port
 from Components.demux_1x import Demux_1x
 from Components.multiplicador_conv import MultiplicadorConv
-from Components.arvore_soma_conv import ArvoreSomaConv
+from Components.SumTree import SumTree
 class NucleoConvolucional(ComponentCommonMethods):
     
     #Compilado
@@ -62,10 +62,10 @@ class NucleoConvolucional(ComponentCommonMethods):
             end if;        
         end process;
 """
-        self.addInternalComponent(ArvoreSomaConv(qtInputs= self.qtColumns*self.qtRows,
+        self.addInternalComponent(SumTree(qtInputs= self.qtColumns*self.qtRows,
                                                  inputDataWidth= convolutionalOutput,
                                                  outputDataWidth= outputDataWidth
-                                                 ), 'u_ARVORE_SOMA_CONV', self.getArvoreSomaPortmap())
+                                                 ), 'u_sumTree', self.getArvoreSomaPortmap())
         self.OutputEntityAndArchitectureFile()
 
     def getResetBehavior(self):

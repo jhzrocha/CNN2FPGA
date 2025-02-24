@@ -43,4 +43,6 @@ export class DataHandler {
         const layer = this.getLayer(layerId);
         layer[attribute] = value;
     }
+
+
 }

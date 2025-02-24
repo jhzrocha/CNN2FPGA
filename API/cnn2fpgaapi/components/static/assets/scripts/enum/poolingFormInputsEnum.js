@@ -2,15 +2,17 @@
 const poolingFormInputsEnum = Object.freeze({
     fields : [ {label: "Tipo",
                 attribute: "poolingType",
-                inputType: "text"
+                inputType: "select",
+                options: [{label: 'Max',
+                           value : 'MAX'},
+                           {label: 'Average',
+                            value: 'AVG'
+                           }]
                 },
-                {label: "Linhas no Kernel",
-                    attribute: "qtRows",
-                    inputType: "number"
-                },
-                {label: "Colunas no Kernel",
-                    attribute: "qtCols",
-                    inputType: "number"
+                {label: "Tamanho do Kernel (LinhasxColunas) Ex: 3x3",
+                    attribute: "kernelSize",
+                    inputType: "text",
+                    placeholder: "Ex: 3x3"
                 }
             ]
 });

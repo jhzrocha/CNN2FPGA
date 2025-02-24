@@ -18,9 +18,9 @@ class OneHotEncoder(ComponentCommonMethods):
             begin
                 for i in 0 to {outputDataWidth-1} loop
                     if (i = to_integer(unsigned(i_DATA))) then 
-                        o_DATA(i) <= '1';
+                        o_DATA{f'(i)' if outputDataWidth > 1 else ''} <= '1';
                     else
-                        o_DATA(i) <= '0'; 
+                        o_DATA{f'(i)' if outputDataWidth > 1 else ''} <= '0'; 
                     end if;
                 end loop;
             end process;
