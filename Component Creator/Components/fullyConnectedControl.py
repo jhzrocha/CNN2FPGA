@@ -127,10 +127,13 @@ class FullyConnectedControl(ComponentCommonMethods):
     case (r_STATE) is
       when s_IDLE => -- aguarda sinal go                 
         if (i_GO = '1') then
-          w_NEXT <= s_BIAS_READ_ENA;
+          w_NEXT <= s_LOAD_PIX_WEIGHT;
         else
           w_NEXT <= s_IDLE;
         end if;
+      
+      when s_LOAD_PIX_WEIGHT => -- habilita leitura pixel de entrada
+        w_NEXT <= s_REG_PIX;
 
       when s_BIAS_READ_ENA => -- havilita leitura de BIAS
         w_NEXT <= s_BIAS_WRITE_ENA;

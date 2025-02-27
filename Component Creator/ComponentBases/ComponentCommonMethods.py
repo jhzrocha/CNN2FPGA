@@ -435,11 +435,13 @@ use work.types_pkg.all;"""
             else:
                 subcomponent.setdataType(subcomponent.getdataType().split('of')[-1].strip())
                 self.verifyInitialValue(subcomponent)
+
+            return None
         if (self.isVectorOfOneElement(subcomponent.getdataType())):
             subcomponent.setdataType(subcomponent.getdataType().replace('std_logic_vector(0 downto 0)', 'std_logic'))
             if(self.isInitialValueForVector(subcomponent.initialValue)):
                 subcomponent.initialValue = "(others => '0')"
-    
+            return None
     def isInitialValueForVector(self, initialValue):
         if "(others => (others => '0'))" in initialValue:
             return True

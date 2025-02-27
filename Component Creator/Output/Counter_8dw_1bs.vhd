@@ -1,7 +1,6 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
-use work.types_pkg.all;
                  
     entity Counter_8dw_1bs is
         

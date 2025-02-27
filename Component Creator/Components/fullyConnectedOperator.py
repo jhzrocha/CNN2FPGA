@@ -13,12 +13,13 @@ class FullyConnectedOperator(ComponentCommonMethods):
     #SCALE_FACTOR - scaleFactor
     #SCALE_SHIFT - scaleShift
     #DATA_WIDTH - dataWidth
-    def __init__(self, nrUnits=2, biasAddressWidth=6, scaleFactor='"01000000000000000000000000000000"', scaleShift=7, dataWidth =8):
+    def __init__(self, nrUnits=2, biasAddressWidth=6, scaleFactor='"01000000000000000000000000000000"', scaleShift=7, dataWidth =8, qtOutputs=34):
         self.nrUnits = nrUnits
         self.biasAddressWidth = biasAddressWidth
         self.scaleFactor = scaleFactor
         self.scaleShift = scaleShift
         self.dataWidth = dataWidth
+        self.qtOutputs = qtOutputs
         self.createComponent()
     
     
@@ -29,8 +30,8 @@ class FullyConnectedOperator(ComponentCommonMethods):
         self.portMap =   { 'in': [
                                 Port('i_CLK','std_logic'),
                                 Port('i_CLR','std_logic'),
-                                Port('i_PIX',f'std_logic_vector({self.dataWidth-1} downto 0)', "(others => '0')"),
-                                Port('i_WEIGHT', f'array (0 to {self.nrUnits-1}) of std_logic_vector({self.dataWidth-1} downto 0)', "(others => (others => '0'))"),
+                                Port('i_PIX',f'std_logic_vector({self.dataWidth-1} downto 0)', initialValue = "(others => (others => '0'))"),
+                                Port('i_WEIGHT', f'array (0 to {self.nrUnits-1}) of std_logic_vector({self.dataWidth-1} downto 0)', initialValue = "(others => (others => '0'))"),
                                 Port('i_REG_PIX_ENA','std_logic'),
                                 Port('i_REG_WEIGHT_ENA','std_logic'),
                                 Port('i_BIAS_SCALE','std_logic_vector(31 downto 0)'),
@@ -79,19 +80,19 @@ class FullyConnectedOperator(ComponentCommonMethods):
         
         self.addInternalSignalWire('w_BIAS_ADDR', dataType=f'std_logic_vector({self.nrUnits-1} downto 0)' if self.nrUnits > 1 else 'std_logic', initialValue="(others => '0')" if self.nrUnits > 1 else "'0'")
         self.addInternalSignalWire('w_SCALE', dataType=f'std_logic_vector(31 downto 0)', initialValue="(others => '0')")
-        self.addInternalSignalWire('w_REG_OUT_ADDR', dataType=f'std_logic_vector(34 downto 0)', initialValue="(others => '0')")
+        self.addInternalSignalWire('w_REG_OUT_ADDR', dataType=f'std_logic_vector({self.qtOutputs-1} downto 0)', initialValue="(others => '0')")
 
         self.generateUnits()
         self.generateOutBuffer()
         self.addInternalOperationLine(f'       o_PIX <= r_REG_OUT;')
 
-        self.addInternalComponent(component=OneHotEncoder(inputDataWidth=self.biasAddressWidth
-                                                          ,outputDataWidth=self.nrUnits),
-                                  componentCallName=f'u_OHE_BIAS',
-                                  portmap={ 'i_DATA': 'i_REG_BIAS_ADDR',
-                                            'o_DATA': 'w_BIAS_ADDR'})
-        self.addInternalComponent(component=OneHotEncoder(inputDataWidth=6
-                                                          ,outputDataWidth=35),
+        if (self.nrUnits > 1):
+            self.addInternalComponent(component=OneHotEncoder(inputDataWidth=self.biasAddressWidth
+                                                            ,outputDataWidth=self.nrUnits),
+                                    componentCallName=f'u_OHE_BIAS',
+                                    portmap={ 'i_DATA': 'i_REG_BIAS_ADDR',
+                                                'o_DATA': 'w_BIAS_ADDR'})
+        self.addInternalComponent(component=OneHotEncoder(outputDataWidth=self.qtOutputs),
                                   componentCallName=f'u_OHE_OUT',
                                   portmap={ 'i_DATA': 'i_REG_OUT_ADDR',
                                             'o_DATA': 'W_REG_OUT_ADDR'})
@@ -116,15 +117,18 @@ class FullyConnectedOperator(ComponentCommonMethods):
                                                 'i_PIX'           : f'i_PIX',
                                                 'i_WEIGHT'        : f"i_WEIGHT{f'({i})' if self.nrUnits > 1 else ''}",
                                                 'o_PIX'           : f"w_NFC_OUT{f'({i})' if self.nrUnits > 1 else ''}"})
+            registerEnabler = f'w_REG_BIAS_ENA_w_BIAS_ADDR_{i}' if self.nrUnits > 1 else 'i_REG_BIAS_ENA'
             self.addInternalComponent(component=Registrador(dataWidth=32),
                                       componentCallName=f'u_REG_BIAS_{i}',
                                       portmap={ 'i_CLK' : 'i_CLK',
                                                 'i_CLR' : 'i_CLR',
-                                                'i_ENA' : f'w_REG_BIAS_ENA_w_BIAS_ADDR_{i}',
+                                                'i_ENA' : registerEnabler,
                                                 'i_A'   : f'i_BIAS_SCALE',
                                                 'o_Q'   : f'w_REG_BIAS_OUT_{i}'})
             
-            self.addInternalOperationLine(f"     w_REG_BIAS_ENA_w_BIAS_ADDR_{i}   <= i_REG_BIAS_ENA and w_BIAS_ADDR{f'({i})' if self.nrUnits>1 else ''};")
+            if (self.nrUnits > 1):
+                self.addInternalSignalWire(f'w_REG_BIAS_ENA_w_BIAS_ADDR_{i}', dataType='std_logic')
+                self.addInternalOperationLine(f"     w_REG_BIAS_ENA_w_BIAS_ADDR_{i}   <= i_REG_BIAS_ENA and w_BIAS_ADDR{f'({i})' if self.nrUnits>1 else ''};")
 
             self.addInternalOperationLine(f'     w_ADD_BIAS_OUT{f"({i})" if self.nrUnits>1 else ""}   <= std_logic_vector(signed(w_NFC_OUT{f"({i})" if self.nrUnits>1 else ""}) + signed(w_REG_BIAS_OUT_{i}));')
             self.addInternalOperationLine(f'     w_A{f"({i})" if self.nrUnits>1 else ""}(31 downto 0) <= w_ADD_BIAS_OUT{f"({i})" if self.nrUnits>1 else ""};')
@@ -137,15 +141,14 @@ class FullyConnectedOperator(ComponentCommonMethods):
             self.addInternalOperationLine(f"     w_CLIP_OUT{f'({i})' if self.nrUnits>1 else ''} <= w_OFFSET_OUT{f'({i})' if self.nrUnits>1 else ''}(7 downto 0);")
 
     def generateOutBuffer(self):
-        for i in range(0, 34):
+        for i in range(0, self.qtOutputs):
             self.addInternalSignalWire(f'w_REG_OUT_ENA_W_REG_OUT_ADDR_{i}', dataType='std_logic')
-            self.addInternalSignalWire(f'w_REG_BIAS_ENA_w_BIAS_ADDR_{i}', dataType='std_logic')
      
             self.addInternalOperationLine(f'     w_REG_OUT_ENA_W_REG_OUT_ADDR_{i}   <= i_REG_OUT_ENA and W_REG_OUT_ADDR({i});')
             self.addInternalComponent(component=Registrador(dataWidth=8),
                                         componentCallName=f'u_REG_OUT_{i}',
                                         portmap={ 'i_CLK' : 'i_CLK',
                                                 'i_CLR' : 'i_REG_OUT_CLR',
-                                                'i_ENA' : f'w_REG_BIAS_ENA_w_BIAS_ADDR_{i}',
+                                                'i_ENA' : f'w_REG_OUT_ENA_W_REG_OUT_ADDR_{i}',
                                                 'i_A'   : f'w_CLIP_OUT{f"(0)" if self.nrUnits>1 else ""}',
                                                 'o_Q'   : f'r_REG_OUT({i})'})

@@ -4,8 +4,11 @@ from ComponentBases.port import Port
 class OneHotEncoder(ComponentCommonMethods):
 
 #Testado
-    def __init__(self, inputDataWidth=5, outputDataWidth=18):
+    def __init__(self, inputDataWidth=None, outputDataWidth=18):
         self.startInstance()
+
+        inputDataWidth = inputDataWidth if  inputDataWidth != None else len(bin(outputDataWidth)[2:])
+        
         self.minimalComponentFileName = f"One_Hot_Encoder_{inputDataWidth}x{outputDataWidth}"
         self.portMap =   { 'in': [
                                 Port('i_DATA',f"std_logic_vector({inputDataWidth-1} downto 0)")
