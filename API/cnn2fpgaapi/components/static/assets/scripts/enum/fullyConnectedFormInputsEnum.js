@@ -1,16 +1,27 @@
 
 const fullyConnectedFormInputsEnum = Object.freeze({
-    fields : [ {label: "Pesos",
-                attribute: "weights",
-                inputType: "file"
+    fields : [ {label: "Função de Ativação",
+                attribute: "activationFunction",
+                inputType: "select",
+                options: [{label: 'ReLU',
+                           value : 'RELU'
+                          },
+                           {label: 'Sigmoid',
+                            value: 'SIGMOID'
+                           },
+                           {label: 'Tangente Hiperbólica',
+                            value: 'TANH'
+                           }
+                        ]
                 },
-                {label: "Bias",
-                    attribute: "bias",
-                    inputType: "file"
-                },
-                {label: "Tamanho do Kernel",
-                    attribute: "kernelSize",
-                    inputType: "number"
+                {label: "Quantidade de Camadas",
+                    attribute: "qtFCLayers",
+                    inputType: "number",
+                    generateNewInputs: true,
+                    generatedInputsAttributes: 'qtNeuronLayer',
+                    generatedInputsTitle: 'Quantidade de Neuronios por Camada', 
+                    generatedInputsLabel: 'Camada ',
+                    generatedInputsType: 'number'
                 }
             ]
 });

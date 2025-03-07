@@ -1,23 +1,17 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.types_pkg.all;
                  
     entity CNN2FPGAVHDL is
         
         port (i_CLK : in std_logic;
               i_CLR : in std_logic;
               i_GO : in std_logic;
-              o_READY : out std_logic;
-              o_REG_PIX_ENA : out std_logic;
-              o_REG_WEIGHT_ENA : out std_logic;
-              o_REG_BIAS_ENA : out std_logic;
-              o_ACC_ENA : out std_logic;
-              o_ACC_CLR : out std_logic;
-              o_REG_OUT_ENA : out std_logic;
-              o_REG_OUT_ADDR : out std_logic_vector(5 downto 0):= (others => '0');
-              o_WEIGHT_READ_ADDR : out std_logic_vector(12 downto 0);
-              o_BIAS_READ_ADDR : out std_logic_vector(5 downto 0);
-              o_IN_READ_ADDR : out std_logic_vector (7 downto 0)
+              i_PIX : in i_A_Multiplexer_64_8b:= (others => (others => '0'));
+              o_PIX : out o_PIX_FullyConnectedOperator:= (others => (others => '0'));
+              o_READ_ADDR : out std_logic_vector(7 downto 0);
+              o_READY : out std_logic
         );
     end CNN2FPGAVHDL;
                  
@@ -25,22 +19,15 @@ use ieee.numeric_std.all;
 
 
         begin 
-        fullyConnectedControl_13_6_8 : entity work.fullyConnectedControl_13_6_8
+        FullyConnectedLayer : entity work.FullyConnectedLayer
         port map (
             i_CLK  => i_CLK,
             i_CLR  => i_CLR,
             i_GO  => i_GO,
-            o_READY  => o_READY,
-            o_REG_PIX_ENA  => o_REG_PIX_ENA,
-            o_REG_WEIGHT_ENA  => o_REG_WEIGHT_ENA,
-            o_REG_BIAS_ENA  => o_REG_BIAS_ENA,
-            o_ACC_ENA  => o_ACC_ENA,
-            o_ACC_CLR  => o_ACC_CLR,
-            o_REG_OUT_ENA  => o_REG_OUT_ENA,
-            o_REG_OUT_ADDR  => o_REG_OUT_ADDR,
-            o_WEIGHT_READ_ADDR  => o_WEIGHT_READ_ADDR,
-            o_BIAS_READ_ADDR  => o_BIAS_READ_ADDR,
-            o_IN_READ_ADDR  => o_IN_READ_ADDR
+            i_PIX  => i_PIX,
+            o_PIX  => o_PIX,
+            o_READ_ADDR  => o_READ_ADDR,
+            o_READY  => o_READY
         );
 
     end arc;

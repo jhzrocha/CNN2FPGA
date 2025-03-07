@@ -4,6 +4,10 @@ from ComponentBases.type import Type
 from Components.neuron import Neuron
 from Components.registrador import Registrador
 from Components.oneHotEncoder import OneHotEncoder
+from Components.relu import Relu
+from Components.hyperbolicTangent import HyperbolicTangent
+from Components.sigmoid import Sigmoid
+
 
 #Compilado
 class FullyConnectedOperator(ComponentCommonMethods):
@@ -13,13 +17,14 @@ class FullyConnectedOperator(ComponentCommonMethods):
     #SCALE_FACTOR - scaleFactor
     #SCALE_SHIFT - scaleShift
     #DATA_WIDTH - dataWidth
-    def __init__(self, nrUnits=2, biasAddressWidth=6, scaleFactor='"01000000000000000000000000000000"', scaleShift=7, dataWidth =8, qtOutputs=34):
+    def __init__(self, nrUnits=2, biasAddressWidth=6, scaleFactor='"01000000000000000000000000000000"', scaleShift=7, dataWidth =8, qtOutputs=34, functionActivationType='RELU'):
         self.nrUnits = nrUnits
         self.biasAddressWidth = biasAddressWidth
         self.scaleFactor = scaleFactor
         self.scaleShift = scaleShift
         self.dataWidth = dataWidth
         self.qtOutputs = qtOutputs
+        self.functionActivationType = functionActivationType
         self.createComponent()
     
     
@@ -30,7 +35,7 @@ class FullyConnectedOperator(ComponentCommonMethods):
         self.portMap =   { 'in': [
                                 Port('i_CLK','std_logic'),
                                 Port('i_CLR','std_logic'),
-                                Port('i_PIX',f'std_logic_vector({self.dataWidth-1} downto 0)', initialValue = "(others => (others => '0'))"),
+                                Port('i_PIX',f'std_logic_vector({self.dataWidth-1} downto 0)', initialValue = "(others => '0')"),
                                 Port('i_WEIGHT', f'array (0 to {self.nrUnits-1}) of std_logic_vector({self.dataWidth-1} downto 0)', initialValue = "(others => (others => '0'))"),
                                 Port('i_REG_PIX_ENA','std_logic'),
                                 Port('i_REG_WEIGHT_ENA','std_logic'),
@@ -45,7 +50,7 @@ class FullyConnectedOperator(ComponentCommonMethods):
 
                                 ],
                             'out': [
-                                    Port(name='o_PIX',dataType=f'array (0 to 34) of std_logic_vector({self.dataWidth-1} downto 0)',initialValue="(others => (others => '0'))"),
+                                    Port(name='o_PIX',dataType=f'array (0 to {self.qtOutputs}) of std_logic_vector({self.dataWidth-1} downto 0)',initialValue="(others => (others => '0'))"),
                                    ] 
                     }
         
@@ -74,7 +79,9 @@ class FullyConnectedOperator(ComponentCommonMethods):
         self.addInternalSignalWire('w_CAST_OUT', dataType=commonUnitsTypeCall, initialValue=commonUnitsInitialValue)
         self.addInternalSignalWire('w_SHIFT_OUT', dataType=commonUnitsTypeCall, initialValue=commonUnitsInitialValue)
         self.addInternalSignalWire('w_OFFSET_OUT', dataType=commonUnitsTypeCall, initialValue=commonUnitsInitialValue)
-        self.addInternalSignalWire('w_CLIP_OUT', dataType=f'array (0 to {self.nrUnits-1}) of std_logic_vector(7 downto 0)', initialValue="(others => (others => '0'))")
+        self.addInternalSignalWire('w_CLIP_OUT_BIAS', dataType=f'array (0 to {self.nrUnits-1}) of std_logic_vector({self.dataWidth-1} downto 0)', initialValue="(others => (others => '0'))")
+        self.addInternalSignalWire('w_CLIP_OUT_FUNCTION', dataType=f'array (0 to {self.nrUnits-1}) of std_logic_vector({self.dataWidth-1} downto 0)', initialValue="(others => (others => '0'))")
+
         self.addInternalSignalWire('r_REG_OUT', dataType=self.getPortDataType('o_PIX'), initialValue="(others => (others => '0'))")
         
         
@@ -138,8 +145,31 @@ class FullyConnectedOperator(ComponentCommonMethods):
             self.addInternalOperationLine(f"     w_SHIFT_OUT{f'({i})' if self.nrUnits>1 else ''}(31 downto {31-self.scaleShift}) <= (others => '1') when (w_CAST_OUT{f'({i})' if self.nrUnits>1 else ''}(31) = '1') else (others => '0');")
             
             self.addInternalOperationLine(f"     w_OFFSET_OUT{f'({i})' if self.nrUnits>1 else ''} <= std_logic_vector(unsigned(w_SHIFT_OUT{f'({i})' if self.nrUnits>1 else ''}) + to_unsigned(82, 32));")
-            self.addInternalOperationLine(f"     w_CLIP_OUT{f'({i})' if self.nrUnits>1 else ''} <= w_OFFSET_OUT{f'({i})' if self.nrUnits>1 else ''}(7 downto 0);")
-
+            self.addInternalOperationLine(f"     w_CLIP_OUT_BIAS{f'({i})' if self.nrUnits>1 else ''} <= w_OFFSET_OUT{f'({i})' if self.nrUnits>1 else ''}(7 downto 0);")
+            self.addFunctionActivationComponent()
+    
+    def addFunctionActivationComponent(self):
+        if (self.functionActivationType == 'RELU'):
+            self.addInternalComponent(component=Relu(dataWidth=self.dataWidth),
+                                      componentCallName='u_RELU',
+                                      portmap={ 'i_PIX': f'w_CLIP_OUT_BIAS',
+                                                'o_PIX': f'w_CLIP_OUT_FUNCTION'
+                                                })
+        elif (self.functionActivationType == 'SIGMOID'):
+            self.addInternalComponent(component=Sigmoid(dataWidth=self.dataWidth),
+                                      componentCallName='u_SIGMOID',
+                                      portmap={ 'i_X' : 'w_CLIP_OUT_BIAS',
+                                                'i_CLK': f'i_CLK',
+                                                'i_Y': f'w_CLIP_OUT_FUNCTION'
+                                                })
+        elif (self.functionActivationType == 'TANH'):
+            self.addInternalComponent(component=HyperbolicTangent(dataWidth=self.dataWidth),
+                                      componentCallName='u_TANH',
+                                      portmap={ 'i_X' : 'w_CLIP_OUT_BIAS',
+                                                'i_CLK': f'i_CLK',
+                                                'i_Y': f'w_CLIP_OUT_FUNCTION'
+                                                })
+    
     def generateOutBuffer(self):
         for i in range(0, self.qtOutputs):
             self.addInternalSignalWire(f'w_REG_OUT_ENA_W_REG_OUT_ADDR_{i}', dataType='std_logic')
@@ -150,5 +180,5 @@ class FullyConnectedOperator(ComponentCommonMethods):
                                         portmap={ 'i_CLK' : 'i_CLK',
                                                 'i_CLR' : 'i_REG_OUT_CLR',
                                                 'i_ENA' : f'w_REG_OUT_ENA_W_REG_OUT_ADDR_{i}',
-                                                'i_A'   : f'w_CLIP_OUT{f"(0)" if self.nrUnits>1 else ""}',
+                                                'i_A'   : f'w_CLIP_OUT_FUNCTION{f"(0)" if self.nrUnits>1 else ""}',
                                                 'o_Q'   : f'r_REG_OUT({i})'})

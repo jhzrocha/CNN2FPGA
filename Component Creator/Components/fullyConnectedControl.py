@@ -9,11 +9,12 @@ class FullyConnectedControl(ComponentCommonMethods):
     #BIAS_ADDRESS_WIDTH biasAddressWidth
     #ADDR_WIDTH - addWidth
     #LAST_FEATURE - lastFeature
-    def __init__(self,weightAddressWidth=13, biasAddressWidth=6, addWidth=8, lastFeature='"10000000"'):
-        self.weightAddressWidth = weightAddressWidth
+    def __init__(self,biasAddressWidth=6, addWidth=8, qtInputs = 128, qtNeurons = 34):
+        self.weightAddressWidth = len(bin(qtInputs)[2:])
         self.biasAddressWidth = biasAddressWidth
         self.addWidth = addWidth
-        self.lastFeature = lastFeature
+        self.lastFeature = bin(qtInputs)[2:]
+        self.qtNeurons = qtNeurons
         self.createComponent()
         
     
@@ -37,22 +38,22 @@ class FullyConnectedControl(ComponentCommonMethods):
                                 Port('o_REG_OUT_ADDR','std_logic_vector(5 downto 0)', initialValue="(others => '0')"),
                                 Port('o_WEIGHT_READ_ADDR',f'std_logic_vector({self.weightAddressWidth-1} downto 0)'),
                                 Port('o_BIAS_READ_ADDR',f'std_logic_vector({self.biasAddressWidth-1} downto 0)'),
+                                Port('o_ACT_FUNCT_ENA','std_logic'),
                                 Port('o_IN_READ_ADDR','std_logic_vector (7 downto 0)')
                                    ] 
                     }
         
         self.addStateTypeOnArchitecture(name='t_STATE',
                                         states=['s_IDLE',
-                                                's_BIAS_READ_ENA',
-                                                's_BIAS_WRITE_ENA',
+                                                's_LOAD_INPUT',
+                                                's_LOAD_WEIGHT',
+                                                's_ENABLE_NEURON_ACC',
+                                                's_INC_WEIGHT_AND_INPUT',
+                                                's_LOAD_BIAS',
+                                                's_ENABLE_BIAS_TO_SUM',
+                                                's_ENABLE_FUNCTION',
+                                                's_ENABLE_REG_OUT',
                                                 's_BIAS_INC_ADDR',
-                                                's_LOAD_PIX_WEIGHT',
-                                                's_REG_PIX',
-                                                's_REG_OUT_NFC',
-                                                's_WRITE_OUT',
-                                                's_LAST_UNIT',
-                                                's_RST_ADDRS',
-                                                's_LAST_FEATURE',
                                                 's_END'])
         
         self.addInternalSignalWire('r_STATE','t_STATE')
@@ -70,13 +71,16 @@ class FullyConnectedControl(ComponentCommonMethods):
         self.addInternalSignalWire('w_RST_BIAS_ADDR','std_logic')
         self.addInternalSignalWire('w_INC_BIAS_ADDR','std_logic')
 
-        self.addInternalSignalWire('w_LAST_FEATURE','std_logic')
 
-        self.addInternalSignalWire('w_LAST_UNIT','std_logic', initialValue="'0'")
+
+        self.addInternalSignalWire('w_LAST_WEIGHT','std_logic', initialValue="'0'")
+        self.addInternalSignalWire('w_LAST_NEURON','std_logic', initialValue="'0'")
 
         self.addInternalSignalWire('r_REG_OUT_ADDR','std_logic_vector(5 downto 0)', initialValue="(others => '0')")
         self.addInternalSignalWire('w_INC_BUFF_OUT','std_logic', initialValue="'0'")
         self.addInternalSignalWire('w_RST_BUFF_OUT','std_logic', initialValue="'0'")
+
+        
 
         self.addInternalComponent(component=Counter(dataWidth=self.biasAddressWidth,
                                                     bitStep=1),
@@ -109,8 +113,8 @@ class FullyConnectedControl(ComponentCommonMethods):
                                                     bitStep=1),
                                                     componentCallName='u_REG_OUT_ADDR',
                                                     portmap={ 'i_CLK'       : 'i_CLK',
-                                                              'i_RESET'     : 'w_INC_BUFF_OUT',# TROCADO
-                                                              'i_INC'       : 'w_RST_BUFF_OUT',# TROCADO
+                                                              'i_RESET'     : 'w_RST_BUFF_OUT',
+                                                              'i_INC'       : 'w_INC_BUFF_OUT',
                                                               'i_RESET_VAL' : "(others => '0')",
                                                               'o_Q'         : 'r_REG_OUT_ADDR'})
         self.internalOperations = f"""
@@ -122,56 +126,50 @@ class FullyConnectedControl(ComponentCommonMethods):
       r_STATE <= w_NEXT; --next state
     end if;
   end process;
-  p_NEXT : process (r_STATE, i_GO, r_BIAS_ADDR, w_LAST_FEATURE, w_LAST_UNIT)
+  p_NEXT : process (r_STATE, i_GO, r_BIAS_ADDR, w_LAST_NEURON, w_LAST_WEIGHT)
   begin
     case (r_STATE) is
       when s_IDLE => -- aguarda sinal go                 
         if (i_GO = '1') then
-          w_NEXT <= s_LOAD_PIX_WEIGHT;
+          w_NEXT <= s_LOAD_INPUT;
         else
           w_NEXT <= s_IDLE;
         end if;
-      
-      when s_LOAD_PIX_WEIGHT => -- habilita leitura pixel de entrada
-        w_NEXT <= s_REG_PIX;
 
-      when s_BIAS_READ_ENA => -- havilita leitura de BIAS
-        w_NEXT <= s_BIAS_WRITE_ENA;
+      when s_LOAD_INPUT =>
+	      w_NEXT <= s_LOAD_WEIGHT;
 
-      when s_BIAS_WRITE_ENA => -- havilita escrita de BIAS
-        w_NEXT <= s_BIAS_INC_ADDR;
+      when s_LOAD_WEIGHT =>
+	      w_NEXT <= s_ENABLE_NEURON_ACC;
 
-      when s_BIAS_INC_ADDR => -- incrementa contgador BIAS
-        w_NEXT <= s_LOAD_PIX_WEIGHT;
-
-      when s_LOAD_PIX_WEIGHT => -- habilita leitura pixel de entrada
-        w_NEXT <= s_REG_PIX;
-
-      when s_REG_PIX => -- registra pixel de entrada        
-        w_NEXT <= s_REG_OUT_NFC;
-
-      when s_REG_OUT_NFC => -- registra saida
-        w_NEXT <= s_LAST_FEATURE;
-
-      when s_LAST_FEATURE => -- verifica fim linhas
-        if (w_LAST_FEATURE = '1') then
-          w_NEXT <= s_WRITE_OUT;
+      when s_ENABLE_NEURON_ACC =>
+        if (w_LAST_WEIGHT = '1') then
+          w_NEXT <= s_LOAD_BIAS;
         else
-          w_NEXT <= s_LOAD_PIX_WEIGHT;
+          w_NEXT <= s_INC_WEIGHT_AND_INPUT;
         end if;
+      
+      when s_INC_WEIGHT_AND_INPUT =>
+        w_NEXT <= s_LOAD_INPUT;
 
-      when s_WRITE_OUT =>
-        w_NEXT <= s_LAST_UNIT;
+      when s_LOAD_BIAS =>
+	      w_NEXT <= s_ENABLE_BIAS_TO_SUM;
 
-      when s_LAST_UNIT =>
-        if (w_LAST_UNIT = '1') then
+      when s_ENABLE_BIAS_TO_SUM =>
+	      w_NEXT <= s_ENABLE_FUNCTION;
+
+      when s_ENABLE_FUNCTION =>
+	      w_NEXT <= s_ENABLE_REG_OUT;
+
+      when s_ENABLE_REG_OUT =>
+	      if (w_LAST_NEURON = '1') then
           w_NEXT <= s_END;
         else
-          w_NEXT <= s_BIAS_READ_ENA;
+          w_NEXT <= s_BIAS_INC_ADDR;
         end if;
 
-      when s_END => -- fim
-        w_NEXT <= s_IDLE;
+      when s_BIAS_INC_ADDR =>
+	      w_NEXT <= s_LOAD_INPUT;
 
       when others =>
         w_NEXT <= s_IDLE;
@@ -179,75 +177,40 @@ class FullyConnectedControl(ComponentCommonMethods):
     end case;
   end process;
 
-  --- sinais para ROM de pesos, bias e scale/ cache de pesos, registradores de bias e scale
-  -- enderecametno do bias
-  w_RST_BIAS_ADDR <= '1' when (i_CLR = '1' or r_STATE = s_IDLE) else
-    '0';
-  w_INC_BIAS_ADDR <= '1' when (r_STATE = s_BIAS_INC_ADDR) else
-    '0';
+  -- CLEAR 
+  w_RST_BIAS_ADDR <= '1' when (i_CLR = '1' or r_STATE = s_IDLE) else '0';
+  w_RST_WEIGHT_ADDR <= '1' when (i_CLR = '1' or r_STATE = s_IDLE) else '0';
+  w_RST_IN_ADDR <= '1' when (i_CLR = '1' or r_STATE = s_IDLE) else '0';
+  w_RST_BUFF_OUT <= '1' when (r_STATE = s_IDLE) else '0';
+  o_ACC_CLR <= '1' when (r_STATE = s_IDLE) else '0';
 
-      -- ENDERECO PARA ROM BIAS
+  -- ADDRS
+  o_WEIGHT_READ_ADDR <= r_WEIGHT_ADDR;
+  o_IN_READ_ADDR <= w_IN_READ_ADDR;
+  o_REG_OUT_ADDR <= r_REG_OUT_ADDR;
   o_BIAS_READ_ADDR <= r_BIAS_ADDR;
 
-  -- sinaliza quando contador chegar a 34
-  w_LAST_UNIT <= '1' when (r_BIAS_ADDR = "100010") else
-    '0'; -- 0 to 34 
-
-  -- habilita registradores de scale e bias
-  o_REG_BIAS_ENA <= '1' when (r_STATE = s_BIAS_WRITE_ENA) else
-    '0';
-
-  -- sinais durante processamento       
-  -- enderecamento dos pesos
-  w_RST_WEIGHT_ADDR <= '1' when (i_CLR = '1' or r_STATE = s_IDLE) else
-    '0';
-  w_INC_WEIGHT_ADDR <= '1' when (r_STATE = s_REG_PIX) else
-    '0';
-
-      -- ENDERECO PARA ROM PESOS
-  o_WEIGHT_READ_ADDR <= r_WEIGHT_ADDR;
-  ---------------------------------
-  -- sinais para buffers de entrada
-  ---------------------------------  
-  w_INC_IN_ADDR <= '1' when (r_STATE = s_REG_PIX) else
-    '0';
-  w_RST_IN_ADDR <= '1' when (i_CLR = '1' or r_STATE = s_IDLE) else
-    '0';
-
-      o_IN_READ_ADDR <= w_IN_READ_ADDR;
-
-  w_LAST_FEATURE <= '1' when (w_IN_READ_ADDR = {self.lastFeature}) else
-    '0';
-
-  -- sinais de inc/rst
-  w_INC_BUFF_OUT <= '1' when (r_STATE = s_LAST_UNIT) else
-    '0';
-  w_RST_BUFF_OUT <= '1' when (r_STATE = s_IDLE) else
-    '0';
-
-      o_REG_OUT_ADDR <= r_REG_OUT_ADDR;
-  ---------------------------------
-  ---------------------------------
-  -- habilita registradores de pixel e peso
-  o_REG_PIX_ENA <= '1' when (r_STATE = s_REG_PIX) else
-    '0';
-  o_REG_WEIGHT_ENA <= '1' when (r_STATE = s_REG_PIX) else
-    '0';
-  -- habilita acumulador
-  o_ACC_ENA <= '1' when (r_STATE = s_REG_OUT_NFC) else
-    '0';
-  o_ACC_CLR <= '1' when (r_STATE = s_IDLE) else
-    '0';
-
-  -- habilita/clear registrador de saida
-  o_REG_OUT_ENA <= '1' when (r_STATE = s_WRITE_OUT) else
-    '0';
-  -- sinaliza fim do processamento
-  o_READY <= '1' when (r_STATE = s_END) else
-    '0';
-        """
+  -- INCREMENTS  
+  w_INC_BIAS_ADDR <= '1' when (r_STATE = s_BIAS_INC_ADDR) else '0';
+  w_INC_WEIGHT_ADDR <= '1' when (r_STATE = s_INC_WEIGHT_AND_INPUT) else '0';
+  w_INC_IN_ADDR <= '1' when (r_STATE = s_INC_WEIGHT_AND_INPUT) else '0';
+  w_INC_BUFF_OUT <= '1' when (r_STATE = s_BIAS_INC_ADDR) else '0';
+  
+  -- ENABLERS
+  o_REG_BIAS_ENA <= '1' when (r_STATE = s_LOAD_BIAS) else '0';
+  o_ACT_FUNCT_ENA <= '1' when (r_STATE = s_ENABLE_FUNCTION) else '0';  
+  o_REG_PIX_ENA <= '1' when (r_STATE = s_LOAD_INPUT) else '0';
+  o_REG_WEIGHT_ENA <= '1' when (r_STATE = s_LOAD_WEIGHT) else '0';
+  o_ACC_ENA <= '1' when (r_STATE = s_ENABLE_NEURON_ACC) else '0';
+  o_REG_OUT_ENA <= '1' when (r_STATE = s_ENABLE_REG_OUT) else '0';
+  
+  -- LAST CONTROLLERS
+  w_LAST_NEURON <= '1' when (r_BIAS_ADDR = "{bin(self.qtNeurons)[2:]}") else '0';
+  w_LAST_WEIGHT <= '1' when (r_WEIGHT_ADDR = "{self.lastFeature}") else '0';
+  
+  -- END
+  o_READY <= '1' when (r_STATE = s_END) else '0';
+  
+  """
         
         self.OutputEntityAndArchitectureFile()
-
-
-

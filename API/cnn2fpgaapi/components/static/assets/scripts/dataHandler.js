@@ -44,5 +44,9 @@ export class DataHandler {
         layer[attribute] = value;
     }
 
+    removeLayerAttribute(layerID, attribute) {
+        delete this.layers[`${layerID}`][attribute]; // Remove o atributo especificado
+    }
+
 
 }

@@ -3,7 +3,7 @@ from ComponentBases.port import Port
 from Components.fullyConnectedControl import FullyConnectedControl
 from Components.fullyConnectedOperator import FullyConnectedOperator
 from Components.genericMultiplexer import Multiplexer
-
+from Components.registrador import Registrador
 from MemoryInitializationComponents.memoryInitializationComponent import MemoryInitializationComponent
 
 class FullyConnectedLayer(ComponentCommonMethods):
@@ -16,16 +16,15 @@ class FullyConnectedLayer(ComponentCommonMethods):
     #NUM_CHANNELS          : integer          := 64;
     #NUM_UNITS             : integer          := 1;
     #SCALE_SHIFT           : integer          := 7
-    def __init__(self, dataWidth=8, addWidth=8, weightAddressWidth=13, biasAddressWidth=6,numWeightFilterCha='"1000"', lastWeight='"1000110000000"', lastBias='"100100"', lastFeature='"10000000"',
-                 numChannels=64, numUnits=2, scaleShift=7, weightsFileName='', weightsFileDataWidth=8, biasFileName ='', biasFileDataWidth=32,qtInputs = 64, qtNeurons =36):
+    def __init__(self, dataWidth=8, addWidth=8, weightAddressWidth=13, biasAddressWidth=6,numWeightFilterCha='"1000"', lastWeight='"1000110000000"', lastBias='"100100"',
+                 numChannels=64, numUnits=2, scaleShift=7, weightsFileName='', weightsFileDataWidth=8, biasFileName ='', biasFileDataWidth=32,qtInputs = 64, qtNeurons =36, functionActivation='RELU', qtMaxQtNeuronsOnLayer=36):
         self.dataWidth = dataWidth
         self.addWidth = addWidth
-        self.weightAddressWidth = weightAddressWidth
+        self.weightAddressWidth = len(bin(qtInputs))-1
         self.biasAddressWidth = biasAddressWidth
         self.numWeightFilterCha = numWeightFilterCha
         self.lastWeight = lastWeight
         self.lastBias = lastBias
-        self.lastFeature = lastFeature
         self.numChannels = numChannels
         self.numUnits = numUnits
         self.scaleShift = scaleShift
@@ -35,6 +34,8 @@ class FullyConnectedLayer(ComponentCommonMethods):
         self.biasFileDataWidth = biasFileDataWidth
         self.qtInputs = qtInputs
         self.qtNeurons = qtNeurons
+        self.functionActivation = functionActivation
+        self.qtMaxQtNeuronsOnLayer = qtMaxQtNeuronsOnLayer
         self.createComponent()
     
     
@@ -46,10 +47,11 @@ class FullyConnectedLayer(ComponentCommonMethods):
         self.fullyConnectedOperator = FullyConnectedOperator(nrUnits=self.numUnits, 
                                                                    biasAddressWidth=self.biasAddressWidth, 
                                                                    scaleShift=self.scaleShift, 
-                                                                   dataWidth =self.dataWidth)
+                                                                   dataWidth =self.dataWidth,
+                                                                   functionActivationType=self.functionActivation)
         
         self.inputMultiplexer = Multiplexer(dataWidth=self.dataWidth, qtInputs=self.qtInputs)
-                                                                  
+               
         self.portMap =   { 'in': [
                                 Port('i_CLK','std_logic'),
                                 Port('i_CLR','std_logic'),
@@ -79,13 +81,31 @@ class FullyConnectedLayer(ComponentCommonMethods):
         
         self.addInternalSignalWire(name='w_PIX',              dataType=self.fullyConnectedOperator.getPortDataType('i_PIX'))
         self.addInternalSignalWire(name='w_IN_READ_ADDR',         dataType=f"std_logic_vector({len(bin(self.qtNeurons))-1} downto 0)")
+        self.addInternalSignalWire(name='w_SEL_REG_INT',         dataType=f"std_logic_vector({len(bin(self.qtMaxQtNeuronsOnLayer-1))} downto 0)")
+        self.addInternalSignalWire(name='w_SEL_INPUT_OR_IN_REG',      dataType=f"std_logic_vector(1 downto 0)")
 
+        self.addInternalSignalWire(name='w_OPERATOR_OUTPUT',dataType= self.fullyConnectedOperator.getPortDataType('o_PIX'), initialValue="(others => (others => '0'))"),
+        self.addInternalSignalWire(name='w_INPUT_OR_REG',dataType= f"array (0 to 1) of std_logic_vector ({self.dataWidth-1} downto 0)", initialValue="(others => (others => '0'))"),
 
         self.addInternalComponent(component=self.inputMultiplexer,
                                     componentCallName='u_INPUTS_MUX',
                                     portmap={'i_A':'i_PIX',
                                              'i_SEL': 'w_IN_READ_ADDR',
-                                             'o_Q':'w_PIX'})
+                                             'o_Q':'w_INPUT_OR_REG(0)'})
+
+        self.internalRegistersMultiplexer = Multiplexer(dataWidth=self.dataWidth, qtInputs=self.qtMaxQtNeuronsOnLayer)
+        self.addInternalComponent(component=self.internalRegistersMultiplexer,
+                            componentCallName='u_REG_IN_MUX',
+                            portmap={'i_A'  : 'w_OUTPUT_REG_INT',
+                                     'i_SEL': 'w_SEL_REG_INT',
+                                     'o_Q'  : 'w_INPUT_OR_REG(1)'})
+        
+        
+        self.addInternalComponent(component=Multiplexer(dataWidth=self.dataWidth, qtInputs=2),
+                    componentCallName='u_SEL_INPUT_OR_IN_REG',
+                    portmap={'i_A'  : 'w_INPUT_OR_REG',
+                             'i_SEL': 'w_SEL_INPUT_OR_IN_REG',
+                             'o_Q'  : 'w_PIX'})
         
         self.addInternalComponent(component=MemoryInitializationComponent(type='conv_weights',
                                                                           initFileName= self.weightsFileName,
@@ -106,10 +126,8 @@ class FullyConnectedLayer(ComponentCommonMethods):
                                              'clken':"'1'",
                                              'clock':"i_CLK",
                                              'q':'w_BIAS_SCALE'})
-        self.addInternalComponent(component=FullyConnectedControl(weightAddressWidth=self.weightAddressWidth, 
-                                                                  biasAddressWidth=self.biasAddressWidth, 
-                                                                  addWidth=self.addWidth, 
-                                                                  lastFeature=self.lastFeature),
+        self.addInternalComponent(component=FullyConnectedControl(biasAddressWidth=self.biasAddressWidth, 
+                                                                  addWidth=self.addWidth),
                                     componentCallName='u_CONTROLE',
                                     portmap={'i_CLK': 'i_CLK',
                                             'i_CLR' : 'i_CLR',
@@ -131,7 +149,7 @@ class FullyConnectedLayer(ComponentCommonMethods):
                                     portmap={
                                             'i_CLK':'i_CLK',
                                             'i_CLR':'i_CLR',
-                                            'i_PIX':'i_PIX',
+                                            'i_PIX':'w_PIX',
                                             'i_WEIGHT':'w_WEIGHT',
                                             'i_REG_PIX_ENA':'w_REG_PIX_ENA',
                                             'i_REG_WEIGHT_ENA':'w_REG_WEIGHT_ENA',
@@ -145,10 +163,22 @@ class FullyConnectedLayer(ComponentCommonMethods):
                                             'i_REG_OUT_ADDR':'w_REG_OUT_ADDR',
                                             'o_PIX':'o_PIX'        
                                     })
+        self.addInternalSignalWire(name=f'w_ENA_REG_INT', dataType=f"std_logic_vector ({self.qtMaxQtNeuronsOnLayer-1} downto 0)")
+        self.addInternalSignalWire(name=f'w_OUTPUT_REG_INT', dataType=self.internalRegistersMultiplexer.getPortDataType('i_A'))
+
+        for i in range(0, self.qtMaxQtNeuronsOnLayer):
+            self.addInternalComponent(component=Registrador(dataWidth=self.dataWidth),
+                            componentCallName=f'u_REG_INT_{i}',
+                            portmap={ 'i_CLK' : 'i_CLK',
+                                    'i_CLR' : 'i_CLR',
+                                    'i_ENA' : f'w_ENA_REG_INT({i})',
+                                    'i_A'   : f'w_OPERATOR_OUTPUT({i})',
+                                    'o_Q'   : f'w_OUTPUT_REG_INT({i})'})
+       
         self.internalOperations = f"""
-  o_READ_ADDR <= w_IN_READ_ADDR;
-  w_WEIGHT{f"(0)" if self.numUnits>1 else ""}<= w_ROM_OUT;
-        """
+        o_READ_ADDR <= w_IN_READ_ADDR;
+        w_WEIGHT{f"(0)" if self.numUnits>1 else ""}<= w_ROM_OUT;
+                """
         self.OutputEntityAndArchitectureFile()
 
 

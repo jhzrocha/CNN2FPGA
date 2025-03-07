@@ -49,10 +49,10 @@ export class LayerConfigurationModal {
 
     loadInputValueFromLocalstorage(element, layerId){
         const valueOnLocalStorage = this.dataHandler.getLayerAttribute(layerId, element.getAttribute('attributeName'));
-
         if (element.type != "file" && valueOnLocalStorage){
             element.value = valueOnLocalStorage;
         }
+        this.dataHandler.setLayerAttribute(layerId,element.getAttribute('attributeName'), element.value);
     }
 
     updateModalLayerType(newLayerType, layerId){
@@ -66,6 +66,38 @@ export class LayerConfigurationModal {
         element.addEventListener("change", (event) =>{
             this.updateFormByLayerType(event.currentTarget.value);
         });
+    }
+
+    updateMultiGeneratedOnDataHandler(newValue, oldValue, attribute){
+        if(oldValue > newValue){
+            for (let i = newValue; newValue < oldValue; newValue++){
+                this.dataHandler.removeLayerAttribute(this.layerId, `${attribute}_${i}`);
+            }
+        }
+    }
+
+    addMultiGeneratedInputs(inputField, oldValue){
+        console.log(`Old Value = ${oldValue}`);
+        if(inputField.value != undefined){
+            const generatedInputsDiv = document.querySelector(`.${inputField.getAttribute('name')}_generatedInputs`);
+            if (generatedInputsDiv){
+                generatedInputsDiv.innerHTML = `<p></p><br><label class="form-label">${generatedInputsDiv.getAttribute('generatedInputsTitle')}</label><br>`;
+                for(let i=0; i < parseInt(inputField.value); i++){
+                    let generatedInputConf = {
+                        attribute: `${generatedInputsDiv.getAttribute('generatedInputsAttributes')}_${i}`,
+                        inputType: generatedInputsDiv.getAttribute('generatedInputsType'),
+                        label: `${generatedInputsDiv.getAttribute('generatedInputsLabel')} ${i}`
+                    }
+
+                    const generatedInput = this.createLabelInputByEnum(generatedInputConf);
+                    generatedInput.classList.add('col');
+                    this.addUpdateDatahandlerEvent(generatedInput, this.layerId);
+                    this.loadInputValueFromLocalstorage(generatedInput,this.layerId);
+                    generatedInputsDiv.appendChild(generatedInput);
+                }
+            this.updateMultiGeneratedOnDataHandler(inputField.value, oldValue, `${generatedInputsDiv.getAttribute('generatedInputsAttributes')}`);
+            }
+        }
     }
 
     createLabelInputByEnum(field){
@@ -88,13 +120,24 @@ export class LayerConfigurationModal {
             this.addUpdateDatahandlerEvent(input, this.layerId);
             this.loadInputValueFromLocalstorage(input,this.layerId);
             div.appendChild(input);
+            if (field.generateNewInputs){
+                let generatedInputsDiv = document.createElement("div");
+                generatedInputsDiv.setAttribute('generatedInputsAttributes', field.generatedInputsAttributes);
+                generatedInputsDiv.setAttribute('generatedInputsLabel', field.generatedInputsLabel);
+                generatedInputsDiv.setAttribute('generatedInputsType', field.generatedInputsType);
+                generatedInputsDiv.setAttribute('generatedInputsTitle', field.generatedInputsTitle);                
+                generatedInputsDiv.classList.add(`${field.attribute}_generatedInputs`);
+                generatedInputsDiv.classList.add('row');
+                generatedInputsDiv.classList.add('align-items-start');                
+                div.appendChild(generatedInputsDiv);
+            }
         } else {
             let select = document.createElement('select');
             select.setAttribute("attributeName", field.attribute);
             select.setAttribute("type", field.inputType);
             select.setAttribute("name", field.attribute);
             select.classList.add("form-control");
-
+            
             field.options.forEach((option) =>{
                 let optionElement = document.createElement('option');
                 optionElement.setAttribute("value", option.value);
@@ -105,14 +148,14 @@ export class LayerConfigurationModal {
             this.addUpdateDatahandlerEvent(select, this.layerId);
             this.loadInputValueFromLocalstorage(select,this.layerId);
             div.appendChild(select);
-        }        
+        }
         return div;
     }   
 
     setInputsByEnum(updatedForm, inputEnum){
         inputEnum.fields.forEach(field => {
             updatedForm.appendChild(this.createLabelInputByEnum(field));
-        });  
+        });
     }
 
     updateFormByLayerType(newLayerType) {
@@ -128,7 +171,6 @@ export class LayerConfigurationModal {
         } else if (newLayerType === "FC") {
             this.setInputsByEnum(updatedForm, fullyConnectedFormInputsEnum);
         }
-        
         opcoesDiv.appendChild(updatedForm);
     }
     
@@ -137,6 +179,7 @@ export class LayerConfigurationModal {
         const attribute = element.getAttribute('attributeName');
         element.addEventListener('blur', ()=>{
             if(element.value != undefined && element.value != this.dataHandler.getLayerAttribute(layerId, attribute)){
+                this.addMultiGeneratedInputs(element, this.dataHandler.getLayerAttribute(layerId, attribute));
                 this.dataHandler.setLayerAttribute(layerId,attribute, element.value);
                 this.updateCardInformations(layerId);
             }
@@ -150,6 +193,4 @@ export class LayerConfigurationModal {
         cardTitle.textContent = this.dataHandler.getLayerAttribute(layerID, cardTitle.getAttribute('attributeName'));
         cardSubtitle.textContent = layerType[this.dataHandler.getLayerAttribute(layerID, cardSubtitle.getAttribute('attributeName'))];
     }
-
-    
 }

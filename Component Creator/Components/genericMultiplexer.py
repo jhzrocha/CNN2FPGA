@@ -13,8 +13,7 @@ class Multiplexer(ComponentCommonMethods):
     def createComponent(self):
         self.startInstance()
         self.minimalComponentFileName = f"Multiplexer_{self.qtInputs}_{self.dataWidth}b"
-        self.selectionWidth = len(self.integerToBinary(self.qtInputs))-1
-        self.defineTypeOnTypePackage(Type(f't_ARRAY_OF_LOGIC_VECTOR_mult{self.qtInputs}',f'std_logic_vector({self.dataWidth-1} downto 0)', self.qtInputs))
+        self.selectionWidth = len(bin(self.qtInputs)[2:])/2
         self.portMap =   { 'in': [
                                 Port('i_A',f'array (0 to {self.qtInputs-1}) of std_logic_vector({self.dataWidth-1} downto 0)', initialValue="(others => (others => '0'))"),
                                 Port('i_SEL',f"std_logic_vector({self.selectionWidth-1} DOWNTO 0)",initialValue="(others => '0')")
