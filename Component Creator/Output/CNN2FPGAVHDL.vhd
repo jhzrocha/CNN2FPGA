@@ -10,7 +10,7 @@ use work.types_pkg.all;
               i_GO : in std_logic;
               i_PIX : in i_A_Multiplexer_64_8b:= (others => (others => '0'));
               o_PIX : out o_PIX_FullyConnectedOperator:= (others => (others => '0'));
-              o_READ_ADDR : out std_logic_vector(7 downto 0);
+              o_READ_ADDR : out std_logic_vector(6 downto 0);
               o_READY : out std_logic
         );
     end CNN2FPGAVHDL;

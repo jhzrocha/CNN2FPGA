@@ -11,3 +11,6 @@ obj = FullyConnectedLayer(numUnits=1,weightsFileName='conv1.mif', biasFileName= 
 projectSpinal.setTopEntityComponent(obj)
 
 projectSpinal.start()
+
+
+# print(len(bin(64)[2:]))

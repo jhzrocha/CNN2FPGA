@@ -3,7 +3,7 @@ use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.types_pkg.all;
                  
-    entity fullyConnectedControl_8_6_8 is
+    entity fullyConnectedControl_7_6 is
         
         port (i_CLK : in std_logic;
               i_CLR : in std_logic;
@@ -16,14 +16,14 @@ use work.types_pkg.all;
               o_ACC_CLR : out std_logic;
               o_REG_OUT_ENA : out std_logic;
               o_REG_OUT_ADDR : out std_logic_vector(5 downto 0):= (others => '0');
-              o_WEIGHT_READ_ADDR : out std_logic_vector(7 downto 0);
+              o_WEIGHT_READ_ADDR : out std_logic_vector(6 downto 0);
               o_BIAS_READ_ADDR : out std_logic_vector(5 downto 0);
               o_ACT_FUNCT_ENA : out std_logic;
-              o_IN_READ_ADDR : out std_logic_vector (7 downto 0)
+              o_IN_READ_ADDR : out std_logic_vector (6 downto 0)
         );
-    end fullyConnectedControl_8_6_8;
+    end fullyConnectedControl_7_6;
                  
-    architecture arc of fullyConnectedControl_8_6_8 is
+    architecture arc of fullyConnectedControl_7_6 is
 
             type t_STATE is (
               s_IDLE,
@@ -40,10 +40,10 @@ use work.types_pkg.all;
             );
         signal r_STATE : t_STATE;
         signal w_NEXT : t_STATE;
-        signal w_IN_READ_ADDR : std_logic_vector (7 downto 0);
+        signal w_IN_READ_ADDR : std_logic_vector (6 downto 0);
         signal w_INC_IN_ADDR : std_logic;
         signal w_RST_IN_ADDR : std_logic;
-        signal r_WEIGHT_ADDR : std_logic_vector(7 downto 0);
+        signal r_WEIGHT_ADDR : std_logic_vector(6 downto 0);
         signal w_RST_WEIGHT_ADDR : std_logic;
         signal w_INC_WEIGHT_ADDR : std_logic;
         signal r_BIAS_ADDR : std_logic_vector(5 downto 0);
@@ -66,7 +66,7 @@ use work.types_pkg.all;
             o_Q  => r_BIAS_ADDR
         );
  
-        u_WEIGHT_ADDR : entity work.Counter_8dw_1bs
+        u_WEIGHT_ADDR : entity work.Counter_7dw_1bs
         port map (
             i_CLK  => i_CLK,
             i_RESET  => w_RST_WEIGHT_ADDR,
@@ -75,7 +75,7 @@ use work.types_pkg.all;
             o_Q  => r_WEIGHT_ADDR
         );
  
-        u_INPUT_ADDR : entity work.Counter_8dw_1bs
+        u_INPUT_ADDR : entity work.Counter_7dw_1bs
         port map (
             i_CLK  => i_CLK,
             i_RESET  => w_RST_IN_ADDR,
@@ -181,7 +181,7 @@ use work.types_pkg.all;
   
   -- LAST CONTROLLERS
   w_LAST_NEURON <= '1' when (r_BIAS_ADDR = "100010") else '0';
-  w_LAST_WEIGHT <= '1' when (r_WEIGHT_ADDR = "10000000") else '0';
+  w_LAST_WEIGHT <= '1' when (r_WEIGHT_ADDR = "1000000") else '0';
   
   -- END
   o_READY <= '1' when (r_STATE = s_END) else '0';

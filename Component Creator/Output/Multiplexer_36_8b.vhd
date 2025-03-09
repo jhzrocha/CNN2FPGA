@@ -6,7 +6,7 @@ use work.types_pkg.all;
     entity Multiplexer_36_8b is
         
         port (i_A : in i_A_Multiplexer_36_8b:= (others => (others => '0'));
-              i_SEL : in std_logic_vector(2.0 DOWNTO 0):= (others => '0');
+              i_SEL : in std_logic_vector(5 DOWNTO 0):= (others => '0');
               o_Q : out std_logic_vector(7 DOWNTO 0)
         );
     end Multiplexer_36_8b;

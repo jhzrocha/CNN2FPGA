@@ -9,19 +9,20 @@ class FullyConnectedControl(ComponentCommonMethods):
     #BIAS_ADDRESS_WIDTH biasAddressWidth
     #ADDR_WIDTH - addWidth
     #LAST_FEATURE - lastFeature
-    def __init__(self,biasAddressWidth=6, addWidth=8, qtInputs = 128, qtNeurons = 34):
+    def __init__(self,biasAddressWidth=6, addWidth=8, qtInputs = 128, qtNeurons = 34, qtNeuronLayers = 1):
         self.weightAddressWidth = len(bin(qtInputs)[2:])
-        self.biasAddressWidth = biasAddressWidth
-        self.addWidth = addWidth
+        self.biasAddressWidth = len(bin(qtNeurons)[2:])
         self.lastFeature = bin(qtInputs)[2:]
+        self.WidthAddrInput = len(bin(qtInputs)[2:])
         self.qtNeurons = qtNeurons
+        self.qtNeuronLayers = qtNeuronLayers
         self.createComponent()
         
     
     def createComponent(self):
     
         self.startInstance()
-        self.minimalComponentFileName = f'fullyConnectedControl_{self.weightAddressWidth}_{self.biasAddressWidth}_{self.addWidth}'
+        self.minimalComponentFileName = f'fullyConnectedControl_{self.weightAddressWidth}_{self.biasAddressWidth}'
         self.portMap =   { 'in': [
                                 Port('i_CLK','std_logic'),
                                 Port('i_CLR','std_logic'),
@@ -39,7 +40,7 @@ class FullyConnectedControl(ComponentCommonMethods):
                                 Port('o_WEIGHT_READ_ADDR',f'std_logic_vector({self.weightAddressWidth-1} downto 0)'),
                                 Port('o_BIAS_READ_ADDR',f'std_logic_vector({self.biasAddressWidth-1} downto 0)'),
                                 Port('o_ACT_FUNCT_ENA','std_logic'),
-                                Port('o_IN_READ_ADDR','std_logic_vector (7 downto 0)')
+                                Port('o_IN_READ_ADDR',f'std_logic_vector ({self.WidthAddrInput-1} downto 0)')
                                    ] 
                     }
         
@@ -59,13 +60,17 @@ class FullyConnectedControl(ComponentCommonMethods):
         self.addInternalSignalWire('r_STATE','t_STATE')
         self.addInternalSignalWire('w_NEXT','t_STATE')
 
-        self.addInternalSignalWire('w_IN_READ_ADDR',F'std_logic_vector ({self.addWidth-1} downto 0)')
+        self.addInternalSignalWire('w_IN_READ_ADDR',f'std_logic_vector ({self.WidthAddrInput-1} downto 0)')
         self.addInternalSignalWire('w_INC_IN_ADDR','std_logic')
         self.addInternalSignalWire('w_RST_IN_ADDR','std_logic')
 
         self.addInternalSignalWire('r_WEIGHT_ADDR',f'std_logic_vector({self.weightAddressWidth-1} downto 0)')
+        self.addInternalSignalWire('r_LAYER_COUNTER',f'std_logic_vector({len(bin(self.qtNeuronLayers)[2:])-1} downto 0)')
+
         self.addInternalSignalWire('w_RST_WEIGHT_ADDR','std_logic')
         self.addInternalSignalWire('w_INC_WEIGHT_ADDR','std_logic')
+        self.addInternalSignalWire('w_INC_LAYER_COUNTER','std_logic')
+
 
         self.addInternalSignalWire('r_BIAS_ADDR',f'std_logic_vector({self.biasAddressWidth-1} downto 0)')
         self.addInternalSignalWire('w_RST_BIAS_ADDR','std_logic')
@@ -74,6 +79,8 @@ class FullyConnectedControl(ComponentCommonMethods):
 
 
         self.addInternalSignalWire('w_LAST_WEIGHT','std_logic', initialValue="'0'")
+        self.addInternalSignalWire('w_LAST_LAYER','std_logic', initialValue="'0'")
+
         self.addInternalSignalWire('w_LAST_NEURON','std_logic', initialValue="'0'")
 
         self.addInternalSignalWire('r_REG_OUT_ADDR','std_logic_vector(5 downto 0)', initialValue="(others => '0')")
@@ -100,7 +107,7 @@ class FullyConnectedControl(ComponentCommonMethods):
                                                               'i_RESET_VAL' : "(others => '0')",
                                                               'o_Q'         : 'r_WEIGHT_ADDR'})
 
-        self.addInternalComponent(component=Counter(dataWidth=self.addWidth,
+        self.addInternalComponent(component=Counter(dataWidth=self.WidthAddrInput,
                                                     bitStep=1),
                                                     componentCallName='u_INPUT_ADDR',
                                                     portmap={ 'i_CLK'       : 'i_CLK',
@@ -117,6 +124,16 @@ class FullyConnectedControl(ComponentCommonMethods):
                                                               'i_INC'       : 'w_INC_BUFF_OUT',
                                                               'i_RESET_VAL' : "(others => '0')",
                                                               'o_Q'         : 'r_REG_OUT_ADDR'})
+        
+        self.addInternalComponent(component=Counter(dataWidth=len(bin(self.qtNeuronLayers)[2:]),
+                                            bitStep=1),
+                                            componentCallName='u_LAYER_COUNTER',
+                                            portmap={ 'i_CLK'       : 'i_CLK',
+                                                      'i_RESET'     : 'i_CLR',
+                                                      'i_INC'       : 'w_INC_LAYER_COUNTER',
+                                                      'i_RESET_VAL' : "(others => '0')",
+                                                      'o_Q'         : 'r_LAYER_COUNTER'})
+        
         self.internalOperations = f"""
   p_STATE : process (i_CLK, i_CLR)
   begin
@@ -168,6 +185,13 @@ class FullyConnectedControl(ComponentCommonMethods):
           w_NEXT <= s_BIAS_INC_ADDR;
         end if;
 
+      when s_IS_LAST_LAYER =>
+      if (w_LAST_LAYER = '1') then  --PARADO AQUI 
+          w_NEXT <= s_END;
+      else
+          w_NEXT <= s_BIAS_INC_ADDR;
+      end if;
+     
       when s_BIAS_INC_ADDR =>
 	      w_NEXT <= s_LOAD_INPUT;
 
@@ -207,6 +231,7 @@ class FullyConnectedControl(ComponentCommonMethods):
   -- LAST CONTROLLERS
   w_LAST_NEURON <= '1' when (r_BIAS_ADDR = "{bin(self.qtNeurons)[2:]}") else '0';
   w_LAST_WEIGHT <= '1' when (r_WEIGHT_ADDR = "{self.lastFeature}") else '0';
+  w_LAST_LAYER <= '1' when (r_LAYER_COUNTER = "{bin(self.qtNeuronLayers)[2:]}") else '0';
   
   -- END
   o_READY <= '1' when (r_STATE = s_END) else '0';
