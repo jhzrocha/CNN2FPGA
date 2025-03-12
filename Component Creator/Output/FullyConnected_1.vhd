@@ -3,7 +3,7 @@ use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.types_pkg.all;
                  
-    entity CNN2FPGAVHDL is
+    entity FullyConnected_1 is
         
         port (i_CLK : in std_logic;
               i_CLR : in std_logic;
@@ -13,21 +13,24 @@ use work.types_pkg.all;
               o_PIX_0 : out o_PIX_FullyConnectedOperator:= (others => (others => '0'));
               o_READ_ADDR_0 : out std_logic_vector(6 downto 0):= (others => '0')
         );
-    end CNN2FPGAVHDL;
+    end FullyConnected_1;
                  
-    architecture arc of CNN2FPGAVHDL is
+    architecture arc of FullyConnected_1 is
+        signal w_CHANNEL_0_READY : std_logic;
 
 
         begin 
-        FullyConnected_1 : entity work.FullyConnected_1
+        fcLayerChannel_0 : entity work.FullyConnectedLayer_8dw_2un_3l15n_RELU_8wfdw
         port map (
             i_CLK  => i_CLK,
             i_CLR  => i_CLR,
             i_GO  => i_GO,
-            i_PIX_0  => i_PIX_0,
-            o_READY  => o_READY,
-            o_PIX_0  => o_PIX_0,
-            o_READ_ADDR_0  => o_READ_ADDR_0
+            i_PIX  => i_PIX_0,
+            o_PIX  => o_PIX_0,
+            o_READ_ADDR  => o_READ_ADDR_0,
+            o_READY  => w_CHANNEL_0_READY
         );
 
+            o_READY <=  w_CHANNEL_1_READY
+        
     end arc;

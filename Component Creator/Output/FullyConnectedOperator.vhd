@@ -8,11 +8,11 @@ use work.types_pkg.all;
         port (i_CLK : in std_logic;
               i_CLR : in std_logic;
               i_PIX : in std_logic_vector(7 downto 0):= (others => '0');
-              i_WEIGHT : in std_logic_vector(7 downto 0):= (others => '0');
+              i_WEIGHT : in i_WEIGHT_FullyConnectedOperator:= (others => (others => '0'));
               i_REG_PIX_ENA : in std_logic;
               i_REG_WEIGHT_ENA : in std_logic;
               i_BIAS_SCALE : in std_logic_vector(31 downto 0);
-              i_REG_BIAS_ADDR : in std_logic_vector(5 downto 0);
+              i_REG_BIAS_ADDR : in std_logic_vector(3 downto 0);
               i_REG_BIAS_ENA : in std_logic;
               i_ACC_ENA : in std_logic;
               i_ACC_CLR : in std_logic;
@@ -24,21 +24,24 @@ use work.types_pkg.all;
     end FullyConnectedOperator;
                  
     architecture arc of FullyConnectedOperator is
-        signal w_NFC_OUT : std_logic_vector(31 downto 0) := (others => '0');
-        signal w_ADD_BIAS_OUT : std_logic_vector(31 downto 0) := (others => '0');
-        signal w_A : std_logic_vector(31 downto 0) := (others => '0');
+        signal w_NFC_OUT : commonUnitsTypeOn_FullyConnectedOperator := (others => (others => '0'));
+        signal w_ADD_BIAS_OUT : commonUnitsTypeOn_FullyConnectedOperator := (others => (others => '0'));
+        signal w_A : commonUnitsTypeOn_FullyConnectedOperator := (others => (others => '0'));
         signal w_B : std_logic_vector(31 downto 0) := (others => '0');
-        signal w_SCALE_OUT : std_logic_vector(63 downto 0) := (others => '0');
-        signal w_CAST_OUT : std_logic_vector(31 downto 0) := (others => '0');
-        signal w_SHIFT_OUT : std_logic_vector(31 downto 0) := (others => '0');
-        signal w_OFFSET_OUT : std_logic_vector(31 downto 0) := (others => '0');
-        signal w_CLIP_OUT_BIAS : std_logic_vector(7 downto 0) := (others => '0');
-        signal w_CLIP_OUT_FUNCTION : std_logic_vector(7 downto 0) := (others => '0');
+        signal w_SCALE_OUT : w_SCALE_OUT_FullyConnectedOperator := (others => (others => '0'));
+        signal w_CAST_OUT : commonUnitsTypeOn_FullyConnectedOperator := (others => (others => '0'));
+        signal w_SHIFT_OUT : commonUnitsTypeOn_FullyConnectedOperator := (others => (others => '0'));
+        signal w_OFFSET_OUT : commonUnitsTypeOn_FullyConnectedOperator := (others => (others => '0'));
+        signal w_CLIP_OUT_BIAS : w_CLIP_OUT_BIAS_FullyConnectedOperator := (others => (others => '0'));
+        signal w_CLIP_OUT_FUNCTION : w_CLIP_OUT_FUNCTION_FullyConnectedOperator := (others => (others => '0'));
         signal r_REG_OUT : o_PIX_FullyConnectedOperator := (others => (others => '0'));
-        signal w_BIAS_ADDR : std_logic := '0';
+        signal w_BIAS_ADDR : std_logic_vector(1 downto 0) := (others => '0');
         signal w_SCALE : std_logic_vector(31 downto 0) := (others => '0');
         signal w_REG_OUT_ADDR : std_logic_vector(33 downto 0) := (others => '0');
         signal w_REG_BIAS_OUT_0 : std_logic_vector(31 downto 0) := (others => '0');
+        signal w_REG_BIAS_ENA_w_BIAS_ADDR_0 : std_logic;
+        signal w_REG_BIAS_OUT_1 : std_logic_vector(31 downto 0) := (others => '0');
+        signal w_REG_BIAS_ENA_w_BIAS_ADDR_1 : std_logic;
         signal w_REG_OUT_ENA_W_REG_OUT_ADDR_0 : std_logic;
         signal w_REG_OUT_ENA_W_REG_OUT_ADDR_1 : std_logic;
         signal w_REG_OUT_ENA_W_REG_OUT_ADDR_2 : std_logic;
@@ -86,15 +89,15 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_REG_WEIGHT_ENA  => i_REG_WEIGHT_ENA,
             i_ACC_CLR  => i_ACC_CLR,
             i_PIX  => i_PIX,
-            i_WEIGHT  => i_WEIGHT,
-            o_PIX  => w_NFC_OUT
+            i_WEIGHT  => i_WEIGHT(0),
+            o_PIX  => w_NFC_OUT(0)
         );
  
         u_REG_BIAS_0 : entity work.registrador_32b
         port map (
             i_CLK  => i_CLK,
             i_CLR  => i_CLR,
-            i_ENA  => i_REG_BIAS_ENA,
+            i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_0,
             i_A  => i_BIAS_SCALE,
             o_Q  => w_REG_BIAS_OUT_0
         );
@@ -105,12 +108,34 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             o_PIX  => w_CLIP_OUT_FUNCTION
         );
  
+        u_UNIT_1 : entity work.neuron_8_32
+        port map (
+            i_CLK  => i_CLK,
+            i_CLR  => i_CLR,
+            i_ACC_ENA  => i_ACC_ENA,
+            i_REG_PIX_ENA  => i_REG_PIX_ENA,
+            i_REG_WEIGHT_ENA  => i_REG_WEIGHT_ENA,
+            i_ACC_CLR  => i_ACC_CLR,
+            i_PIX  => i_PIX,
+            i_WEIGHT  => i_WEIGHT(1),
+            o_PIX  => w_NFC_OUT(1)
+        );
+ 
+        u_REG_BIAS_1 : entity work.registrador_32b
+        port map (
+            i_CLK  => i_CLK,
+            i_CLR  => i_CLR,
+            i_ENA  => w_REG_BIAS_ENA_w_BIAS_ADDR_1,
+            i_A  => i_BIAS_SCALE,
+            o_Q  => w_REG_BIAS_OUT_1
+        );
+ 
         u_REG_OUT_0 : entity work.registrador_8b
         port map (
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_0,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(0)
         );
  
@@ -119,7 +144,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_1,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(1)
         );
  
@@ -128,7 +153,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_2,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(2)
         );
  
@@ -137,7 +162,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_3,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(3)
         );
  
@@ -146,7 +171,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_4,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(4)
         );
  
@@ -155,7 +180,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_5,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(5)
         );
  
@@ -164,7 +189,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_6,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(6)
         );
  
@@ -173,7 +198,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_7,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(7)
         );
  
@@ -182,7 +207,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_8,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(8)
         );
  
@@ -191,7 +216,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_9,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(9)
         );
  
@@ -200,7 +225,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_10,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(10)
         );
  
@@ -209,7 +234,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_11,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(11)
         );
  
@@ -218,7 +243,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_12,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(12)
         );
  
@@ -227,7 +252,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_13,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(13)
         );
  
@@ -236,7 +261,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_14,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(14)
         );
  
@@ -245,7 +270,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_15,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(15)
         );
  
@@ -254,7 +279,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_16,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(16)
         );
  
@@ -263,7 +288,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_17,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(17)
         );
  
@@ -272,7 +297,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_18,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(18)
         );
  
@@ -281,7 +306,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_19,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(19)
         );
  
@@ -290,7 +315,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_20,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(20)
         );
  
@@ -299,7 +324,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_21,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(21)
         );
  
@@ -308,7 +333,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_22,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(22)
         );
  
@@ -317,7 +342,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_23,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(23)
         );
  
@@ -326,7 +351,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_24,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(24)
         );
  
@@ -335,7 +360,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_25,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(25)
         );
  
@@ -344,7 +369,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_26,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(26)
         );
  
@@ -353,7 +378,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_27,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(27)
         );
  
@@ -362,7 +387,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_28,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(28)
         );
  
@@ -371,7 +396,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_29,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(29)
         );
  
@@ -380,7 +405,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_30,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(30)
         );
  
@@ -389,7 +414,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_31,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(31)
         );
  
@@ -398,7 +423,7 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_32,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(32)
         );
  
@@ -407,8 +432,14 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             i_CLK  => i_CLK,
             i_CLR  => i_REG_OUT_CLR,
             i_ENA  => w_REG_OUT_ENA_W_REG_OUT_ADDR_33,
-            i_A  => w_CLIP_OUT_FUNCTION,
+            i_A  => w_CLIP_OUT_FUNCTION(0),
             o_Q  => r_REG_OUT(33)
+        );
+ 
+        u_OHE_BIAS : entity work.One_Hot_Encoder_4x2
+        port map (
+            i_DATA  => i_REG_BIAS_ADDR,
+            o_DATA  => w_BIAS_ADDR
         );
  
         u_OHE_OUT : entity work.One_Hot_Encoder_6x34
@@ -417,14 +448,24 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
             o_DATA  => W_REG_OUT_ADDR
         );
 
-     w_ADD_BIAS_OUT   <= std_logic_vector(signed(w_NFC_OUT) + signed(w_REG_BIAS_OUT_0));
-     w_A(31 downto 0) <= w_ADD_BIAS_OUT;
-     w_SCALE_OUT <= std_logic_vector(signed(w_A) * signed(SCALE_FACTOR));
-     w_CAST_OUT <= w_SCALE_OUT(62 downto 31);
-     w_SHIFT_OUT(24 downto 0)  <= w_CAST_OUT(31 downto 7);
-     w_SHIFT_OUT(31 downto 24) <= (others => '1') when (w_CAST_OUT(31) = '1') else (others => '0');
-     w_OFFSET_OUT <= std_logic_vector(unsigned(w_SHIFT_OUT) + to_unsigned(82, 32));
-     w_CLIP_OUT_BIAS <= w_OFFSET_OUT(7 downto 0);
+     w_REG_BIAS_ENA_w_BIAS_ADDR_0   <= i_REG_BIAS_ENA and w_BIAS_ADDR(0);
+     w_ADD_BIAS_OUT(0)   <= std_logic_vector(signed(w_NFC_OUT(0)) + signed(w_REG_BIAS_OUT_0));
+     w_A(0)(31 downto 0) <= w_ADD_BIAS_OUT(0);
+     w_SCALE_OUT(0) <= std_logic_vector(signed(w_A(0)) * signed(SCALE_FACTOR));
+     w_CAST_OUT(0) <= w_SCALE_OUT(0)(62 downto 31);
+     w_SHIFT_OUT(0)(24 downto 0)  <= w_CAST_OUT(0)(31 downto 7);
+     w_SHIFT_OUT(0)(31 downto 24) <= (others => '1') when (w_CAST_OUT(0)(31) = '1') else (others => '0');
+     w_OFFSET_OUT(0) <= std_logic_vector(unsigned(w_SHIFT_OUT(0)) + to_unsigned(82, 32));
+     w_CLIP_OUT_BIAS(0) <= w_OFFSET_OUT(0)(7 downto 0);
+     w_REG_BIAS_ENA_w_BIAS_ADDR_1   <= i_REG_BIAS_ENA and w_BIAS_ADDR(1);
+     w_ADD_BIAS_OUT(1)   <= std_logic_vector(signed(w_NFC_OUT(1)) + signed(w_REG_BIAS_OUT_1));
+     w_A(1)(31 downto 0) <= w_ADD_BIAS_OUT(1);
+     w_SCALE_OUT(1) <= std_logic_vector(signed(w_A(1)) * signed(SCALE_FACTOR));
+     w_CAST_OUT(1) <= w_SCALE_OUT(1)(62 downto 31);
+     w_SHIFT_OUT(1)(24 downto 0)  <= w_CAST_OUT(1)(31 downto 7);
+     w_SHIFT_OUT(1)(31 downto 24) <= (others => '1') when (w_CAST_OUT(1)(31) = '1') else (others => '0');
+     w_OFFSET_OUT(1) <= std_logic_vector(unsigned(w_SHIFT_OUT(1)) + to_unsigned(82, 32));
+     w_CLIP_OUT_BIAS(1) <= w_OFFSET_OUT(1)(7 downto 0);
      w_REG_OUT_ENA_W_REG_OUT_ADDR_0   <= i_REG_OUT_ENA and W_REG_OUT_ADDR(0);
      w_REG_OUT_ENA_W_REG_OUT_ADDR_1   <= i_REG_OUT_ENA and W_REG_OUT_ADDR(1);
      w_REG_OUT_ENA_W_REG_OUT_ADDR_2   <= i_REG_OUT_ENA and W_REG_OUT_ADDR(2);

@@ -8,45 +8,37 @@ from MemoryInitializationComponents.memoryInitializationComponent import MemoryI
 
 class FullyConnectedLayer(ComponentCommonMethods):
     
-    #BIAS_ADDRESS_WIDTH    : integer          := 6;               -- numero de bits para enderecar registradores de bias e scales    
-    #NUM_WEIGHT_FILTER_CHA : std_logic_vector := "1000";          -- quantidade de peso por filtro por canal(R*S) (de 0 a 8)
-    #LAST_WEIGHT           : std_logic_vector := "1000110000000"; -- quantidade de pesos (27) !! QUANTIDADE PESOS POR FILTRO (R*S*C) !!
-    #LAST_BIAS             : std_logic_vector := "100100";        -- 35 bias + 1 scale
-    #LAST_FEATURE          : std_logic_vector := "10000000";      -- 128 pixels     
-    #NUM_CHANNELS          : integer          := 64;
-    #NUM_UNITS             : integer          := 1;
-    #SCALE_SHIFT           : integer          := 7
-    def __init__(self, dataWidth=8, addWidth=8, weightAddressWidth=13, biasAddressWidth=6,numWeightFilterCha='"1000"', lastWeight='"1000110000000"', lastBias='"100100"',
-                 numChannels=64, numUnits=2, scaleShift=7, weightsFileName='', weightsFileDataWidth=8, biasFileName ='', biasFileDataWidth=32,qtInputs = 64, qtNeurons =36, 
-                 functionActivation='RELU', qtMaxQtNeuronsOnLayer=36, qtNeuronsLayers=3):
+    def __init__(self, dataWidth=8, numUnits=2, scaleShift=7, weightsFileDataWidth=8, biasFileName =None, biasFileDataWidth=32,qtInputs = 64, 
+                 functionActivation='RELU', qtNeuronsPerLayer=[4,5,6]):
         self.dataWidth = dataWidth
-        self.addWidth = addWidth
+        self.qtNeuronsPerLayer = qtNeuronsPerLayer
+
         self.weightAddressWidth = len(bin(qtInputs)[2:])
-        self.biasAddressWidth = biasAddressWidth
-        self.numWeightFilterCha = numWeightFilterCha
-        self.lastWeight = lastWeight
-        self.lastBias = lastBias
-        self.numChannels = numChannels
+        self.biasAddressWidth = len(bin(sum(self.qtNeuronsPerLayer))[2:])
+        
         self.numUnits = numUnits
         self.scaleShift = scaleShift
-        self.weightsFileName = weightsFileName
+
         self.weightsFileDataWidth = weightsFileDataWidth
-        self.biasFileName = biasFileName
+
+        self.biasFileName = biasFileName if biasFileName != None else 'bias.mif'
         self.biasFileDataWidth = biasFileDataWidth
-        self.qtNeuronsLayers = qtNeuronsLayers
         
         self.qtInputs = qtInputs
         self.qtInputAddr = len(bin(qtInputs)[2:])
         
-        self.qtNeurons = qtNeurons
         self.functionActivation = functionActivation
-        self.qtMaxQtNeuronsOnLayer = qtMaxQtNeuronsOnLayer
+
+        self.qtNeurons = sum(self.qtNeuronsPerLayer)
+        self.qtMaxQtNeuronsOnLayer = max(self.qtNeuronsPerLayer)
+        self.qtNeuronsLayers = len(self.qtNeuronsPerLayer)
+
         self.createComponent()
     
     
     def createComponent(self):
         self.startInstance()
-        self.minimalComponentFileName = f'FullyConnectedLayer'
+        self.minimalComponentFileName = f'FullyConnectedLayer_{self.dataWidth}dw_{self.numUnits}un_{self.qtNeuronsLayers}l{self.qtNeurons}n_{self.functionActivation}_{self.weightsFileDataWidth}wfdw'
         
         self.fullyConnectedOperator = FullyConnectedOperator(nrUnits=self.numUnits, 
                                                                    biasAddressWidth=self.biasAddressWidth, 
@@ -117,10 +109,8 @@ class FullyConnectedLayer(ComponentCommonMethods):
                                              'clock':"i_CLK",
                                              'q':'w_BIAS_SCALE'})
 
-        self.addInternalComponent(component=FullyConnectedControl(biasAddressWidth=self.biasAddressWidth, 
-                                                                  addWidth=self.addWidth,
-                                                                  qtInputs=self.qtInputs,
-                                                                  qtNeuronLayers=self.qtNeuronLayers),
+        self.addInternalComponent(component=FullyConnectedControl(qtInputs=self.qtInputs,
+                                                                  qtNeuronsPerLayer = self.qtNeuronsPerLayer),
                                     componentCallName='u_CONTROLE',
                                     portmap={'i_CLK': 'i_CLK',
                                             'i_CLR' : 'i_CLR',
@@ -185,10 +175,16 @@ class FullyConnectedLayer(ComponentCommonMethods):
 
     def createWeightROMComponents(self):
         for i in range(0, self.qtNeuronsLayers):
+            dataDepth=0
+            if i == 0:
+                dataDepth = len(bin(self.qtInputs)[2:])
+            else:
+                dataDepth = len(bin(self.qtNeuronsPerLayer[i-1])[2:])
+            
             self.addInternalComponent(component=MemoryInitializationComponent(type='conv_weights',
                                                                             initFileName= f'fc_weights_{i}.mif',
                                                                             dataWidth=self.weightsFileDataWidth,
-                                                                            dataDepth=self.weightAddressWidth),
+                                                                            dataDepth=dataDepth),
                                         componentCallName= f'u_ROM_WEIGHTS_{i}',
                                         portmap={'address':'w_WEIGHT_READ_ADDR',
                                                 'clock':'i_CLK',
