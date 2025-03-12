@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{% static 'assets/style/style.css' %}">
 </head>
 <body>
-    <div class="container-fluid form">
+    <div class="container-fluid">
         <div class="row">
             <main class="col-lg-12 p-4 ">
                 <h1 class="mb-4">CNN2FPGA</h1>
@@ -20,34 +20,35 @@
                 <form action= "{% url 'component' %}" method = "post" class="ms-10">
                   {% csrf_token %}  
                   <div class="row g-3">
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <label for="tipo-imagem" class="form-label">Tipo da Imagem</label>
-                            <select id="tipo-imagem" name="tipo-imagem" class="form-select">
-                                <option value="">Selecionar</option>
+                            <select id="qtChannelsInput" name="tipo-imagem" class="form-select" attributename="qtChannels">
+                                <option value=1>1 Canal</option>
+                                <option value=2>RGB (3 Canais)</option>
                             </select>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <label for="tamanho-imagem" class="form-label">Tamanho da Imagem</label>
-                            <input type="text" id="tamanho-imagem" name="tamanho-imagem" class="form-control">
+                            <input type="text" id="imageSizeInput" name="tamanho-imagem" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <label for="classificador-saida" class="form-label">Classificador de Saída</label>
                             <select id="classificador-saida" name="classificador-saida" class="form-select">
                                 <option value="">Selecionar</option>
                             </select>
-                        </div>
-                        <div class="col-md-6">
+                        </div> -->
+                        <!-- <div class="col-md-6">
                             <label for="quantidade-classes" class="form-label">Quantidade de Classes</label>
                             <input type="text" id="quantidade-classes" name="quantidade-classes" class="form-control">
-                        </div>
-                        <div class="col-md-6">
+                        </div> -->
+                        <div class="col-md-3">
                             <label for="upload-imagem" class="form-label">Imagem</label>
-                            <input type="file" id="upload-imagem" name="upload-imagem" class="form-control">
+                            <input type="file" id="imageInput" name="upload-imagem" class="form-control" attributename="image">
                         </div>
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <label for="upload-pesos" class="form-label">Pesos e Vieses</label>
                             <input type="file" id="upload-pesos" name="upload-pesos" class="form-control">
-                        </div>
+                        </div> -->
                     </div>
                     <br>
                     <p>Camadas</p>
@@ -91,7 +92,6 @@
                 </div>
                 <div class="modal-footer bg-dark">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary">Salvar Alterações</button>
                 </div>
             </div>
         </div>

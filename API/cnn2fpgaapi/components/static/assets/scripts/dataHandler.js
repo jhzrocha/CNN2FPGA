@@ -1,19 +1,23 @@
 export class DataHandler {
-    layers = {}
+    userLocalStorage = {}
 
     addLayer(layerID){
-        this.layers[`layer${layerID}`] = {name : `Camada ${layerID}`}
-        this.layers[`layer${layerID}`].type = '--';
-        localStorage.setItem('layers', JSON.stringify(this.layers));
+        this.userLocalStorage[`layer${layerID}`] = {name : `Camada ${layerID}`}
+        this.userLocalStorage[`layer${layerID}`].type = '--';
+        localStorage.setItem('userLocalStorage', JSON.stringify(this.userLocalStorage));
+    }
+
+    addAttribute(attribute, value){
+        this.userLocalStorage[`${attribute}`] = value;
     }
 
     removeLayer(layerID){
-        delete this.layers[layerID];
+        delete this.userLocalStorage[layerID];
         this.updateLayersAfterRemove(layerID);
     }
 
     updateLayersAfterRemove() {
-        const entries = Object.entries(this.layers)
+        const entries = Object.entries(this.userLocalStorage)
             .sort((a, b) => {
                 const numA = parseInt(a[0].replace('layer', ''));
                 const numB = parseInt(b[0].replace('layer', ''));
@@ -26,12 +30,12 @@ export class DataHandler {
             layersRenomeados[newKey] = entry[1];
         });
     
-        this.layers = layersRenomeados;
-        console.log(this.layers);
+        this.userLocalStorage = layersRenomeados;
+        console.log(this.userLocalStorage);
     }
 
     getLayer(layerID){
-        return this.layers[`${layerID}`];
+        return this.userLocalStorage[`${layerID}`];
     }
 
     getLayerAttribute(layerId, attribute){
@@ -45,7 +49,7 @@ export class DataHandler {
     }
 
     removeLayerAttribute(layerID, attribute) {
-        delete this.layers[`${layerID}`][attribute]; // Remove o atributo especificado
+        delete this.userLocalStorage[`${layerID}`][attribute]; // Remove o atributo especificado
     }
 
 

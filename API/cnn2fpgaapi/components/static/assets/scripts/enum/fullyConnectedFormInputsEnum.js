@@ -14,6 +14,10 @@ const fullyConnectedFormInputsEnum = Object.freeze({
                            }
                         ]
                 },
+                {   label: "Pesos",
+                    attribute: "FCWeights",
+                    inputType: "file"
+                },
                 {label: "Quantidade de Camadas",
                     attribute: "qtFCLayers",
                     inputType: "number",

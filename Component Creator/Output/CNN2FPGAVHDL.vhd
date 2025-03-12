@@ -19,7 +19,7 @@ use work.types_pkg.all;
 
 
         begin 
-        FullyConnected_1 : entity work.FullyConnected_1
+        FullyConnected0idx_1chs : entity work.FullyConnected0idx_1chs
         port map (
             i_CLK  => i_CLK,
             i_CLR  => i_CLR,

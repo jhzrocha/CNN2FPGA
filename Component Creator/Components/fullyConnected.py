@@ -41,7 +41,7 @@ class FullyConnected(ComponentCommonMethods):
         
         self.createChannels()
         self.internalOperations = f"""
-            o_READY <= {self.generateReadyOutput()}
+            o_READY <= {self.generateReadyOutput()};
         """
         self.OutputEntityAndArchitectureFile()
 
@@ -50,7 +50,8 @@ class FullyConnected(ComponentCommonMethods):
         condition = ''
         for i in range(0, self.qtChannels-1):
             condition = condition + f' w_CHANNEL_{i}_READY AND' 
-        condition = condition + f' w_CHANNEL_{self.qtChannels}_READY'
+        condition = condition + f' w_CHANNEL_{self.qtChannels-1}_READY'
+
         return condition
 
     def createChannels(self):

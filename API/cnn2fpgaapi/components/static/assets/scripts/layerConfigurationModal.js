@@ -8,9 +8,26 @@ export class LayerConfigurationModal {
     layerType;
     layerId;
     
+    defaultInputs= ['qtChannelsInput', 'imageSizeInput', 'imageInput']
+
+
     init(dataHandler){
         this.dataHandler = dataHandler;
+        this.addDefaultOptionsEvents();
     }
+    
+    addDefaultOptionsEvents(){
+        this.defaultInputs.forEach((input) => {
+            document.getElementById(input).addEventListener('blur', (event) => {
+                console.log(event);
+            });
+        });
+    }
+
+    addAtributeOnDataHandler(event){
+        this.dataHandler.addAttribute(event.currentTarget.attribute, event.currentTarget.value);
+    }
+
     
     show(layerId){
         let htmlModal = document.getElementById("layerSettingsModal");
@@ -173,17 +190,34 @@ export class LayerConfigurationModal {
         }
         opcoesDiv.appendChild(updatedForm);
     }
-    
 
     addUpdateDatahandlerEvent(element, layerId) {
         const attribute = element.getAttribute('attributeName');
-        element.addEventListener('blur', ()=>{
-            if(element.value != undefined && element.value != this.dataHandler.getLayerAttribute(layerId, attribute)){
-                this.addMultiGeneratedInputs(element, this.dataHandler.getLayerAttribute(layerId, attribute));
-                this.dataHandler.setLayerAttribute(layerId,attribute, element.value);
-                this.updateCardInformations(layerId);
-            }
-        });
+        if(element.type != "file"){
+            element.addEventListener('blur', ()=>{
+                if(element.value != undefined && element.value != this.dataHandler.getLayerAttribute(layerId, attribute)){
+                    this.dataHandler.setLayerAttribute(layerId,attribute, element.value);
+                    this.updateCardInformations(layerId);
+                    this.addMultiGeneratedInputs(element, this.dataHandler.getLayerAttribute(layerId, attribute));
+                }
+            });
+        }
+        
+        if (element.type == "file"){
+            element.addEventListener('change', (event)=>{
+                let file = event.target.files[0];
+                let reader = new FileReader();
+                reader.onload = (event) => {
+                    let fileContent = event.target.result; 
+                    this.dataHandler.setLayerAttribute(layerId,attribute, fileContent);
+                };
+                reader.onerror = () => {
+                    showMessage("Error reading the file. Please try again.", "error");
+                };
+                reader.readAsText(file);
+            });
+        }
+
     }
 
     updateCardInformations(layerID){

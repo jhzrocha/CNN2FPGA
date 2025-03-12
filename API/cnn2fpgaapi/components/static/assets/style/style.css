@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #2C2C38;
+    background-color: #0a97b0;
     color: #fff;
 }
 
@@ -11,7 +11,7 @@ body {
 
 .sidebar {
     width: 200px;
-    background-color: #0a97b0;
+
     padding: 20px;
 }
 
@@ -368,6 +368,7 @@ h1 {
   .header_section .header_bottom .container-fluid {
     padding-right: 25px;
     padding-left: 25px;
+    background-color: #0a97b0;
   }
   
   .navbar-brand span {

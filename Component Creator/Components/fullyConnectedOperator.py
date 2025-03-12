@@ -152,22 +152,22 @@ class FullyConnectedOperator(ComponentCommonMethods):
         if (self.functionActivationType == 'RELU'):
             self.addInternalComponent(component=Relu(dataWidth=self.dataWidth),
                                       componentCallName='u_RELU',
-                                      portmap={ 'i_PIX': f'w_CLIP_OUT_BIAS',
-                                                'o_PIX': f'w_CLIP_OUT_FUNCTION'
+                                      portmap={ 'i_PIX': f'w_CLIP_OUT_BIAS(0)',
+                                                'o_PIX': f'w_CLIP_OUT_FUNCTION(0)'
                                                 })
         elif (self.functionActivationType == 'SIGMOID'):
             self.addInternalComponent(component=Sigmoid(dataWidth=self.dataWidth),
                                       componentCallName='u_SIGMOID',
-                                      portmap={ 'i_X' : 'w_CLIP_OUT_BIAS',
+                                      portmap={ 'i_X' : 'w_CLIP_OUT_BIAS(0)',
                                                 'i_CLK': f'i_CLK',
-                                                'i_Y': f'w_CLIP_OUT_FUNCTION'
+                                                'i_Y': f'w_CLIP_OUT_FUNCTION(0)'
                                                 })
         elif (self.functionActivationType == 'TANH'):
             self.addInternalComponent(component=HyperbolicTangent(dataWidth=self.dataWidth),
                                       componentCallName='u_TANH',
-                                      portmap={ 'i_X' : 'w_CLIP_OUT_BIAS',
+                                      portmap={ 'i_X' : 'w_CLIP_OUT_BIAS(0)',
                                                 'i_CLK': f'i_CLK',
-                                                'i_Y': f'w_CLIP_OUT_FUNCTION'
+                                                'i_Y': f'w_CLIP_OUT_FUNCTION(0)'
                                                 })
     
     def generateOutBuffer(self):

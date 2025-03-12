@@ -104,8 +104,8 @@ constant SCALE_FACTOR : std_logic_vector(31 downto 0) := "0100000000000000000000
  
         u_RELU : entity work.Relu_8dw
         port map (
-            i_PIX  => w_CLIP_OUT_BIAS,
-            o_PIX  => w_CLIP_OUT_FUNCTION
+            i_PIX  => w_CLIP_OUT_BIAS(0),
+            o_PIX  => w_CLIP_OUT_FUNCTION(0)
         );
  
         u_UNIT_1 : entity work.neuron_8_32
